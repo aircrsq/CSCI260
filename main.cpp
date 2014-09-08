@@ -44,8 +44,13 @@ class Disjoint_Array{
 
         void PrintArray(int value){
             for (int count = 0; count < value; count++){
-                cout << count << " " << Parent[count] << '\n';
+                cout << count << '\t';
             }
+            cout << '\n';
+            for (int count = 0; count < value; count++){
+                cout << Parent[count] << '\t';
+            }
+            cout << '\n' << '\n';
         }
 };
 
@@ -89,6 +94,7 @@ int main()
             else if (operation == 'U'){
                 da->Union(First, Second);
             }
+//            da->PrintArray(value);
         }
 //        da->PrintArray(value);
         myfile.close();
