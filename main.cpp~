@@ -69,6 +69,7 @@ class Disjoint_Array{
 string GetFileName(){
     string FilePath;
     string Prompt;
+    system("clear");    
     cout << "Please enter path of source file \n";
     cin >> FilePath;
     cout << FilePath << " Is this correct?";
@@ -101,7 +102,8 @@ int main()
             std::istringstream istr(line);
             istr >> operation >> First >> Second;
             if (operation == 'F'){
-//		system("clear");		
+/*		system("clear");
+		cout <<		*/
                 cout << da->Find(First) << " is the root of " << First << '\n';
             }
             else if (operation == 'U'){
@@ -112,6 +114,8 @@ int main()
 //        da->PrintArray(value);
         myfile.close();
     }
-    else cout << "Unable to open file";
+    else {
+	cout << "Unable to open file";
+    }
     return 0;
 }

@@ -1,0 +1,12 @@
+testappQF:
+	testapp.o unionfindQF.o
+	g++ -o testappQF testapp.o unionfindQF.o
+testappQU:
+	testapp.o unionfindQU.o
+	g++ -o testappQU testapp.o unionfindQU.o
+testappQUPCR:
+	etc...
+testapp.o: unionfind.h testapp.cpp
+	g++ - testapp.cpp
+	etc....
+	
