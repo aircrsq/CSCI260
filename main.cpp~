@@ -101,8 +101,7 @@ int main()
             std::istringstream istr(line);
             istr >> operation >> First >> Second;
             if (operation == 'F'){
-/*		system("clear");
-		cout <<		*/
+//		system("clear");		
                 cout << da->Find(First) << " is the root of " << First << '\n';
             }
             else if (operation == 'U'){
@@ -113,8 +112,6 @@ int main()
 //        da->PrintArray(value);
         myfile.close();
     }
-    else {
-	cout << "Unable to open file";
-    }
+    else cout << "Unable to open file";
     return 0;
 }
