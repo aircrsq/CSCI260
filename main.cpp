@@ -30,11 +30,11 @@ class Disjoint_Array{
         void Union(int Element1, int Element2){
             if (Find(Element1) != Find(Element2)){
                 if (Rank[Element1] < Rank[Element2]){
-                    Parent[Element1] = Element2;
+                    Parent[Element1] = Find(Element2);
                     Rank[Element1]++;
                 }
                 else{
-                    Parent[Element2] = Element1;
+                    Parent[Element2] = Find(Element1);
                     Rank[Element2]++;
                 }
             }
