@@ -1,9 +1,9 @@
 /************************************************************************
  Design Unit  : Lab1
 
- File Name    : unionfind.h
+ File Name    : unionfindQF.cpp
 
- Purpose      : Header file for unionfind
+ Purpose      : Union-Find using Quick-find
 
  Note         :
 
@@ -11,7 +11,7 @@
 
  Errors       : none known
 
- Modules      :
+ Modules      : unionfind.h
 
  Dependences  : none
 
@@ -24,45 +24,41 @@
  Version      Author  Date    Changes
  1.0          DB      Sep 08  New version
 *************************************************************************/
-#ifndef unionfind
-#define unionfind
-
-
-
-
 class unionfind{
     private:
-        int n;
         int * Parent;
         int * Rank;
 
     public:
-        unionfind(int Elements);/*{
+        unionfind(int Elements){
             Parent = new int [Elements];
-            Rank = new int [Elements];
             for (int counter = 0; counter < Elements; counter++){
                 Parent[counter] = counter;
-                Rank[counter] = 0;
             }
-        }       */
+        }
 
 /*        int Root(int item){
             if (Parent[item] != item){
                 Parent[item] = Find(Parent[item]);
             }
             if (Parent[item] == item){
-		Rank[item] = 0;
-	    }
-	    else {
-		Rank[item] = 1;
-	    }
+                Rank[item] = 0;
+            }
+            else {
+                Rank[item] = 1;
+            }
             return Parent[item];
-       }        */
+        }   */
 
-        bool Find(int item1, int item2);
+        bool Find(int item1, int item2){
+            return (Parent[item1] == Parent[item2]);
+	    }
 
-        void Union(int Element1, int Element2);
-
-        void PrintArray(int value);
-};
-#endif
+        void Union(int Element1, int Element2){
+            if (!Find(int Element1, int Element2)){
+                    Parent[Element1] = Find(Element2);
+                }
+            else
+                cout << Element1 << " and " << Element2 << " are in the same bush\n";
+        }
+}
