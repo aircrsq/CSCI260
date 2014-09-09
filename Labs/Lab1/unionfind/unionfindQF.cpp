@@ -55,10 +55,11 @@ class unionfind{
 	    }
 
         void Union(int Element1, int Element2){
-            if (!Find(int Element1, int Element2)){
-                    Parent[Element1] = Find(Element2);
+            int Parent = Parent[Element1];
+            for (int i=0; i < Parent.length; i++){
+                if (Parent[i] == Parent){
+                    Parent[i] = Parent[Element2];
                 }
-            else
-                cout << Element1 << " and " << Element2 << " are in the same bush\n";
+            }
         }
 }
