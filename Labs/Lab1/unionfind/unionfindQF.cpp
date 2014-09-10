@@ -37,21 +37,15 @@ class unionfind{
             }
         }
 
-/*        int Root(int item){
+        int Root(int item){
             if (Parent[item] != item){
                 Parent[item] = Find(Parent[item]);
             }
-            if (Parent[item] == item){
-                Rank[item] = 0;
-            }
-            else {
-                Rank[item] = 1;
-            }
             return Parent[item];
-        }   */
+        }
 
         bool Find(int item1, int item2){
-            return (Parent[item1] == Parent[item2]);
+            return (Root[item1] == Root[item2]);
 	    }
 
         void Union(int Element1, int Element2){
@@ -61,5 +55,21 @@ class unionfind{
                     Parent[i] = Parent[Element2];
                 }
             }
+        }
+
+        void PrintArray(int value){
+	    system("clear");
+            for (int count = 0; count < value; count++){
+                cout << count << '\t';
+            }
+            cout << '\n';
+            for (int count = 0; count < value; count++){
+                cout << Parent[count] << '\t';
+            }
+/*            cout << '\n';
+            for (int count = 0; count < value; count++){
+                cout << Rank[count] << '\t';
+            }       */
+            cout << '\n' << '\n';
         }
 }

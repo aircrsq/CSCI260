@@ -72,4 +72,20 @@ class unionfind{
                 cout << Element1 << " and " << Element2 << " are in the same bush\n";
         }
 
+        void PrintArray(int value){
+	    system("clear");
+            for (int count = 0; count < value; count++){
+                cout << count << '\t';
+            }
+            cout << '\n';
+            for (int count = 0; count < value; count++){
+                cout << Parent[count] << '\t';
+            }
+            cout << '\n';
+            for (int count = 0; count < value; count++){
+                cout << Rank[count] << '\t';
+            }
+            cout << '\n' << '\n';
+        }
+
 }

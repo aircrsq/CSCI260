@@ -54,4 +54,20 @@ class unionfind{
             int j = Root(Element2);
             Parent[i] = j;
         }
+
+        void PrintArray(int value){
+	    system("clear");
+            for (int count = 0; count < value; count++){
+                cout << count << '\t';
+            }
+            cout << '\n';
+            for (int count = 0; count < value; count++){
+                cout << Parent[count] << '\t';
+            }
+/*            cout << '\n';
+            for (int count = 0; count < value; count++){
+                cout << Rank[count] << '\t';
+            }       */
+            cout << '\n' << '\n';
+        }
 }

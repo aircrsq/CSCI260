@@ -23,6 +23,11 @@
 
  Dependences  : unionfind.h
               : Test input data file
+              : iostream
+              : fstream
+              : string
+              : sstream
+              : stdlib.h
 
  Author       : David Burneau, Vancouver Island University
 
@@ -83,6 +88,9 @@ int main()
             }
             else if (operation == 'u'){
                 da->Union(First, Second);
+            }
+            else if (operation == 'd'){
+                da->PrintArray(First, Second);
             }
 //            da->PrintArray(value);
         }

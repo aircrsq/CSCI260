@@ -60,66 +60,16 @@ Testapp.o: unionfind.h Testapp.cpp
 gdb:	Testapp
 	gdb -d Testapp -d unionfindQF -d unionfindQU -d unionfindQUPRC unionfind
 
-runtest: Testapp
-# test each module first
-	for m in $(MODULES); do \
-		( cd $$m; $(MAKE) 'CFLAGS=$(CFLAGS)' runtest; ) \
-	done
-#
-# now test the whole kwic program
-	rm -f actualOutput/*;
-#
-# ***** use different lines files
-# input/test0 from stdin
-	./kwic -n noiseWordsThe < input/test0 > actualOutput/test0
-	-diff actualOutput/test0 expectedOutput/test0
-# input/test0 as command line argument
-	./kwic -n noiseWordsThe input/test0 > actualOutput/test0a
-	-diff actualOutput/test0 expectedOutput/test0
-# input/test0 and input/test1 as command line arguments
-	./kwic -n noiseWordsThe input/test0 input/test1 > actualOutput/test0test1
-	-diff actualOutput/test0test1 expectedOutput/test0test1
-#
-# ***** use different noise words files
-# default file
-	./kwic input/test0 > actualOutput/noiseWords0
-	-diff actualOutput/noiseWords0 expectedOutput/noiseWords0
-#
-# -n argument
-	./kwic -n noiseWordsThe input/test0 > actualOutput/noiseWords1
-	-diff actualOutput/noiseWords1 expectedOutput/noiseWords1
-#
-# environment variable
-# Note: parentheses needed to retain environment variable definition
-	( \
-	KWICNOISEWORDS=noiseWordsIn; \
-	export KWICNOISEWORDS; \
-	./kwic input/test0 > actualOutput/noiseWords2; \
-	)
-	-diff actualOutput/noiseWords2 expectedOutput/noiseWords2
-
-main.o: $(INC)/kwic.h $(IMPINC)
-	$(CC) -c $(CFLAGS) main.c
+main.o: $(INC)/unionfind.h $(IMPINC)
+	$(CC) -c $(CFLAGS) Testapp.c
 
 clean:
 	for m in $(MODULES); do \
-		( cd $$m; $(MAKE) clean; ) \
+		( cd $$m; rm -f *.o ) \
 	done
-	rm -f kwic core mon.out gmon.out *.o actualOutput/*
+	rm -f Testapp core mon.out gmon.out *.o
 
 gcov:
 	for m in $(MODULES); do \
 		( cd $$m; $(MAKE) gcov; ) \
 	done
-testappQF:
-	testapp.o unionfindQF.o
-	g++ -o testappQF testapp.o unionfindQF.o
-testappQU:
-	testapp.o unionfindQU.o
-	g++ -o testappQU testapp.o unionfindQU.o
-testappQUPCR:
-	etc...
-testapp.o: unionfind.h testapp.cpp
-	g++ - testapp.cpp
-	etc....
-
