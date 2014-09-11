@@ -24,6 +24,8 @@
  Version      Author  Date    Changes
  1.0          DB      Sep 08  New version
 *************************************************************************/
+#include <iostream>
+#include <stdlib.h>
 
 class unionfind{
     private:
@@ -42,7 +44,7 @@ class unionfind{
 
         int Root(int item){
             if (Parent[item] != item){
-                Parent[item] = Find(Parent[item]);
+                Parent[item] = Root(Parent[item]);
             }
             if (Parent[item] == item){
                 Rank[item] = 0;
@@ -58,34 +60,32 @@ class unionfind{
         }
 
         void Union(int Element1, int Element2){
-            if (!(Find(Element1, Element2)){
+            if (!(Find(Element1, Element2))){
                 if (Rank[Element1] < Rank[Element2]){
-                    Parent[Element1] = Find(Element2);
+                    Parent[Element1] = Root(Element2);
                     Rank[Element1]++;
                 }
                 else{
-                    Parent[Element2] = Find(Element1);
+                    Parent[Element2] = Root(Element1);
                     Rank[Element2]++;
                 }
             }
-            else
-                cout << Element1 << " and " << Element2 << " are in the same bush\n";
         }
 
         void PrintArray(int value){
 	    system("clear");
             for (int count = 0; count < value; count++){
-                cout << count << '\t';
+                std::cout << count << '\t';
             }
-            cout << '\n';
+            std::cout << '\n';
             for (int count = 0; count < value; count++){
-                cout << Parent[count] << '\t';
+                std::cout << Parent[count] << '\t';
             }
-            cout << '\n';
+            std::cout << '\n';
             for (int count = 0; count < value; count++){
-                cout << Rank[count] << '\t';
+                std::cout << Rank[count] << '\t';
             }
-            cout << '\n' << '\n';
+            std::cout << '\n' << '\n';
         }
 
-}
+};

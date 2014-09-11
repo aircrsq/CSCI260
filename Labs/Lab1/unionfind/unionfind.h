@@ -24,11 +24,16 @@
  Version      Author  Date    Changes
  1.0          DB      Sep 08  New version
 *************************************************************************/
-#ifndef unionfind
-#define unionfind
+#ifndef ___unionfind
+#define ___unionfind
 
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <stdlib.h>
 
-
+using namespace std;
 
 class unionfind{
     private:
@@ -37,12 +42,12 @@ class unionfind{
         int * Rank;
 
     public:
-        unionfind(int Elements);
+        unionfind(int);
 
-        bool Find(int item1, int item2);
+        bool Find(int, int);
 
-        void Union(int Element1, int Element2);
+        void Union(int, int);
 
-        void PrintArray(int value);
+        void PrintArray(int);
 };
 #endif

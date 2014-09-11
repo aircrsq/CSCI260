@@ -24,6 +24,11 @@
  Version      Author  Date    Changes
  1.0          DB      Sep 08  New version
 *************************************************************************/
+#include <iostream>
+//#include <fstream>
+//#include <string>
+//#include <sstream>
+#include <stdlib.h>
 
 class unionfind{
     private:
@@ -58,16 +63,16 @@ class unionfind{
         void PrintArray(int value){
 	    system("clear");
             for (int count = 0; count < value; count++){
-                cout << count << '\t';
+                std::cout << count << '\t';
             }
-            cout << '\n';
+            std::cout << '\n';
             for (int count = 0; count < value; count++){
-                cout << Parent[count] << '\t';
+                std::cout << Parent[count] << '\t';
             }
 /*            cout << '\n';
             for (int count = 0; count < value; count++){
                 cout << Rank[count] << '\t';
             }       */
-            cout << '\n' << '\n';
+            std::cout << '\n' << '\n';
         }
-}
+};

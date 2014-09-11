@@ -44,7 +44,8 @@
 #include <string>
 #include <sstream>
 #include <stdlib.h>
-#include <unionfind.h>
+#include <ctime>
+#include "unionfind.h"
 
 string GetFileName(){
     string FilePath;
@@ -82,19 +83,23 @@ int main()
             std::istringstream istr(line);
             istr >> operation >> First >> Second;
             if (operation == 'f'){
-/*		system("clear");
-		cout <<		*/
+                clock_t begin = clock();
                 da->Find(First, Second);
+                clock_t end = clock();
+                double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+                std::cout << elapsed_secs << " for f " << First << '\t' << Second << '\n';
             }
             else if (operation == 'u'){
+                clock_t begin = clock();
                 da->Union(First, Second);
+                clock_t end = clock();
+                double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+                std::cout << elapsed_secs << " for u " << First << '\t' << Second << '\n';
             }
             else if (operation == 'd'){
-                da->PrintArray(First, Second);
+                da->PrintArray(value);
             }
-//            da->PrintArray(value);
         }
-//        da->PrintArray(value);
         myfile.close();
     }
     else {

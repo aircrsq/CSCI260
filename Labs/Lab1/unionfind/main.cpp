@@ -3,17 +3,17 @@
 #include <string>
 #include <sstream>
 #include <stdlib.h>
-#include <unionfind.h>
+//#include "unionfind.h"
 
 using namespace std;
 
-class Disjoint_Array{
+class unionfind{
     private:
         int * Parent;
         int * Rank;
 
     public:
-        Disjoint_Array(int Elements){
+        unionfind(int Elements){
             Parent = new int [Elements];
             Rank = new int [Elements];
             for (int counter = 0; counter < Elements; counter++){
