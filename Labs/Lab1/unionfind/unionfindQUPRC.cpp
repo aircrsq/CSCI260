@@ -26,6 +26,7 @@
 *************************************************************************/
 #include <iostream>
 #include <stdlib.h>
+#include "unionfind.h"
 
 class unionfind{
     private:
@@ -33,7 +34,7 @@ class unionfind{
         int * Rank;
 
     public:
-        unionfind(int Elements){
+        unionfind::unionfind(int Elements){
             Parent = new int [Elements];
             Rank = new int [Elements];
             for (int counter = 0; counter < Elements; counter++){

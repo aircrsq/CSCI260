@@ -24,13 +24,13 @@
  Version      Author  Date    Changes
  1.0          DB      Sep 08  New version
 *************************************************************************/
-#ifndef ___unionfind
-#define ___unionfind
+#ifndef ___UNIONFIND___
+#define ___UNIONFIND___
 
 #include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
+//#include <fstream>
+//#include <string>
+//#include <sstream>
 #include <stdlib.h>
 
 using namespace std;

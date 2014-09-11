@@ -25,10 +25,11 @@
  1.0          DB      Sep 08  New version
 *************************************************************************/
 #include <iostream>
-//#include <fstream>
-//#include <string>
-//#include <sstream>
+/*#include <fstream>
+#include <string>
+#include <sstream>*/
 #include <stdlib.h>
+#include "unionfind.h"
 
 class unionfind{
     private:
@@ -36,7 +37,7 @@ class unionfind{
         int * Rank;
 
     public:
-        unionfind(int Elements){
+        unionfind::unionfind(int Elements){
             Parent = new int [Elements];
             for (int counter = 0; counter < Elements; counter++){
                 Parent[counter] = counter;

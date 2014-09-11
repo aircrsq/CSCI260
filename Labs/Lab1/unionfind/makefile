@@ -27,6 +27,8 @@
      #clean:
   	 #$(RM) $(TARGET)
 
+Test: Testapp.cpp unionfind.h unionfindQF.cpp
+	g++ -c Testapp Testapp.cpp unionfindQF.cpp
 
 TestappQF: Testapp.o unionfindQF.o
 	g++ -o TestappQF Testapp.o unionfindQF.o
