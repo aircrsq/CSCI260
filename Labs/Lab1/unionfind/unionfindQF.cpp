@@ -25,60 +25,40 @@
  1.0          DB      Sep 08  New version
 *************************************************************************/
 #include <iostream>
-/*#include <fstream>
-#include <string>
-#include <sstream>*/
 #include <stdlib.h>
 #include "unionfind.h"
 
-class unionfind{
-    private:
-        int * Parent;
-        int * Rank;
-        int elements;
-	
-    public:
-        unionfind::unionfind(int Elements){
-            elements = Elements;
-            Parent = new int [Elements];
-            for (int counter = 0; counter < Elements; counter++){
-                Parent[counter] = counter;
-            }
-        }
+unionfind::unionfind(int Elements){
+  elements = Elements;
+  Parent = new int [Elements];
+  for (int counter = 0; counter < Elements; counter++){
+    Parent[counter] = counter;
+  }
+}
 
-        int Root(int item){
-            if (Parent[item] != item){
-                Parent[item] = Root(Parent[item]);
-            }
-            return Parent[item];
-        }
+int unionfind::Root(int item){}
 
-        bool Find(int item1, int item2){
-            return (Root(item1) == Root(item2));
-	    }
+bool unionfind::Find(int item1, int item2){
+  return (Parent[item1] == Parent[item2]);
+}
 
-        void Union(int Element1, int Element2){
-            int ParentElement = Parent[Element1];
-            for (int i=0; i < elements; i++){
-                if (Parent[i] == ParentElement){
-                    Parent[i] = Parent[Element2];
-                }
-            }
-        }
+void unionfind::Union(int Element1, int Element2){
+  int ParentElement = Parent[Element1];
+  for (int i=0; i < elements; i++){
+    if (Parent[i] == ParentElement){
+      Parent[i] = Parent[Element2];
+    }
+  }
+}
 
-        void PrintArray(int value){
-	    system("clear");
-            for (int count = 0; count < value; count++){
-                std::cout << count << '\t';
-            }
-            std::cout << '\n';
-            for (int count = 0; count < value; count++){
-                std::cout << Parent[count] << '\t';
-            }
-/*            cout << '\n';
-            for (int count = 0; count < value; count++){
-                cout << Rank[count] << '\t';
-            }       */
-            std::cout << '\n' << '\n';
-        }
-};
+void unionfind::PrintArray(int value){
+  system("clear");
+  for (int count = 0; count < value; count++){
+    std::cout << count << '\t';
+  }
+  std::cout << '\n';
+  for (int count = 0; count < value; count++){
+    std::cout << Parent[count] << '\t';
+  }
+  std::cout << '\n' << '\n';
+}

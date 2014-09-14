@@ -46,6 +46,7 @@
 #include <stdlib.h>
 #include <ctime>
 #include "unionfind.h"
+using namespace std;
 
 string GetFileName(){
     string FilePath;
@@ -65,7 +66,8 @@ string GetFileName(){
 
 int main()
 {
-    unionfind da();
+    clock_t start;
+    double duration;
     string FileName = GetFileName();
     string line;
     int value = 0;
@@ -78,29 +80,24 @@ int main()
         getline(myfile,line);
         std::istringstream istr(line);
         istr >> value;
+        start = std::clock();
         unionfind * da = new unionfind(value);
         while (getline(myfile,line)){
             std::istringstream istr(line);
             istr >> operation >> First >> Second;
             if (operation == 'f'){
-                clock_t begin = clock();
                 da->Find(First, Second);
-                clock_t end = clock();
-                double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
-                std::cout << elapsed_secs << " for f " << First << '\t' << Second << '\n';
             }
             else if (operation == 'u'){
-                clock_t begin = clock();
                 da->Union(First, Second);
-                clock_t end = clock();
-                double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
-                std::cout << elapsed_secs << " for u " << First << '\t' << Second << '\n';
             }
             else if (operation == 'd'){
                 da->PrintArray(value);
             }
         }
+        duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
         myfile.close();
+        cout << duration << " secs" << '\n';
     }
     else {
 	cout << "Unable to open file";

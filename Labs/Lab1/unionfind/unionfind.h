@@ -1,3 +1,5 @@
+#ifndef __unionfind_h__
+#define __unionfind_h__
 /************************************************************************
  Design Unit  : Lab1
 
@@ -24,25 +26,22 @@
  Version      Author  Date    Changes
  1.0          DB      Sep 08  New version
 *************************************************************************/
-#ifndef ___UNIONFIND___
-#define ___UNIONFIND___
-
-#include <iostream>
-//#include <fstream>
-//#include <string>
-//#include <sstream>
-#include <stdlib.h>
 
 using namespace std;
 
 class unionfind{
-    private:
+
+    public:
         int n;
         int * Parent;
         int * Rank;
+        int elements;
 
-    public:
-        unionfind(int);
+
+	unionfind(int);
+	~unionfind();
+
+        int Root(int);
 
         bool Find(int, int);
 
@@ -50,4 +49,5 @@ class unionfind{
 
         void PrintArray(int);
 };
+
 #endif

@@ -1,4 +1,4 @@
-# master Makefile for uinonfind program
+# master Makefile for unionfind program
 
 # Make targets:
 #
@@ -8,27 +8,8 @@
 #   make clean		-- removes all .o files
 #   make gdb		-- invokes the gdb debugger on Testapp
 
-  # the compiler: gcc for C program, define as g++ for C++
-     #CC = g++
-
-  # compiler flags:
-  #  -g    adds debugging information to the executable file
-  #  -Wall turns on most, but not all, compiler warnings
-     #CFLAGS  = -g -Wall
-
-  # the build target executable:
-     #TARGET = myprog
-
-     #all: $(TARGET)
-
-     #$(TARGET): $(TARGET).c
-	 #$(CC) $(CFLAGS) -o $(TARGET) $(TARGET).c
-
-     #clean:
-  	 #$(RM) $(TARGET)
-
-Test: Testapp.cpp unionfind.h unionfindQF.cpp
-	g++ -c Testapp Testapp.cpp unionfindQF.cpp
+#Test: Testapp.cpp unionfind.h unionfindQF.cpp
+#	g++ -o Testapp Testapp.cpp unionfindQF.cpp
 
 TestappQF: Testapp.o unionfindQF.o
 	g++ -o TestappQF Testapp.o unionfindQF.o
@@ -53,3 +34,4 @@ unionfindQUPRC.o: unionfindQUPRC.cpp
 
 clean:
 	rm -rf *o
+	rm -rf TestappQ*
