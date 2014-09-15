@@ -1,0 +1,29 @@
+Tromino Pseudocode
+
+Get size of screen
+Get board dimensions from user.
+	Must be a an exponent of two.
+Get the location for the empty square.
+
+Draw Tromino
+	//(Row, Col)
+	TroOne /* blank in top left */
+		(1,1) empty
+		(1,2) bottomfill
+		(1,1) rightfill
+		(2,2) fill
+	TroTwo /* blank in top right */
+		(1,1) bottomfill
+		(1,2) empty
+		(2,1) fill
+		(2,2) leftfill
+	TroThr /* blank in bottom left */
+		(1,1) rightfill
+		(1,2) fill
+		(2,1) empty
+		(2,2) topfill
+	TroFour /* blank in bottom left */
+		(1,1) fill
+		(1,2) leftfill
+		(2,1) topfill
+		(2,2) empty
