@@ -1,22 +1,19 @@
 /************************************************************************
  Design Unit  : Lab2
 
- File Name    : MyTromino.cpp
+ File Name    : gameboard.cpp
 
- Purpose      : Solve a Tromino problem
+ Purpose      :
 
- Note         : Prompts user for
-                Size of screen
-                Size of board and
-                location of hole
+ Note         :
 
  Limitations  :
 
  Errors       : none known
 
- Modules      :
+ Modules      : gameboard.h
 
- Dependences  :
+ Dependences  : none
 
  Author       : David Burneau, Vancouver Island University
 
@@ -25,50 +22,22 @@
 ------------------------------------------------------------------
  Revision List
  Version      Author  Date    Changes
- 1.0          DB      Sep 15  New version
+ 1.0          DB      Sep 16  New version
 *************************************************************************/
-
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
 #include <stdlib.h>
+#include "gameboard.h"
 #include "math.h"
 
 using namespace std;
 
-void PrintBoard(char ***, int);
-
-void SolveBoard(char ***, int, int, int, int, int);
-
-int main(){
-  int n;
-  int p;
-  int x,y;
-  char * Fill = "\u2589";
-  char * RightFill = "\u2590";
-  char * LeftFill = "\u258B";
-  char * BottomFill = "\u2586";
-  char * TopFill = "\u2580";
-  char * BlankSquare = "\u258F";
-
-  //setlocale(LC_ALL, "en_US.UTF-8");
-
-  cout << "Enter the exponential power for the board. \n";
-  cin >> p;
-  int side =(int)pow((double)2,(double)p);
-  char *** board = new char ** [side];
+gameboard::gameboard(int side){
   for (int r=0; r < side; r++){
     board[r] = new char * [side];
   }
-  cout << "Please pick two numbers between 1 and " << side << '\n';
-  cin >> x >> y;
-  board[x][y] = BlankSquare;
-  cout << "Cell " << x+1 << " " << y+1 << " is the blank square. \n";
-  SolveBoard(board, 0, 0, side, x, y);
-  PrintBoard(board, side);
-  system("pause");
-  return 0;
 }
 
 void PrintBoard(char *** b, int side){
@@ -152,15 +121,3 @@ void SolveBoard(char *** b, int x1, int y1, int side, int x, int y){
     }
   }
 }
-/*  char *** board;
-  board = new char**[2];
-	board[0][0] = Fill;
-	board[0][1] = LeftFill;
-	board[1][0] = TopFill;
-	board[1][1] = BlankSquare;
-  for (int i = 0; i <= 1; i++){
-    for (int j = 0; j <= 1; j++){
-      cout << board[i][j];
-    }
-    cout << endl;
-  } */
