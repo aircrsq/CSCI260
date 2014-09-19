@@ -1,7 +1,7 @@
 /************************************************************************
  Design Unit  : Lab2
 
- File Name    : MyTromino.cpp
+ File Name    : main.cpp
 
  Purpose      : Solve a Tromino problem
 

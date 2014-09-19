@@ -1,0 +1,24 @@
+# depslib dependency file v1.0
+1411160503 source:/home/david/School/C260/CSCI260/Labs/Lab2/gameboard.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<stdlib.h>
+	"gameboard.h"
+	"math.h"
+
+1411160360 /home/david/School/C260/CSCI260/Labs/Lab2/gameboard.h
+
+1411158139 source:/home/david/School/C260/CSCI260/Labs/Lab2/575076880Lab2/main.cpp
+	<iostream>
+
+1411160550 source:/home/david/School/C260/CSCI260/Labs/Lab2/MyTromino.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<stdlib.h>
+	"gameboard.h"
+	"math.h"
+
