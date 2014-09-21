@@ -29,27 +29,36 @@
 
 class gameboard{
     private:
-
+int n, i, j, k;
 int p;
 int side, x, y;
-char * Fill = "\u2589";
-char * RightFill = "\u2590";
-char * LeftFill = "\u258B";
-char * BottomFill = "\u2586";
-char * TopFill = "\u2580";
-char * BlankSquare = "\u258F";
+char * Fill = "\u2588";
+char * RightFill = "\u25C0";
+char * LeftFill = "\u25B6";
+char * BottomFill = "\u25B2";
+char * TopFill = "\u25BC";
+char * BlankSquare = "\u2592";
+char *** board;
 
     public:
-        char *** board;
     gameboard();
     gameboard(int);
 	~gameboard();
 
 //  void blank(int, int);
 
-  void PrintBoard(char ***, int);
+  //Setup the board
+  void SetupBoard();
 
-  void SolveBoard(char ***, int, int, int, int, int);
+  //Get the blank square
+  void GetBlankSquare();
+
+  //Solve the board
+  void SolveBoard(int, int, int, int, int);
+
+  //Print the board
+  void PrintBoard();
 };
 
 #endif
+
