@@ -1,7 +1,0 @@
-# depslib dependency file v1.0
-1410834057 source:/home/david/School/CSCI260/CourseWork/CSCI260/Labs/Lab1/Testing/main.cpp
-	<iostream>
-	<iomanip>
-	<stdlib.h>
-	"math.h"
-

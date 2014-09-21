@@ -51,7 +51,7 @@ void PrintBoard(char *** b, int side){
   delete b;
 }
 
-void SolveBoard(char *** b, int x1, int y1, int side, int x, int y){
+void SolveBoard(char *** b, int x1, int y1, int side, int BlankX, int BlankY){
   char * Fill = "\u2589";
   char * RightFill = "\u2590";
   char * LeftFill = "\u258B";
@@ -60,22 +60,28 @@ void SolveBoard(char *** b, int x1, int y1, int side, int x, int y){
   char * BlankSquare = "\u258F";
 
   int halfside = side/2;
+
+  //Look for base case ie if halfside is 1
   if (halfside - 1 == 0){
-    if ((x <= x1 + halfside - 1) && (y > y1 + halfside - 1)){
+    //if blank space is top left ie 1
+    if ((BlankX <= x1 + halfside - 1) && (BlankY > y1 + halfside - 1)){
       b[x1+halfside-1][y1+halfside-1]=BottomFill;   //2
       b[x1+halfside][y1+halfside] = Fill;       //4
       b[x1+halfside][y1+halfside-1]=RightFill;  //3
     }
-    else if((x <= x1 + halfside -1) && (y <= y1 + halfside -1)){
+    //if blank space is top right ie 2
+    else if((BlankX <= x1 + halfside -1) && (BlankY <= y1 + halfside -1)){
       b[x1+halfside-1][y1+halfside]=BottomFill;     //1
       b[x1+halfside][y1+halfside-1]=Fill;       //3
       b[x1+halfside][y1+halfside] = LeftFill;   //4
     }
-    else if((x > x1 + halfside - 1) && (y <= y1 + halfside -1)){
+    //if blank space is bottom left ie 3
+    else if((BlankX > x1 + halfside - 1) && (BlankY <= y1 + halfside -1)){
       b[x1+halfside-1][y1+halfside]=RightFill;  //1
       b[x1+halfside-1][y1+halfside-1]=Fill;     //2
       b[x1+halfside][y1+halfside] = TopFill;    //4
     }
+    //if blank space is bottom right ie 4
     else{
       b[x1+halfside-1][y1+halfside-1]=LeftFill; //2
       b[x1+halfside-1][y1+halfside]=Fill;       //1
@@ -83,31 +89,31 @@ void SolveBoard(char *** b, int x1, int y1, int side, int x, int y){
     }
   }
   else {
-    if ((x <= x1 + halfside -1) && (y > y1 + halfside -1)){
+    if ((BlankX <= x1 + halfside -1) && (BlankY > y1 + halfside -1)){
       b[x1+halfside-1][y1+halfside-1]=TopFill;  //2
       b[x1+halfside][y1+halfside]=Fill;         //4
       b[x1+halfside][y1+halfside-1]=RightFill;  //3
-      SolveBoard(b,x1,y1+halfside,halfside,x,y);
+      SolveBoard(b,x1,y1+halfside,halfside,BlankX,BlankY);
       SolveBoard(b,x1,y1,halfside,x1+halfside-1,y1+halfside-1);
       SolveBoard(b,x1+halfside,y1,halfside,x1+halfside,y1+halfside-1);
       SolveBoard(b,x1+halfside,y1+halfside,halfside,x1+halfside,y1+halfside);
     }
-    else if((x <= x1 + halfside - 1) && (y <= y1 + halfside -1)){
+    else if((BlankX <= x1 + halfside - 1) && (BlankY <= y1 + halfside -1)){
       b[x1+halfside-1][y1+halfside]=BottomFill; //1
       b[x1+halfside][y1+halfside-1]=Fill;       //3
       b[x1+halfside][y1+halfside]=RightFill;    //4
       SolveBoard(b,x1,y1+halfside,halfside,x1+halfside-1,y1+halfside);
-      SolveBoard(b,x1,y1,halfside,x,y);
+      SolveBoard(b,x1,y1,halfside,BlankX,BlankY);
       SolveBoard(b,x1+halfside,y1,halfside,x1+halfside,y1+halfside-1);
       SolveBoard(b,x1+halfside,y1+halfside,halfside,x1+halfside,y1+halfside);
     }
-    else if((x > x1 + halfside -1) && (y <= y1 + halfside -1)){
+    else if((BlankX > x1 + halfside -1) && (BlankY <= y1 + halfside -1)){
       b[x1+halfside-1][y1+halfside-1]=Fill;     //2
       b[x1+halfside-1][y1+halfside]=RightFill;  //1
       b[x1+halfside][y1+halfside]=TopFill;      //4
       SolveBoard(b,x1,y1+halfside,halfside,x1+halfside-1,y1+halfside);
       SolveBoard(b,x1,y1,halfside,x1+halfside-1,y1+halfside-1);
-      SolveBoard(b,x1+halfside,y1,halfside,x,y);
+      SolveBoard(b,x1+halfside,y1,halfside,BlankX,BlankY);
       SolveBoard(b,x1+halfside,y1+halfside,halfside,x1+halfside,y1+halfside);
     }
     else {
@@ -117,7 +123,7 @@ void SolveBoard(char *** b, int x1, int y1, int side, int x, int y){
       SolveBoard(b,x1,y1+halfside,halfside,x1+halfside-1,y1+halfside);
       SolveBoard(b,x1,y1,halfside,x1+halfside-1,y1+halfside-1);
       SolveBoard(b,x1+halfside,y1,halfside,x1+halfside,y1+halfside-1);
-      SolveBoard(b,x1+halfside,y1+halfside,halfside,x,y);
+      SolveBoard(b,x1+halfside,y1+halfside,halfside,BlankX,BlankY);
     }
   }
 }

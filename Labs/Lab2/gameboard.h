@@ -29,7 +29,9 @@
 
 class gameboard{
     private:
-        char *** board;
+
+int p;
+int side, x, y;
 char * Fill = "\u2589";
 char * RightFill = "\u2590";
 char * LeftFill = "\u258B";
@@ -38,9 +40,12 @@ char * TopFill = "\u2580";
 char * BlankSquare = "\u258F";
 
     public:
-
-	gameboard(int);
+        char *** board;
+    gameboard();
+    gameboard(int);
 	~gameboard();
+
+//  void blank(int, int);
 
   void PrintBoard(char ***, int);
 

@@ -32,6 +32,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="../TroPseudo" />
 		<Unit filename="../gameboard.cpp" />
 		<Unit filename="../gameboard.h" />
 		<Unit filename="main.cpp" />

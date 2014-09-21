@@ -1,23 +1,76 @@
-Tromino Pseudocode
+/************************************************************************
+ Design Unit  : Lab2
+
+ File Name    : TroPseudo
+
+ Purpose      : Pseudocode for solving Tromino problem
+
+ Note         :
+
+ Limitations  :
+
+ Errors       : none known
+
+ Modules      :
+
+ Dependences  : none
+
+ Author       : David Burneau, Vancouver Island University
+
+ System       : G++ (Linux)
+
+------------------------------------------------------------------
+ Revision List
+ Version      Author  Date    Changes
+ 1.0          DB      Sep 16  New version
+*************************************************************************/
 
 Get size of screen
+
 Get board dimensions from user.
 	Must be a an exponent of two.
-Get the location for the empty square.
 
-Draw Tromino
-	//(Row, Col)
+Get the location for the empty square.
+    Note: location entered by user is base 1 but array is base 0
+
+Solve the board
+    Divide the side of the board in half
+    If half of the side - 1 is zero, (base case)
+        If (1,1) is the empty square
+            TroOne
+        else if (1,2) is the empty square
+            TroTwo
+        else if (2,1) is the empty square
+            TroThree
+        else
+            TroFour
+
+    Otherwise (not base case)
+        If the blank square is in the top left quadrant
+
+        else if the blank square is in the top rigth quadrant
+
+        else if the blank square is in the bottom left quadrant
+
+        else the blank square is in the bottom right quadrant
+
+Print the board
+    For each row
+        For each column
+            print character at row column
+Base Cases
+    If half of side - 1 is zero
 	TroOne /* blank in top left */
 		(1,1) empty
 		(1,2) bottomfill
-		(1,1) rightfill
+		(2,1) rightfill
 		(2,2) fill
 	TroTwo /* blank in top right */
 		(1,1) bottomfill
 		(1,2) empty
 		(2,1) fill
 		(2,2) leftfill
-	TroThr /* blank in bottom left */
+	TroThree /* blank in bottom left */
 		(1,1) rightfill
 		(1,2) fill
 		(2,1) empty
