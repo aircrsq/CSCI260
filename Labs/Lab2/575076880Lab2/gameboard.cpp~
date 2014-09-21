@@ -13,7 +13,13 @@
 
  Modules      : gameboard.h
 
- Dependences  : none
+ Dependences  : iostream
+	      : fstream
+	      : string
+	      : sstream
+	      : stdlib.h
+	      : gameboard.h
+	      : math.h
 
  Author       : David Burneau, Vancouver Island University
 
@@ -23,6 +29,7 @@
  Revision List
  Version      Author  Date    Changes
  1.0          DB      Sep 16  New version
+ 1.1	      DB      Sep 19  Code for recursion added
 *************************************************************************/
 #include <iostream>
 #include <fstream>
@@ -38,7 +45,12 @@ using namespace std;
 gameboard::gameboard(){
   cout << "Enter the width of your screen, for printing (in characters):";
   cin >> n;
-  cout << "Enter the power k, making a chessboard 2^k x 2^k;";
+
+  double param, result;
+  param = n;
+  result = log2 (param);
+
+  cout << "Enter the power k, making a chessboard 2^k x 2^k less than " << result <<" ;";
   cin >> k;
   boardside =(int)pow((double)2,(double)k);
   board = new char ** [boardside];
@@ -50,7 +62,7 @@ gameboard::gameboard(){
 //Get Blank Square
 void gameboard::GetBlankSquare(){
   char * BlankSquare = "\u2592";
-  cout << "Enter the row and column of the missing square, less than " << boardside 
+  cout << "Enter the row and column of the missing square, < " << boardside 
 	<< " separated by a space:";
   cin >> i >> j;
   board[i-1][j-1] = BlankSquare;

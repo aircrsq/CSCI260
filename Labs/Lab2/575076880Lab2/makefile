@@ -1,15 +1,35 @@
-# master Makefile for unionfind program
+#/************************************************************************
+# Design Unit  : Lab2
+
+# File Name    : makefile
+
+# Purpose      : makefile for Trominos
+
+# Note         :
+
+# Limitations  :
+
+# Errors       : none known
+
+# Modules      :
+
+# Dependences  : none
+
+# Author       : David Burneau, Vancouver Island University
+
+# System       : G++ (Linux)
+
+#------------------------------------------------------------------
+# Revision List
+# Version      Author  Date    Changes
+# 1.0          DB      Sep 19  New version
+#*************************************************************************/
+# master Makefile for Trominos program
 
 # Make targets:
 #
-#   make TestappQF	-- creates TestappQF program
-#   make testappQU	-- creates TestappQF program
-#   make testappQUPCR -- creates TestappQF program
-#   make clean		-- removes all .o files
-#   make gdb		-- invokes the gdb debugger on Testapp
-
-#Test: Testapp.cpp unionfind.h unionfindQF.cpp
-#	g++ -o Testapp Testapp.cpp unionfindQF.cpp
+#   make Trominos	-- creates Trominos program
+#   make clean		-- removes all .o files and the executable
 
 Trominos: main.o gameboard.o
 	g++ -o Trominos main.o gameboard.o

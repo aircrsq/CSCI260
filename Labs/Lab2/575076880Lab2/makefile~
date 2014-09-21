@@ -1,0 +1,16 @@
+# master Makefile for Trominos program
+
+# Make targets:
+#
+#   make Trominos	-- creates Trominos program
+#   make clean		-- removes all .o files and the executable
+
+Trominos: main.o gameboard.o
+	g++ -o Trominos main.o gameboard.o
+
+main.o: gameboard.h main.cpp
+	g++ -c main.cpp
+
+clean:
+	rm -rf *o
+	rm -rf Trominos

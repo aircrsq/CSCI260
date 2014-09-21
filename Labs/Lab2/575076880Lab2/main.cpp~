@@ -27,12 +27,7 @@
  Version      Author  Date    Changes
  1.0          DB      Sep 17  New version
 *************************************************************************/
-/*
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <stdlib.h>	*/
+
 #include "gameboard.h"
 
 using namespace std;

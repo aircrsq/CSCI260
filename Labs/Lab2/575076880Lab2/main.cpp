@@ -16,7 +16,7 @@
 
  Modules      :
 
- Dependences  :
+ Dependences  : gameboard.h
 
  Author       : David Burneau, Vancouver Island University
 
@@ -26,6 +26,7 @@
  Revision List
  Version      Author  Date    Changes
  1.0          DB      Sep 17  New version
+ 1.1	      DB      Sep 19  Code changed to incorporate functions
 *************************************************************************/
 
 #include "gameboard.h"
