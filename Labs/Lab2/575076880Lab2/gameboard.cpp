@@ -80,35 +80,25 @@ void gameboard::SolveBoard(int x1, int y1, int side, int BlankX, int BlankY){
   if (halfside - 1 == 0){
     //TroOne
     if((BlankX <= x1 + halfside -1) && (BlankY <= y1 + halfside -1)){
-      board[x1+halfside-1][y1+halfside]=BottomFill;     //2
-      board[x1+halfside][y1+halfside] = Fill;           //4
-      board[x1+halfside][y1+halfside-1]=RightFill;      //3
+      TroOne(x1, y1, halfside);
     }
     //TroTwo
     else if ((BlankX <= x1 + halfside - 1) && (BlankY > y1 + halfside - 1)){
-      board[x1+halfside-1][y1+halfside-1]=BottomFill;   //1
-      board[x1+halfside][y1+halfside-1]=Fill;	        //3
-      board[x1+halfside][y1+halfside] = LeftFill;       //4
+      TroTwo(x1, y1, halfside);
     }
     //TroThree
     else if((BlankX > x1 + halfside - 1) && (BlankY <= y1 + halfside -1)){
-      board[x1+halfside-1][y1+halfside]=Fill;      	    //2
-      board[x1+halfside-1][y1+halfside-1]=RightFill;    //1
-      board[x1+halfside][y1+halfside] = TopFill;        //4
+      TroThree(x1, y1, halfside);
     }
     //TroFour
     else{
-      board[x1+halfside-1][y1+halfside-1]=Fill;         //1
-      board[x1+halfside-1][y1+halfside]=LeftFill;       //2
-      board[x1+halfside][y1+halfside-1]=TopFill;        //3
+      TroFour(x1, y1, halfside);
     }
   }
   else {
     //Blank in top left quadrant
     if((BlankX <= x1 + halfside - 1) && (BlankY <= y1 + halfside -1)){
-      board[x1+halfside-1][y1+halfside]=BottomFill;     //2
-      board[x1+halfside][y1+halfside]=Fill;             //4
-      board[x1+halfside][y1+halfside-1]=RightFill;      //3
+      TroOne(x1, y1, halfside);
       SolveBoard(x1,y1+halfside,halfside,x1+halfside-1,y1+halfside);
       SolveBoard(x1,y1,halfside,BlankX,BlankY);
       SolveBoard(x1+halfside,y1,halfside,x1+halfside,y1+halfside-1);
@@ -116,9 +106,7 @@ void gameboard::SolveBoard(int x1, int y1, int side, int BlankX, int BlankY){
     }
     //Blank in top right quadrant
     else if ((BlankX <= x1 + halfside -1) && (BlankY > y1 + halfside -1)){
-      board[x1+halfside-1][y1+halfside-1]=BottomFill;   //1
-      board[x1+halfside][y1+halfside-1]=Fill;           //3
-      board[x1+halfside][y1+halfside]=LeftFill;         //4
+      TroTwo(x1, y1, halfside);
       SolveBoard(x1,y1+halfside,halfside,BlankX,BlankY);
       SolveBoard(x1,y1,halfside,x1+halfside-1,y1+halfside-1);
       SolveBoard(x1+halfside,y1,halfside,x1+halfside,y1+halfside-1);
@@ -126,9 +114,7 @@ void gameboard::SolveBoard(int x1, int y1, int side, int BlankX, int BlankY){
     }
     //Blank in bottom left quadrant
     else if((BlankX > x1 + halfside -1) && (BlankY <= y1 + halfside -1)){
-      board[x1+halfside-1][y1+halfside-1]=RightFill;    //1
-      board[x1+halfside-1][y1+halfside]=Fill;           //2
-      board[x1+halfside][y1+halfside]=TopFill;          //4
+      TroThree(x1, y1, halfside);
       SolveBoard(x1,y1+halfside,halfside,x1+halfside-1,y1+halfside);
       SolveBoard(x1,y1,halfside,x1+halfside-1,y1+halfside-1);
       SolveBoard(x1+halfside,y1,halfside,BlankX,BlankY);
@@ -136,9 +122,7 @@ void gameboard::SolveBoard(int x1, int y1, int side, int BlankX, int BlankY){
     }
     //Blank in bottom right quadrant
     else {
-      board[x1+halfside-1][y1+halfside-1]=Fill;         //1
-      board[x1+halfside-1][y1+halfside]=LeftFill;       //2
-      board[x1+halfside][y1+halfside-1]=TopFill;        //3
+      TroFour(x1, y1, halfside);
       SolveBoard(x1,y1+halfside,halfside,x1+halfside-1,y1+halfside);
       SolveBoard(x1,y1,halfside,x1+halfside-1,y1+halfside-1);
       SolveBoard(x1+halfside,y1,halfside,x1+halfside,y1+halfside-1);
@@ -157,4 +141,28 @@ void gameboard::PrintBoard(){
     cout << '\n';
   }
   delete board;
+}
+
+void gameboard::TroOne(int T1X, int T1Y, int T1HS){
+      board[T1X+T1HS-1][T1Y+T1HS]=BottomFill;     //2
+      board[T1X+T1HS][T1Y+T1HS] = Fill;           //4
+      board[T1X+T1HS][T1Y+T1HS-1]=RightFill;      //3
+}
+
+void gameboard::TroTwo(int T1X, int T1Y, int T1HS){
+      board[T1X+T1HS-1][T1Y+T1HS-1]=BottomFill;   //1
+      board[T1X+T1HS][T1Y+T1HS-1]=Fill;	          //3
+      board[T1X+T1HS][T1Y+T1HS] = LeftFill;       //4
+}
+
+void gameboard::TroThree(int T1X, int T1Y, int T1HS){
+      board[T1X+T1HS-1][T1Y+T1HS]=Fill;      	  //2
+      board[T1X+T1HS-1][T1Y+T1HS-1]=RightFill;    //1
+      board[T1X+T1HS][T1Y+T1HS] = TopFill;        //4
+}
+
+void gameboard::TroFour(int T1X, int T1Y, int T1HS){
+      board[T1X+T1HS-1][T1Y+T1HS-1]=Fill;         //1
+      board[T1X+T1HS-1][T1Y+T1HS]=LeftFill;       //2
+      board[T1X+T1HS][T1Y+T1HS-1]=TopFill;        //3
 }

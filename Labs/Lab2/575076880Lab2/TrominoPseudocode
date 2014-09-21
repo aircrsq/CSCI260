@@ -49,13 +49,20 @@ Solve the board
     Otherwise (not base case)
         If the blank square is in the top left quadrant
 		TroOne with one square in each of the other three quadrants
+		Recursively call Solve for each quadrant using the square from TroOne
+			as the blank square
         else if the blank square is in the top rigth quadrant
 		TroTwo with one square in each of the other three quadrants
+		Recursively call Solve for each quadrant using the square from TroTwo
+			as the blank square
         else if the blank square is in the bottom left quadrant
 		TroThree with one square in each of the other three quadrants
+		Recursively call Solve for each quadrant using the square from TroThree
+			as the blank square
         else the blank square is in the bottom right quadrant
 		TroFour with one square in each of the other three quadrants
-
+		Recursively call Solve for each quadrant using the square from TroFour
+			as the blank square
 Print the board
     For each row
         For each column

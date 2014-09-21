@@ -42,6 +42,18 @@ class gameboard{
     char * BlankSquare = "\u2592";
     char *** board;
 
+    //Make Tromino one
+    void TroOne(int, int, int);
+
+    //Make Tromino two
+    void TroTwo(int, int, int);
+
+    //Make Tromino three
+    void TroThree(int, int, int);
+
+    //Make Tromino four
+    void TroFour(int, int, int);
+
   public:
     int boardside, i, j;
     gameboard();
