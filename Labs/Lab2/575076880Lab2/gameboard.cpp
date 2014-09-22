@@ -69,11 +69,11 @@ void gameboard::GetBlankSquare(){
 
 //Solve Board
 void gameboard::SolveBoard(int x1, int y1, int side, int BlankX, int BlankY){
-  char * Fill = "\u2588";
-  char * RightFill = "\u25C0";
-  char * LeftFill = "\u25B6";
-  char * BottomFill = "\u25B2";
-  char * TopFill = "\u25BC";
+  char * Fill = "\u2589";
+  char * RightFill = "\u2590";
+  char * LeftFill = "\u258B";
+  char * BottomFill = "\u2586";
+  char * TopFill = "\u258BC";
   char * BlankSquare = "\u2592";
 
   int halfside = side/2;
