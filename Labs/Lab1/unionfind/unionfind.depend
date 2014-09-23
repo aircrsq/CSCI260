@@ -1,9 +1,0 @@
-# depslib dependency file v1.0
-1410409679 source:/home/david/School/CSCI260/CourseWork/CSCI260/Labs/Lab1/unionfind/unionfindQU.cpp
-	<iostream>
-	<stdlib.h>
-
-1410409921 source:/home/david/School/CSCI260/CourseWork/CSCI260/Labs/Lab1/unionfind/unionfindQUPRC.cpp
-	<iostream>
-	<stdlib.h>
-

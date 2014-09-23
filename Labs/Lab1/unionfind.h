@@ -1,3 +1,5 @@
+#ifndef __unionfind_h__
+#define __unionfind_h__
 /************************************************************************
  Design Unit  : Lab1
 
@@ -24,45 +26,36 @@
  Version      Author  Date    Changes
  1.0          DB      Sep 08  New version
 *************************************************************************/
-#ifndef unionfind
-#define unionfind
 
 
+//#include <iostream>
+//#include <fstream>
+//#include <string>
+//#include <sstream>
+//#include <stdlib.h>
 
+//using namespace std;
 
 class unionfind{
     private:
+
+    public:
         int n;
         int * Parent;
         int * Rank;
+        int elements;
 
-    public:
-        unionfind(int Elements);/*{
-            Parent = new int [Elements];
-            Rank = new int [Elements];
-            for (int counter = 0; counter < Elements; counter++){
-                Parent[counter] = counter;
-                Rank[counter] = 0;
-            }
-        }       */
 
-/*        int Root(int item){
-            if (Parent[item] != item){
-                Parent[item] = Find(Parent[item]);
-            }
-            if (Parent[item] == item){
-		Rank[item] = 0;
-	    }
-	    else {
-		Rank[item] = 1;
-	    }
-            return Parent[item];
-       }        */
+	unionfind(int);
+	~unionfind();
 
-        bool Find(int item1, int item2);
+        int Root(int);
 
-        void Union(int Element1, int Element2);
+        bool Find(int, int);
 
-        void PrintArray(int value);
+        void Union(int, int);
+
+        void PrintArray(int);
 };
+
 #endif
