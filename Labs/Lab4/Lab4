@@ -1,0 +1,40 @@
+CSCI 260 Fall 2014: Lab 4: Binary Search Trees
+
+In this lab, you are to implement a Dictionary ADT using a Binary Search Tree by adapting the C++, header, makefile files provided. Copy them into a new directory before you begin changing your code.
+
+The project produces a link-based Binary Search Tree. A BST is ordered so that for any node in the tree, all the nodes in its left subtree have key value less than or equal to the key of the node, and all keys in the right subtree have key value greater than or equal to the key of the node. The subroutine stubs and header file provided are for your information only, and are in no way guaranteed to work. . If you don't understand how they work, write your own.
+
+Steps
+Change the code so that the testapp program allows you to "find" a node given its key. The find option should return and print data associated with a node that has the input key. Test your program. Initially, you will only be able to use "find" successfully on the root, as insert and delete are not yet working.
+By hand, figure out code that will make "insert" and "remove" work. Debug it as much as possible by hand before implementing.
+Code up your algorithms for "insert" and "remove", and debug.
+Test it. You can use the testapp.C file provided if you like, or write your own testing routines. However, your interface should be the same as that expected by testapp.C
+Run the resulting program, which you have called "testapp" by using the -o option of the g++ compilation command in the makefile, type
+./testapp
+
+Document the code. The stubs provided are only minimally documented. Don't take them as a model; you should bring them up to standard.
+
+To submit the files to me,
+
+Submit the directory that contains:
+
+    the makefile
+    a README file, to indicate how to create the three different executables (i.e., what "make" commands to execute)and what the three versions are named.
+    the code files, with your name and the instructions for compiling at the top
+    a small test file
+    a small text file containing your well-written explanation of your experimental results. You have the option of handing in a neatly handwritten version of this part instead. 
+
+Everything but the data files and the makefile should bear your complete name and student number. Code should be well-documented and well designed.
+To submit, you should have a directory that contains ONLY and ALL the files to submit. While in that directory (i.e., if the directory is called lab4 you should "cd lab4"), type the following command on the command line:
+/home/faculty/gpruesse/260/bin/submit.sh .
+Note that the command ends with "space period", a.k.a " ." The submit command archives whatever arguments are passed on the command line, and "." means the current directory.
+
+
+
+Files
+testapp.cpp
+bst.h
+bst.cpp (stub)
+makefile
+
+
