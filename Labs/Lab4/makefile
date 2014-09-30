@@ -7,4 +7,6 @@ testapp.o:	bst.h testapp.cpp
 
 bst.o:	bst.h bst.cpp
 	g++ -c bst.cpp
-
+clean:
+	rm -rf *o
+	rm -rf testapp

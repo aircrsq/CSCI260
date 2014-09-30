@@ -1,6 +1,8 @@
 #include "bst.h"
 #include <iostream>
 
+using namespace std;
+
 char getcommand();
 void printmenu();
 bool processcommand(char cmd, bst &tree);
@@ -56,8 +58,9 @@ bool processcommand(char cmd, bst &tree)
    switch (cmd) {
       case 'F': cout << "Enter the key integer you wish to find." << endl;
                 cin >> k;
+                tree.find(k);
 //                if (tree.find(k)){
-                  cout << tree.find(k) << " found in tree." << endl;
+//                  cout << tree.find(k) << " found in tree." << endl;
 //                }
 //                else{
 //                  cout << k << " not found in tree." << endl;
