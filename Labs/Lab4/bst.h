@@ -28,6 +28,11 @@ class bst{
     void print(node *n);
     void debugprint(node *n); 
     void swapElements(node* n, node* m);
+    node * Attach(int key, string data, node * &n);
+    void initialize(int key, string data, node* &n);
+    void AttachEqual(int key, string data, node * &n);
+    node * leftjoin(int key, string data, node *&n);
+    node * rightjoin(int key, string data, node *&n);
 
   public:
     bst() { root = NULL; }

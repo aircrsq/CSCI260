@@ -13,7 +13,7 @@ struct node {
 //node *root;
 
 //return an attached node
-node *bst::Attach(int key, string data, node *&n){
+node bst::Attach(int key, string data, node *&n){
   node * tmp = new node;
   initialize(key, data, tmp);
   tmp->parent = n;
