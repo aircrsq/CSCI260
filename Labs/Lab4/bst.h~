@@ -26,7 +26,7 @@ class bst{
    bool Attach(int key, string data, node * &n, node * &c);
    bool AttachEqual(int key, string data, node * &n);
    bool leftjoin(int key, string data, node *&n);
-   bool rightjoin(int key, string data, node *&n);
+   bool rightjoin(int key, string data, node *&n)
       void print(node *n);
       void debugprint(node *n); 
       void swapElements(node* n, node* m);
