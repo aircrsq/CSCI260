@@ -99,14 +99,14 @@ bst::node *bst::FindVictim(int key, node *&n){
 // find the successor going down the left branch
 // return pointer to successor
 bst::node *bst::LeftSuccessor(int key, node *&victim){
-  if ((victim->right == NO_NODE) || (victim->key = key)) {return victim;}
+  if ((victim->right == NO_NODE) || (victim->key == key)) { return victim; }
   else return LeftSuccessor(key, victim->right);
 }
 
 // find the successor going down the right branch
 // return pointer to successor
 bst::node *bst::RightSuccessor(int key, node *&victim){
-  if ((victim->left == NO_NODE) || (victim->key = key)) {return victim;}
+  if ((victim->left == NO_NODE) || (victim->key == key)) {return victim;}
   else return RightSuccessor(key, victim->left);
 }
 
@@ -150,6 +150,7 @@ bool bst::deleteElement(int k, node* &n){
     node * Successor = LeftSuccessor(k, Victim->left);
     TDK(Victim, Successor);
     if (Successor-> left != NO_NODE) {RCL(Successor->parent, Successor->left);}
+    else if (Successor-> left == NO_NODE){Successor->parent->right = NO_NODE;} 
     delete Successor;
   }
   // Successor down right branch
@@ -157,7 +158,8 @@ bool bst::deleteElement(int k, node* &n){
     node * Successor = RightSuccessor(k, Victim->right);
     TDK(Victim, Successor);
     if (Successor-> right != NO_NODE) {RCR(Successor->parent, Successor->right);}
-    delete Successor
+    else if (Successor-> right == NO_NODE){Successor->parent->left = NO_NODE;}
+    delete Successor;
   }
   // victim is a leaf and left child
   else if ((Victim->parent != NO_NODE) && (Victim->parent->left == Victim)){
@@ -169,6 +171,7 @@ bool bst::deleteElement(int k, node* &n){
     Victim->parent->right = NO_NODE;
     delete Victim;
   }
+  return 1;
 }
 
 // find the node with key
