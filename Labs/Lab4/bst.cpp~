@@ -5,13 +5,9 @@ using namespace std;
 //     string      key, data;
 // } *root;
 
-
-
-
-bool bst::insert(int k, string d, node* &n)
 // insert a new node in the bst rooted at n,
 // returning true if successful, false otherwise
-{
+bool bst::insert(int k, string d, node* &n){
    // if we've found the end of a chain,
    //    insert the node here
    if (n == NO_NODE) {
@@ -56,10 +52,11 @@ bool bst::Attach(int key, string data, node *&n, node *&c){
 }
 
 bool bst::AttachEqual(int key, string data, node *&n){
+  node * tmp = n->parent;
   if (n->left == NO_NODE) { return Attach(key, data, n, n->left);}
   else if (n->right == NO_NODE) { return Attach(key, data, n, n->right);}
-  else if (&(n->parent)->left = n) { return leftjoin(key, data, n);}
-  else if (n->parent->right = n) { return rightjoin(key, data, n);}
+  else if (tmp->left = n) { return leftjoin(key, data, n);}
+  else if (tmp->right = n) { return rightjoin(key, data, n);}
 }
 
 bool bst::leftjoin(int key, string data, node *&n) {
@@ -84,10 +81,26 @@ bool bst::rightjoin(int key, string data, node *&n) {
   return 1;  
 }
 
-void bst::deallocate(node* &n)
+bst::node *bst::FindVictim(int key, node *&n){
+  node *Tmp = n;
+  if (Tmp->key == key) {return Tmp; }
+  else if (Tmp->key > key) {return FindVictim(key, Tmp->left);}
+  else if (n->key < key) {return FindVictim(key, Tmp->right);}
+}
+
+bst::node *bst::LeftSuccessor(int key, node *&victim){
+  if ((victim->right == NO_NODE) || (victim->key = key)) {return victim;}
+  else return LeftSuccessor(key, victim->right);
+}
+
+bst::node *bst::RightSuccessor(int key, node *&victim){
+  if ((victim->left == NO_NODE) || (victim->key = key)) {return victim;}
+  else return RightSuccessor(key, victim->left);
+}
+
 // delete all nodes in the subtree rooted at n,
 //    and set n to null
-{
+void bst::deallocate(node* &n){
    if (n == NO_NODE) return;
    deallocate(n->left);
    deallocate(n->right);
@@ -95,47 +108,46 @@ void bst::deallocate(node* &n)
    n = NO_NODE; 
 }
 
-/*
-string bst::find(int k, node* n)
-{
-   if (n==NO_NODE) return( NULL);
-
-   else
-	{
-	//stub here -- doesn't work but returns the right type
-	return (n->data);
-	}
+void bst::TDK(node *&Vic, node *&Suc){
+  Vic -> key = Suc -> key;
+  Vic -> data = Suc -> data;
 }
-*/
-  
 
+void bst::RCL(node *&SP, node *&SC){
+  SP->right = SC;
+  SC->parent = SP;
+}
 
-bool bst::deleteElement(int k, node* &n)
+void bst::RCR(node *&SP, node *&SC){
+  SP->left = SC;
+  SC->parent = SP;
+}
 // if the subtree rooted at n contains a node whose key
 //    matches k then remove it from the subtree, and return true,
 //    otherwise return 
-{
-	if (n==NO_NODE) return 0;
-	if (n->key == k) {
-		if (n->left==NO_NODE) {
-			node* temp = n->right;
-			delete n;
-			n = temp;
-			return 1;
-			}
-		if (n->right == NO_NODE) {
-			node* temp = n->left;
-			delete n;
-			n= temp;
-			return 1;
-			}
-		node* victim = n->right;
-		// node* p = n; // Somehow we must keep track of
-                // whether victim is a right child or a left child
-		// the rest is up to you
-		}
-	// action to take if current node is not the one to delete
-	// WRITE CODE HERE
+bool bst::deleteElement(int k, node* &n){
+  if (n==NO_NODE) return 0;
+  node * Victim = FindVictim(k, n);
+  if (Victim->left != NO_NODE) {
+    node * Successor = LeftSuccessor(k, Victim->left);
+    TDK(Victim, Successor);
+    RCL(Successor->parent, Successor->left);
+    delete Successor;
+  }
+  else if (Victim->right != NO_NODE) {
+    node * Successor = RightSuccessor(k, Victim->right);
+    TDK(Victim, Successor);
+    RCR(Successor->parent, Successor->right);
+    delete Successor;
+  }
+  else if (Victim->parent->left == Victim){
+    Victim->parent->left = NO_NODE;
+    delete Victim;
+  }
+  else if (Victim->parent->right == Victim){
+    Victim->parent->right = NO_NODE;
+    delete Victim;
+  }
 }
 
 string bst::search(int k, node* &n){
@@ -150,9 +162,9 @@ string bst::search(int k, node* &n){
     return n->data;
 }
 
-void bst::print(node *n)
 // display the key/data contents of the subtree rooted at n,
 // sorted (ascending) by key value
+void bst::print(node *n)
 {
    if (n == NO_NODE) return;
    print(n->left);
@@ -160,10 +172,9 @@ void bst::print(node *n)
    print(n->right);
 }
 
-void bst::debugprint(node *n)
 // display the contents and structure of the subtree rooted at n,
 // performed via preorder traversal
-{
+void bst::debugprint(node *n){
    if (n == NO_NODE) return;
    cout << n->key << ":" << n->data << " (";
    if (n->left) cout << n->left->key;
@@ -177,9 +188,7 @@ void bst::debugprint(node *n)
    debugprint(n->right);
 }
 
-
-void bst::swapElements(node* n, node* m)
-{
+void bst::swapElements(node* n, node* m){
    node temp;
    temp.data = n->data;
    n->data = m->data;
@@ -189,5 +198,3 @@ void bst::swapElements(node* n, node* m)
    n->key= m->key;
    m->key= temp.key;
 }
-
-

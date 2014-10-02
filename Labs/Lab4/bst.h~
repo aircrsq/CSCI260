@@ -26,7 +26,13 @@ class bst{
    bool Attach(int key, string data, node * &n, node * &c);
    bool AttachEqual(int key, string data, node * &n);
    bool leftjoin(int key, string data, node *&n);
-   bool rightjoin(int key, string data, node *&n)
+   bool rightjoin(int key, string data, node *&n);
+   node * FindVictim(int key, node *&n);
+   node * LeftSuccessor(int key, node *&victim);
+   node * RightSuccessor(int key, node *&victim);
+   void TDK(node *&Vic, node *&Suc);
+   void RCL(node *&S, node *&SP, node *&SC);
+   void RCR(node *&S, node *&SP, node *&SC);
       void print(node *n);
       void debugprint(node *n); 
       void swapElements(node* n, node* m);
@@ -51,13 +57,6 @@ class bst{
 		return true;
            else return false;
       }
-      // string find( int k) {
-      // 	   node* temp = find(k, root));
-// 	   if (temp==NO_NODE) return NO_STRING;
-// 	   return temp->data;
-//       }
-
-     
 };
 
 #endif
