@@ -1,52 +1,90 @@
+/************************************************************************
+ Design Unit  : Lab4
+
+ File Name    : bst.cpp
+
+ Purpose      :
+
+ Note         :
+
+ Limitations  :
+
+ Errors       : none known
+
+ Modules      : bst.h
+
+ Dependences  : bst.h
+
+ Author       : David Burneau, Vancouver Island University
+
+ System       : G++ (Linux)
+
+------------------------------------------------------------------
+ Revision List
+ Version      Author  Date    Changes
+ 1.0          DB      Sep 29  New version
+*************************************************************************/
 #include "bst.h"
 using namespace std;
-// struct node {
-//     node *right, *left, *parent;
-//     string      key, data;
-// } *root;
+
+/*  contained in bst.h file
+ struct node {
+     node *right, *left, *parent;
+     string      key, data;
+ } *root;   */
 
 // insert a new node in the bst rooted at n,
 // returning true if successful, false otherwise
 bool bst::insert(int k, string d, node* &n){
-   // if we've found the end of a chain,
-   //    insert the node here
-   if (n == NO_NODE) {
+  // insert the node at the appropiate location
+  // if root is null, create a new node with information and return true
+  if (n == NO_NODE) {
    	n = new node;
 	n->left = NO_NODE;
 	n->right = NO_NODE;
 	n->key = k;
 	n->data = d;
    	return 1;
-   }
+  }
+  // if key is < new key and there are nodes to the right
+  // call insert with the right node
   else if ((n->key < k) && (n->right!= NO_NODE)){
     return insert(k, d, n->right);
   }
+  // if key is > new key and there are nodes to the left
+  // call insert with the left node
   else if ((n->key > k) && (n->left != NO_NODE)) {
     return insert(k, d, n->left);
   }
+  // if key is > new key and there are no nodes to the left
+  // attach the new node to the left
   else if ((n->key > k) && (n->left == NO_NODE)){
     if (Attach(k, d, n, n->left));
     return 1;
   }
+  // if key is < new key and there are no nodes to the right
+  // attach the new node to the right
   else if ((n->key < k) && (n->right == NO_NODE)) {
     if (Attach(k, d, n, n->right));
     return 1;
   }
+  // otherwise key = new key
+  // attach an equal key node
   else {
     if (AttachEqual(k, d, n));
     return 1;
   }
 }
 
-// Attach node c to node n, returning true
+// create new node with the input key and data
+// attach node c to node n, returning true
 bool bst::Attach(int key, string data, node *&n, node *&c){
   node * tmp = new node;
   tmp->key = key;
   tmp->data = data;
-  tmp->parent = NO_NODE;
+  tmp->parent = n;
   tmp->left = NO_NODE;
   tmp->right = NO_NODE;
-  tmp->parent = n;
   c = tmp;
   return 1;
 }
@@ -55,9 +93,15 @@ bool bst::Attach(int key, string data, node *&n, node *&c){
 // return true is successful
 bool bst::AttachEqual(int key, string data, node *&n){
   node * tmp = n->parent;
+  // if there are no nodes to the left
+  // attach the new node to the left
   if (n->left == NO_NODE) { return Attach(key, data, n, n->left);}
+  // if there are no nodes to the right
+  // attach new node to the right
   else if (n->right == NO_NODE) { return Attach(key, data, n, n->right);}
+  // if we are a left child attach the node to the left
   else if (tmp->left = n) { return leftjoin(key, data, n);}
+  // if we are a right child attach the node to the right
   else if (tmp->right = n) { return rightjoin(key, data, n);}
 }
 
@@ -91,27 +135,36 @@ bool bst::rightjoin(int key, string data, node *&n) {
 // return pointer to victim
 bst::node *bst::FindVictim(int key, node *&n){
   node *Tmp = n;
+  // if keys match return node
   if (Tmp->key == key) {return Tmp; }
+  // if node key is > key find victim down left tree
   else if (Tmp->key > key) {return FindVictim(key, Tmp->left);}
+  // if node key is < key find victim down right tree
   else if (n->key < key) {return FindVictim(key, Tmp->right);}
 }
 
 // find the successor going down the left branch
 // return pointer to successor
 bst::node *bst::LeftSuccessor(int key, node *&victim){
+  // if there are no nodes on the right child or
+  // the keys match return node
   if ((victim->right == NO_NODE) || (victim->key == key)) { return victim; }
+  // otherwise look to the right for successor
   else return LeftSuccessor(key, victim->right);
 }
 
 // find the successor going down the right branch
 // return pointer to successor
 bst::node *bst::RightSuccessor(int key, node *&victim){
+  // if there are no nodes on the left child or
+  // the keys match return node
   if ((victim->left == NO_NODE) || (victim->key == key)) {return victim;}
+  // otherwise look to the left for sucessor
   else return RightSuccessor(key, victim->left);
 }
 
 // delete all nodes in the subtree rooted at n,
-//    and set n to null
+// and set n to null
 void bst::deallocate(node* &n){
    if (n == NO_NODE) return;
    deallocate(n->left);
@@ -127,38 +180,50 @@ void bst::TDK(node *&Vic, node *&Suc){
 }
 
 // change pointer of left child parent to grandparent
+// and grandparent right child to grandchild
 void bst::RCL(node *&SP, node *&SC){
   SP->right = SC;
   SC->parent = SP;
 }
 
 // change pointer of right child parent to grandparent
+// and grandparent left child to grandchild
 void bst::RCR(node *&SP, node *&SC){
   SP->left = SC;
   SC->parent = SP;
 }
 
 // if the subtree rooted at n contains a node whose key
-//    matches k then remove it from the subtree, and return true,
-//    otherwise return
+// matches k then remove it from the subtree, and return true,
+// otherwise return
 bool bst::deleteElement(int k, node* &n){
   // empty tree
   if (n==NO_NODE) return 0;
   node * Victim = FindVictim(k, n);
-  // Successor down left branch
+  // if victim has left nodes
   if (Victim->left != NO_NODE) {
+    // look for successor to the left
     node * Successor = LeftSuccessor(k, Victim->left);
+    // switch data and key
     TDK(Victim, Successor);
+    // if successor has left children rotate child left
     if (Successor-> left != NO_NODE) {RCL(Successor->parent, Successor->left);}
-    else if (Successor-> left == NO_NODE){Successor->parent->right = NO_NODE;} 
+    // otherwise if successor has no left child point parent to null
+    else if (Successor-> left == NO_NODE){Successor->parent->right = NO_NODE;}
+    // delete the successor
     delete Successor;
   }
-  // Successor down right branch
+  // if victim has right nodes
   else if (Victim->right != NO_NODE) {
+    // look for successor to the right
     node * Successor = RightSuccessor(k, Victim->right);
+    // switch data and key
     TDK(Victim, Successor);
+    // if successor has right children rotate child right
     if (Successor-> right != NO_NODE) {RCR(Successor->parent, Successor->right);}
+    // otherwise if successor has no right child point parent to null
     else if (Successor-> right == NO_NODE){Successor->parent->left = NO_NODE;}
+    // delete the successor
     delete Successor;
   }
   // victim is a leaf and left child
@@ -177,21 +242,24 @@ bool bst::deleteElement(int k, node* &n){
 // find the node with key
 // return data
 string bst::search(int k, node* &n){
+  // if empty tree
   if (n == NO_NODE) return "nothing";
+  // otherwise if nodes key is > than k
   else if (k < n->key){
     return search(k, n->left);
   }
+  // otherwise if nodes key is < k
   else if (k > n->key){
     return search(k, n->right);
   }
+  // otherwise return data
   else
     return n->data;
 }
 
 // display the key/data contents of the subtree rooted at n,
 // sorted (ascending) by key value
-void bst::print(node *n)
-{
+void bst::print(node *n){
    if (n == NO_NODE) return;
    print(n->left);
    cout << n->key << ":" << n->data << endl;

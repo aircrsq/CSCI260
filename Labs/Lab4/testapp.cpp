@@ -1,3 +1,36 @@
+/************************************************************************
+ Design Unit  : Lab4
+
+ File Name    : testapp.cpp
+
+ Purpose      : creates a test application for the bst data type
+
+ Note         : Prompts user for
+                inputs for nodes
+                removal of nodes
+                finding of nodes
+                printing of the tree in Inorder
+                Help menu, and
+                quit
+
+ Limitations  : unknown
+
+ Errors       : none known
+
+ Modules      :
+
+ Dependences  : bst.h
+
+ Author       : David Burneau, Vancouver Island University
+
+ System       : G++ (Linux)
+
+------------------------------------------------------------------
+ Revision List
+ Version      Author  Date    Changes
+ 1.0          DB      Sep 29  New version some code was implemented from original
+                              version provided by Professor Gara Pruesse
+*************************************************************************/
 #include "bst.h"
 #include <iostream>
 
@@ -10,10 +43,10 @@ bool processcommand(char cmd, bst &tree);
 int main()
 {
    bst B;
-   
+
    printmenu();
    char cmd = getcommand();
-   while (processcommand(cmd, B)) { 
+   while (processcommand(cmd, B)) {
       cout << endl;
       cmd = getcommand();
    }
@@ -59,14 +92,14 @@ bool processcommand(char cmd, bst &tree)
       case 'F': cout << "Enter the key integer you wish to find." << endl;
                 cin >> k;
                 tree.find(k);
-      case 'H': printmenu(); 
+      case 'H': printmenu();
                 break;
       case 'I': cout << "Enter the key integer" << endl;
                 cin >> k;
                 cout << "Enter the data word" << endl;
                 cin >> d;
                 cout << "(" << k << "," << d << ") ";
-                if (tree.insert(k, d)) 
+                if (tree.insert(k, d))
                    cout << "was inserted successfully" << endl;
                 else cout << "was not inserted correctly" << endl;
                 break;
@@ -78,10 +111,10 @@ bool processcommand(char cmd, bst &tree)
                 break;
       case 'P': cout << "The tree contents are: ";
                 tree.display();
-                break; 
+                break;
       case 'D': cout << "The tree debug data is:" << endl;
                 tree.debug();
-                break; 
+                break;
       default:  return false;
    }
    return true;
