@@ -89,3 +89,47 @@ The tree contents are:
 30:thirty (0, parent = 35)
 33:thirtythree (0, parent = 30)
 35:thirtyfive (0, parent = 25)
+50:fifty (0, parent = null)
+60:sixty (0, parent = 75)
+67:sixtyseven (0, parent = 69)
+69:sixtynine (0, parent = 60)
+75:seventyfive (0, parent = 50)
+79:seventynine (0, parent = 80)
+80:eighty (0, parent = 75)
+90:ninety (0, parent = 80)
+
+Enter your command choice (I, R, P, D, H, Q, or F)
+Enter the key integer
+25 was successfully deleted.
+
+Enter your command choice (I, R, P, D, H, Q, or F)
+The tree contents are: 
+10:ten (0, parent = 13)
+13:thirteen (0, parent = 20)
+20:twenty (0, parent = 50)
+30:thirty (0, parent = 35)
+33:thirtythree (0, parent = 30)
+35:thirtyfive (0, parent = 20)
+50:fifty (0, parent = null)
+60:sixty (0, parent = 75)
+67:sixtyseven (0, parent = 69)
+69:sixtynine (0, parent = 60)
+75:seventyfive (0, parent = 50)
+79:seventynine (0, parent = 80)
+80:eighty (0, parent = 75)
+90:ninety (0, parent = 80)
+
+Enter your command choice (I, R, P, D, H, Q, or F)
+Enter the key integer you wish to find.
+tenEnter I to insert a new element,
+   or R to remove an element with given key,
+   or P to print all elements,
+   or D to for debug data display,
+   or H for help,
+   or Q to quit,
+   or F to find a node.
+
+Enter your command choice (I, R, P, D, H, Q, or F)
+The tree debug data is:
+50:fifty (20<-left,right->75) 20:twenty (13<-left,right->35) 13:thirteen (10<-left,right->NULL) 10:ten (NULL<-left,right->NULL) 35:thirtyfive (30<-left,right->NULL) 30:thirty (NULL<-left,right->33) 33:thirtythree (NULL<-left,right->NULL) 75:seventyfive (60<-left,right->80) 60:sixty (NULL<-left,right->69) 69:sixtynine (67<-left,right->NULL) 67:sixtyseven (NULL<-left,right->NULL) 80:eighty (79<-left,right->90) 79:seventynine (NULL<-left,right->NULL) 90:ninety (NULL<-left,right->NULL) 
+Enter your command choice (I, R, P, D, H, Q, or F)

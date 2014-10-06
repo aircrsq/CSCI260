@@ -10,10 +10,6 @@ The project produces a link-based Red-Black Tree. A Red-Black tree is a BST (key
 Part 1
 
 Make a null node (leaf) with colour black and use in tree.
-Preorder print - the old debugprint order, with new data
-	5:string:b (4 <-left, 6, right->11)
-	n->key":"n->data":"n->colour " (" n->left->key " <-left, " n->parent->key ", right->" n->right->key ")\n"
-Inorder print - the print order, with new data
 
 You will have to change the struct of the node to accommodate "colour".
 Change the struct to add a parent pointer "parent". Update your insert and delete so that parent pointers are updated as required.

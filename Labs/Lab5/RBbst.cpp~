@@ -308,7 +308,6 @@ void bst::debugprint(node *n){
    debugprint(n->right);
 }
 
-//Change to printout as specified in Lab5 Preorder Print
 void bst::PreOrdprint(node *n){
    if (n == NO_NODE) return;
    cout << n->key << ":" << n->data << " (";

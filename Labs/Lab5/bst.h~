@@ -74,7 +74,6 @@ class bst{
   void RCR(node *&SP, node *&SC);
   void print(node *n);
   void debugprint(node *n);
-  void PreOrdprint(node *n);
   void swapElements(node* n, node* m);
 
   public:
@@ -96,9 +95,6 @@ class bst{
 
     //prints node key and pointer information
     void debug() { debugprint(root); }
-
-    //prints node key and pointer information
-    void PreOrd() { PreOrdprint(root); }
 
     //Inserts a node with key k and data d into the tree
     bool insert(int k, string d) {

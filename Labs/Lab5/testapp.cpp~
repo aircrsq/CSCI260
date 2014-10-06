@@ -56,17 +56,16 @@ int main()
 
 char getcommand()
 {
-   cout << "Enter your command choice (A, D, P, H, I, Q, R, F, or S)" << endl;
+   cout << "Enter your command choice (I, R, P, D, H, Q, or F)" << endl;
    char cmd;
    cin >> cmd;
    cmd = toupper(cmd);
    switch (cmd) {
-      case 'A':
       case 'F':
       case 'H':
       case 'I':
       case 'R':
-//      case 'M':
+      case 'M':
       case 'P':
       case 'Q':
       case 'D': return cmd;
@@ -77,8 +76,7 @@ char getcommand()
 
 void printmenu()
 {
-   cout << "Enter A to print in pre-order," << endl;
-   cout << "   or I to insert a new element," << endl;
+   cout << "Enter I to insert a new element," << endl;
    cout << "   or R to remove an element with given key," << endl;
    cout << "   or P to print all elements," << endl;
    cout << "   or D to for debug data display," << endl;
@@ -117,8 +115,6 @@ bool processcommand(char cmd, bst &tree)
       case 'D': cout << "The tree debug data is:" << endl;
                 tree.debug();
                 break;
-      case 'A': cout << "The tree contents in Preorder is:" << endl;
-                tree.PreOrd();
       default:  return false;
    }
    return true;
