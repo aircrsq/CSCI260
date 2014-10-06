@@ -1,0 +1,50 @@
+CSCI 260 Fall 2014: Lab 5: Red Black Trees
+
+DUE: Wed Oct 15 11:00 am
+
+In this lab, you are to implement a Dictionary ADT by adapting your Binary Search Tree code into Red-Black trees. Copy your BST makefile and .cpp files into a new directory before you begin changing your code.
+
+The project produces a link-based Red-Black Tree. A Red-Black tree is a BST (keys are ordered so that for any node in the tree, all the nodes in its left subtree have key value less than or equal to the key of the node, and all keys in the right subtree have key value greater than or equal to the key of the node). The trees are kept approximately balances using Red-Black insert and remove. Insert codes is well covered in the (see notes ).
+
+Steps
+You will have to change the struct of the node to accommodate "colour" and "parent". Also change your "debugprint" so that colour and parent key value are also printed. Your output should now look like this:
+Enter your command choice (D, P, H, I, Q, R, or S)
+p
+The tree contents are:
+2:c (b, parent = 5)
+5:a (b, parent = NO_NODE)
+7:b (b, parent = 5)
+
+
+Note that you should also have a line break before the start of your listing of nodes, to improve readability.
+You may want to have an alternative debugprint that it gives the tree contents in pre-order; it is then easier for you to tell what your tree looks like. You can add this as a new option to your menu; however, leave "P" as the option for the in-order print, for testing purposes.
+Understand how "insert" works for red-black trees. Change your "insert" so that it balances as necessary for red-black trees. Debug this before continuing on to your "remove".
+Understand how "remove" works for red-black trees. Code up your algorithm for "remove", and debug.
+Test it. You can use the testapp.C file provided if you like, or write your own testing routines. However, your interface should be the same as that expected by testapp.C
+Run the resulting program, which you have called "testapp" by using the -o option of the g++ compilation command in the makefile, type
+./testapp
+
+Document the code. The stubs provided are only minimally documented. Don't take them as a model; you should bring them up to standard.
+
+To submit the files to me,
+
+Submit the directory that contains:
+
+    the makefile
+    the code files, with your name and the instructions for compiling at the top
+    A sample input file for a binary tree that with at least 20 nodes, and with 4 removes. The file should be of a form so that "./testapp < filenamehere" will give suitable input to build such a tree.
+
+Everything but the data files and the makefile should bear your complete name and student number. Code should be well-documented and well designed.
+To submit, you should have a directory that contains ONLY and ALL the files to submit. While in that directory (i.e., if the directory is called lab4 you should "cd lab4"), type the following command on the command line:
+/home/faculty/gpruesse/260/bin/submit.sh .
+Note that the command ends with "space period", a.k.a " ." The submit command archives whatever arguments are passed on the command line, and "." means the current directory.
+
+
+
+Files
+testapp.cpp
+bst.h
+bst.cpp (stub)
+makefile
+
+
