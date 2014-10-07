@@ -45,6 +45,71 @@ RBbst::NullNode->parent = NO_NODE;
 RBbst::NullNode->key = 0;
 RBbst::NullNode->data = "N";
 */
+
+// Return grandparent
+node* RBbst::grandparent(node *&n){
+    assert (n != NullNode);
+    assert (n->parent != NullNode);
+    assert (n->parent->parent != NullNode);
+    return n->parent->parent;
+}
+
+
+// Return Sibling of Node
+node* RBbst::sibling(node *&n){
+    assert (n != NullNode);
+    assert (n->parent != NullNode);
+    if (n == n->parent->left)
+        return n->parent->right;
+    else
+        return n->parent->left;
+}
+
+ // Return Uncle of Node
+node* RBbst::uncle(node *&n){
+    assert (n != NullNode);
+    assert (n->parent != NullNode);
+    assert (n->parent->parent != NullNode);
+    return sibling(n->parent);
+}
+
+// Verifying Properties of Red black Tree
+void RBbst::verify_properties(rbtree t){
+    verify_property_1 (t->root);
+    verify_property_2 (t->root);
+    verify_property_4 (t->root);
+    verify_property_5 (t->root);
+}
+
+// Verifying Property 1 Each node must be red or black
+void RBbst::verify_property_1(node *&n){
+    assert (node_color(n) == r || node_color(n) == b);  //confirm node_color***********
+    if (n == NullNode)
+        return;
+    verify_property_1(n->left);
+    verify_property_1(n->right);
+}
+
+// Verifying Property 2 Root node must be black
+void RBbst::verify_property_2(node *&root){
+    assert (node_color(root) == b);
+}
+
+
+// Verifying Property 4 If a node is red, it's children and parent must be black
+void RBbst::verify_property_4(node *&n){
+    if (node_color(n) == r){
+        assert (node_color(n->left) == b);
+        assert (node_color(n->right) == b);
+        assert (node_color(n->parent) == b);
+    }
+    if (n == NullNode)
+        return;
+    verify_property_4(n->left);
+    verify_property_4(n->right);
+}
+
+
 // insert a new node in the bst rooted at n,
 // returning true if successful, false otherwise
 bool bst::insert(int k, string d, node* &n){

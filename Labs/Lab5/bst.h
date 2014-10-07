@@ -36,12 +36,12 @@ const int NO_NODE = 0;
 class bst{
   private:
   enum colour { r, b };
-  struct node {
+  typedef struct node {
          node *right, *left, *parent;
          string data;
          int key;
          enum colour colour;
-  };
+  };*node;
 /*  struct NullNode {
          bst::node *right = NO_NODE;
          bst::node *left = NO_NODE;
@@ -49,8 +49,11 @@ class bst{
          string data = "N";
          int key = N; have to figure out how to convert?
          enum colour colour;
-};
-	*/
+};  */
+  typedef struct rbtree {
+    node root;
+  }
+
   node* NullNode;
   // we maintain a pointer to the root of the tree
   node *root;
@@ -76,6 +79,12 @@ class bst{
   void debugprint(node *n);
   void PreOrdprint(node *n);
   void swapElements(node* n, node* m);
+  node* grandparent(node *&n);
+  node* sibling(node *&n);
+  node* uncle(node *&n);
+  void verify_property_1(node *&n);
+  void verify_property_2(node *&root);
+  void verify_property_4(node *&n);
 
   public:
     //Constructors
