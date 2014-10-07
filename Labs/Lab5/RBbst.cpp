@@ -147,12 +147,11 @@ rbtree RBbst::rbtree_create(){
     return t;
 }
 
-/****************** verify pointers (k,v) and input arguements ***********
 // Creating New Node of Reb Black Tree
-node* RBbst::new_node(void* k, void* v, colour n_colour, node left, node right){
-    node result = new rbtree_node;
-    result->key = k;
-    result->value = v;
+node* RBbst::new_node(int key, string data, colour n_colour, node *&left, node *&right){
+    node *result = new node;
+    result->key = key;
+    result->data = data;
     result->colour = n_colour;
     result->left = left;
     result->right = right;
@@ -163,7 +162,6 @@ node* RBbst::new_node(void* k, void* v, colour n_colour, node left, node right){
     result->parent = NullNode;
     return result;
 }
-******************************************************************/
 
 //Look Up through Node
 node* RBbst::lookup_node(rbtree t, void* key, compare_func compare){//verify inputs ********
@@ -231,17 +229,17 @@ void RBTree::replace_node(rbtree t, node oldn, node newn){
 }
 
 // Insert node into RBTree
-void RBbst::rbtree_insert(rbtree t, void* key, void* value, compare_func compare){
-    node inserted_node = new_node(key, value, r, NullNode, NullNode);
+void RBbst::rbtree_insert(rbtree t, int key, string data, compare_func compare){
+    node *inserted_node = new_node(key, data, r, NullNode, NullNode);
     if (t->root == NullNode){
         t->root = inserted_node;
     }
     else{
-        node n = t->root;
+        node *n = t->root;/*****************Here**************/
         while (1){
             int comp_result = compare(key, n->key);
             if (comp_result == 0) {
-                n->value = value;
+                n->data = data;
                 return;
             }
             else if (comp_result < 0){
@@ -477,38 +475,38 @@ void print_tree(rbtree t){
 
 // insert a new node in the bst rooted at n,
 // returning true if successful, false otherwise
-bool bst::insert(int k, string d, node* &n){
+bool RBbst::insert(int k, string d, node *&n){
   // insert the node at the appropiate location
   // if root is null, create a new node with information and return true
-  if (n == NO_NODE) {
+  if (n == NullNode) {
    	n = new node;
-	n->left = NO_NODE;
-	n->right = NO_NODE;
-        n->parent = NO_NODE; //new NullNode;
+	n->left = NullNode;
+	n->right = NullNode;
+    n->parent = NullNode; //new NullNode;
 	n->key = k;
 	n->data = d;
-        n->colour = r;
+    n->colour = r;
    	return 1;
   }
   // if key is < new key and there are nodes to the right
   // call insert with the right node
-  else if ((n->key < k) && (n->right!= NO_NODE)){
+  else if ((n->key < k) && (n->right!= NullNode)){
     return insert(k, d, n->right);
   }
   // if key is > new key and there are nodes to the left
   // call insert with the left node
-  else if ((n->key > k) && (n->left != NO_NODE)) {
+  else if ((n->key > k) && (n->left != NullNode)) {
     return insert(k, d, n->left);
   }
   // if key is > new key and there are no nodes to the left
   // attach the new node to the left
-  else if ((n->key > k) && (n->left == NO_NODE)){
+  else if ((n->key > k) && (n->left == NullNode)){
     if (Attach(k, d, n, n->left));
     return 1;
   }
   // if key is < new key and there are no nodes to the right
   // attach the new node to the right
-  else if ((n->key < k) && (n->right == NO_NODE)) {
+  else if ((n->key < k) && (n->right == NullNode)) {
     if (Attach(k, d, n, n->right));
     return 1;
   }
@@ -522,13 +520,13 @@ bool bst::insert(int k, string d, node* &n){
 
 // create new node with the input key and data
 // attach node c to node n, returning true
-bool bst::Attach(int key, string data, node *&n, node *&c){
-  node * tmp = new node;
+bool RBbst::Attach(int key, string data, node *&n, node *&c){
+  node *tmp = new node;
   tmp->key = key;
   tmp->data = data;
   tmp->parent = n;
-  tmp->left = NO_NODE;
-  tmp->right = NO_NODE;
+  tmp->left = NullNode;
+  tmp->right = NullNode;
   tmp->colour = r;
   c = tmp;
   return 1;
@@ -536,14 +534,14 @@ bool bst::Attach(int key, string data, node *&n, node *&c){
 
 // insert a node of equal value with different data attached to n
 // return true is successful
-bool bst::AttachEqual(int key, string data, node *&n){
+bool RBbst::AttachEqual(int key, string data, node *&n){
   node * tmp = n->parent;
   // if there are no nodes to the left
   // attach the new node to the left
-  if (n->left == NO_NODE) { return Attach(key, data, n, n->left);}
+  if (n->left == NullNode) { return Attach(key, data, n, n->left);}
   // if there are no nodes to the right
   // attach new node to the right
-  else if (n->right == NO_NODE) { return Attach(key, data, n, n->right);}
+  else if (n->right == NullNode) { return Attach(key, data, n, n->right);}
   // if we are a left child attach the node to the left
   else if (tmp->left = n) { return leftjoin(key, data, n);}
   // if we are a right child attach the node to the right
@@ -552,11 +550,11 @@ bool bst::AttachEqual(int key, string data, node *&n){
 
 // join new node to left child of n
 // return true
-bool bst::leftjoin(int key, string data, node *&n) {
+bool RBbst::leftjoin(int key, string data, node *&n) {
   node *tmp = new node;
   tmp->key = key;
   tmp->data = data;
-  tmp->right = NO_NODE;
+  tmp->right = NullNode;
   tmp->parent = n-> parent;
   tmp->colour = r;
   tmp->left = n;
@@ -566,7 +564,7 @@ bool bst::leftjoin(int key, string data, node *&n) {
 
 // join new node to right child of n
 // return true
-bool bst::rightjoin(int key, string data, node *&n) {
+bool RBbst::rightjoin(int key, string data, node *&n) {
   node *tmp = new node;
   tmp->key = key;
   tmp->data = data;
@@ -580,7 +578,7 @@ bool bst::rightjoin(int key, string data, node *&n) {
 
 // find the node with key to be deleted
 // return pointer to victim
-bst::node *bst::FindVictim(int key, node *&n){
+RBbst::node *RBbst::FindVictim(int key, node *&n){
   node *Tmp = n;
   // if keys match return node
   if (Tmp->key == key) {return Tmp; }
@@ -592,27 +590,27 @@ bst::node *bst::FindVictim(int key, node *&n){
 
 // find the successor going down the left branch
 // return pointer to successor
-bst::node *bst::LeftSuccessor(int key, node *&victim){
+RBbst::node *RBbst::LeftSuccessor(int key, node *&victim){
   // if there are no nodes on the right child or
   // the keys match return node
-  if ((victim->right == NO_NODE) || (victim->key == key)) { return victim; }
+  if ((victim->right == NullNode) || (victim->key == key)) { return victim; }
   // otherwise look to the right for successor
   else return LeftSuccessor(key, victim->right);
 }
 
 // find the successor going down the right branch
 // return pointer to successor
-bst::node *bst::RightSuccessor(int key, node *&victim){
+RBbst::node *RBbst::RightSuccessor(int key, node *&victim){
   // if there are no nodes on the left child or
   // the keys match return node
-  if ((victim->left == NO_NODE) || (victim->key == key)) {return victim;}
+  if ((victim->left == NullNode) || (victim->key == key)) {return victim;}
   // otherwise look to the left for sucessor
   else return RightSuccessor(key, victim->left);
 }
 
 // delete all nodes in the subtree rooted at n,
 // and set n to null
-void bst::deallocate(node* &n){
+void RBbst::deallocate(node* &n){
    if (n == NO_NODE) return;
    deallocate(n->left);
    deallocate(n->right);
@@ -621,21 +619,21 @@ void bst::deallocate(node* &n){
 }
 
 // transfer data and key from successor to victim
-void bst::TDK(node *&Vic, node *&Suc){
+void RBbst::TDK(node *&Vic, node *&Suc){
   Vic -> key = Suc -> key;
   Vic -> data = Suc -> data;
 }
 
 // change pointer of left child parent to grandparent
 // and grandparent right child to grandchild
-void bst::RCL(node *&SP, node *&SC){
+void RNbst::RCL(node *&SP, node *&SC){
   SP->right = SC;
   SC->parent = SP;
 }
 
 // change pointer of right child parent to grandparent
 // and grandparent left child to grandchild
-void bst::RCR(node *&SP, node *&SC){
+void RBbst::RCR(node *&SP, node *&SC){
   SP->left = SC;
   SC->parent = SP;
 }
@@ -643,44 +641,44 @@ void bst::RCR(node *&SP, node *&SC){
 // if the subtree rooted at n contains a node whose key
 // matches k then remove it from the subtree, and return true,
 // otherwise return
-bool bst::deleteElement(int k, node* &n){
+bool RBbst::deleteElement(int k, node *&n){
   // empty tree
-  if (n==NO_NODE) return 0;
+  if (n==NullNode) return 0;
   node * Victim = FindVictim(k, n);
   // if victim has left nodes
-  if (Victim->left != NO_NODE) {
+  if (Victim->left != NullNode) {
     // look for successor to the left
     node * Successor = LeftSuccessor(k, Victim->left);
     // switch data and key
     TDK(Victim, Successor);
     // if successor has left children rotate child left
-    if (Successor-> left != NO_NODE) {RCL(Successor->parent, Successor->left);}
+    if (Successor-> left != NullNode) {RCL(Successor->parent, Successor->left);}
     // otherwise if successor has no left child point parent to null
-    else if (Successor-> left == NO_NODE){Successor->parent->right = NO_NODE;}
+    else if (Successor-> left == NullNode){Successor->parent->right = NullNode;}
     // delete the successor
     delete Successor;
   }
   // if victim has right nodes
-  else if (Victim->right != NO_NODE) {
+  else if (Victim->right != NullNode) {
     // look for successor to the right
     node * Successor = RightSuccessor(k, Victim->right);
     // switch data and key
     TDK(Victim, Successor);
     // if successor has right children rotate child right
-    if (Successor-> right != NO_NODE) {RCR(Successor->parent, Successor->right);}
+    if (Successor-> right != NullNode) {RCR(Successor->parent, Successor->right);}
     // otherwise if successor has no right child point parent to null
-    else if (Successor-> right == NO_NODE){Successor->parent->left = NO_NODE;}
+    else if (Successor-> right == NullNode){Successor->parent->left = NullNode;}
     // delete the successor
     delete Successor;
   }
   // victim is a leaf and left child
-  else if ((Victim->parent != NO_NODE) && (Victim->parent->left == Victim)){
-    Victim->parent->left = NO_NODE;
+  else if ((Victim->parent != NullNode) && (Victim->parent->left == Victim)){
+    Victim->parent->left = NullNode;
     delete Victim;
   }
   // victim is a leaf and right child
-  else if ((Victim->parent != NO_NODE) && (Victim->parent->right == Victim)){
-    Victim->parent->right = NO_NODE;
+  else if ((Victim->parent != NullNode) && (Victim->parent->right == Victim)){
+    Victim->parent->right = NullNode;
     delete Victim;
   }
   return 1;
@@ -688,9 +686,9 @@ bool bst::deleteElement(int k, node* &n){
 
 // find the node with key
 // return data
-string bst::search(int k, node* &n){
+string RBbst::search(int k, node *&n){
   // if empty tree
-  if (n == NO_NODE) return "nothing";
+  if (n == NullNode) return "nothing";
   // otherwise if nodes key is > than k
   else if (k < n->key){
     return search(k, n->left);
@@ -709,10 +707,10 @@ string bst::search(int k, node* &n){
 /*2:c (5 b N N)
 5:a (N b 2 7)
 7:b (5 b N N)	*/
-void bst::print(node *n){
-   if (n == NO_NODE) return;
+void RBbst::print(node *n){
+   if (n == NullNode) return;
    print(n->left);
-   if (n->parent == NO_NODE){
+   if (n->parent == NullNode){
      cout << n->key << ":" << n->data << " (" << n->colour << ", parent = null)" << endl;
    }
    else {
@@ -724,7 +722,7 @@ void bst::print(node *n){
 
 // display the contents and structure of the subtree rooted at n,
 // performed via preorder traversal
-void bst::debugprint(node *n){
+void RBbst::debugprint(node *n){
    if (n == NO_NODE) return;
    cout << n->key << ":" << n->data << " (";
    if (n->left) cout << n->left->key;
@@ -739,8 +737,8 @@ void bst::debugprint(node *n){
 }
 
 //Change to printout as specified in Lab5 Preorder Print
-void bst::PreOrdprint(node *n){
-   if (n == NO_NODE) return;
+void RBbst::PreOrdprint(node *n){
+   if (n == NullNode) return;
    cout << n->key << ":" << n->data << " (";
    if (n->left) cout << n->left->key;
    else cout << "NULL";
@@ -753,7 +751,7 @@ void bst::PreOrdprint(node *n){
    PreOrdprint(n->right);
 }
 // swap data and key between two nodes
-void bst::swapElements(node* n, node* m){
+void RBbst::swapElements(node* n, node* m){
    node temp;
    temp.data = n->data;
    n->data = m->data;

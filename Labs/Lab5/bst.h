@@ -61,7 +61,14 @@ class bst{
     node root;
   };
 
-  node* NullNode;
+  node* NullNode = new node;
+    NullNode->right = NO_NODE;
+    NullNode->left = NO_NODE;
+    NullNode->parent = NO_NODE;
+    NullNode->data = "N";
+    NullNode->key = 0; have to figure out how to convert?
+    NullNode->colour = b;
+
   // we maintain a pointer to the root of the tree
   node *root;
 
@@ -69,9 +76,9 @@ class bst{
   // (used by the public methods)
   // see bst.cpp file for explanation
   void deallocate(node* &n);
-  bool insert(int k, string d, node* &n);
+  bool insert(int k, string d, node *&n);
   bool deleteElement(int k, node* &n);
-  string search(int k, node* &n);
+  string search(int k, node *&n);
   bool Attach(int key, string data, node * &n, node * &c);
   bool AttachEqual(int key, string data, node * &n);
   bool leftjoin(int key, string data, node *&n);
@@ -96,12 +103,12 @@ class bst{
   void verify_property_5_helper(node *&n, int black_count, int* path_black_count);
   colour node_colour(node *&n);
   rbtree rbtree_create();
-  node* new_node(void* k, void* v, colour n_colour, node left, node right); //verify input arguements
+  node* new_node(int key, string data, colour n_colour, node *&left, node *&right);
   node* lookup_node(rbtree t, void* key, compare_func compare); //Verify input arguements
   void rotate_left(rbtree t, node *&n);
   void rotate_right(rbtree t, node *&n);
   void replace_node(rbtree t, node oldn, node newn);
-  void rbtree_insert(rbtree t, void* key, void* value, compare_func compare);
+  void rbtree_insert(rbtree t, int key, string data, compare_func compare);
   void insert_case1(rbtree t, node *&n);
   void insert_case2(rbtree t, node *&n);
   void insert_case3(rbtree t, node *&n);
@@ -120,7 +127,7 @@ class bst{
 
   public:
     //Constructors
-    bst() { root = NULL; }
+    bst() { root = NullNode; }
     ~bst() { deallocate(root); }
 
     //prints tree in Inorder
