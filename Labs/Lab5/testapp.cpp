@@ -66,7 +66,6 @@ char getcommand()
       case 'H':
       case 'I':
       case 'R':
-//      case 'M':
       case 'P':
       case 'Q':
       case 'D': return cmd;
@@ -113,11 +112,11 @@ bool processcommand(char cmd, RBbst &tree)
                 break;
 /*      case 'P': cout << "The tree contents are: ";
                 tree.display();
-                break;
+                break;  */
       case 'D': cout << "The tree debug data is:" << endl;
                 tree.debug();
                 break;
-      case 'A': cout << "The tree contents in Preorder is:" << endl;
+ /*     case 'A': cout << "The tree contents in Preorder is:" << endl;
                 tree.PreOrd();  */
       default:  return false;
    }
