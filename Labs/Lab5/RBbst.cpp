@@ -24,104 +24,469 @@
  Version      Author  Date    Changes
  1.0          DB      Oct 06  New version
 *************************************************************************/
-#include "bst.h"
+#include "RBbst.h"
 using namespace std;
 
 /*
-  node* NullNode;
-  enum colour { r, b };
   struct node {
          node *right, *left, *parent;
          string data;
          int key;
-         enum colour colour;
+         int colour;
   };
-  *root;   */
-/*
-RBbst::NullNode = new node;
-RBbst::NullNode->left = NO_NODE;
-RBbst::NullNode->right = NO_NODE;
-RBbst::NullNode->parent = NO_NODE;
-RBbst::NullNode->key = 0;
-RBbst::NullNode->data = "N";
-*/
+  */
 
-// Return grandparent
-node* RBbst::grandparent(node *&n){
-    assert (n != NullNode);
-    assert (n->parent != NullNode);
-    assert (n->parent->parent != NullNode);
-    return n->parent->parent;
+// insert a new node in the bst rooted at n,
+// returning true if successful, false otherwise
+RBbst::node * RBbst::insert(int key, string data, node *&root){
+ /*****************************************************/
+  node* current= new node;
+  current->key = key;
+  current->data=data;
+  current->left=NULL;
+  current->right=NULL;
+  current->colour=RED;
+  if(root==NULL){
+    current->colour=BLACK;
+    current->parent=NULL;
+    root=current;
+    return root;
+  }
+  else{
+    node*temp=NULL;
+    temp=finding(root,key,0);
+    current->parent=temp;
+    if(key>=temp->key)
+      temp->right=current;
+    else temp->left=current;
+  }
+  root=insert_case1(current,root);
+  return root;
+
+ /*************************************
+  node *inserted_node = new_node(key, data, r, NO_NODE, NO_NODE);
+  if (n == NO_NODE){
+    n = inserted_node;
+  }
+  else{
+    node *r = n;
+    while (1){
+      if (n->key < k) {
+        if (r->right == NO_NODE){
+          r->right = inserted_node;
+          break;
+        }
+        else{
+          r = r->right;
+        }
+      }
+      else if (n->key > k){
+        if (r->left == NO_NODE){
+          r->left = inserted_node;
+          break;
+        }
+        else{
+          r = r->left;
+        }
+      }
+      else{
+        r->data = data;
+        return;
+      }
+    }
+    inserted_node->parent = n;
+  }
+  insert_case1(n, inserted_node);
+  verify_properties(n); */
 }
 
+RBbst::node * finding(node*& root,int key,int i){
+  //static int i;
+  static  node* temp=NULL;
+  if(root==NULL)return NULL;
+  if(i==1)return temp;
+  if(root->key>key){
+    if(root->left==NULL){
+      temp=root;i=1;return temp;
+    }
+    finding(root->left,key,i);
+  }
+  else{
+    if(root->right==NULL){
+      temp=root;
+      i=1;
+      return temp;
+    }
+    finding(root->right,key,i);
+  }
+  return temp;
+}
+
+RBbst::node * insert_case1(node *&n, node *&head){
+  if (n->parent == NULL)
+    n->colour = BLACK;
+  else
+    head=insert_case2(n,head);
+  return head;
+}
+
+RBbst::node * insert_case2( node *&n, node *head){
+  if (n->parent->colour == BLACK)
+    return head;
+  else
+    head=insert_case3(n,head);
+  return head;
+}
+
+RBbst::node * insert_case3( node *&n, node *&head){
+  node *u = uncle(n), *g;
+  if ((u != NULL) && (u->colour == RED)) {
+    n->parent->colour = BLACK;
+    u->colour = BLACK;
+    g = grandparent(n);
+    g->colour = RED;
+    head=insert_case1(g,head);
+  }
+  else {
+    head=insert_case4(n,head);
+  }
+  return head;
+}
+
+RBbst::node * insert_case4(node *&n, node *&head){
+  node *g = grandparent(n);
+  if ((n == n->parent->right) && (n->parent == g->left)) {
+    head=rotate_left(n->parent,head);
+
+    n = n->left;
+  }
+  else if ((n == n->parent->left) && (n->parent == g->right)) {
+    head=rotate_right(n->parent,head);
+
+    n = n->right;
+  }
+  head=insert_case5(n,head);
+  return head;
+}
+
+RBbst::node * insert_case5(node *&n, node *&head){
+  node *g = grandparent(n);
+  n->parent->colour = BLACK;
+  g->colour = RED;
+  if (n == n->parent->left)
+    head=rotate_right(n,head);
+  else
+    head=rotate_left(n,head);
+  return head;
+}
+
+RBbst::node * uncle(node *&n){
+  node *g = grandparent(n);
+  if (g == NULL)
+    return NULL; // No grandparent means no uncle
+  if (n->parent == g->left)
+    return g->right;
+  else
+    return g->left;
+}
+
+RBbst::node * grandparent(node *&n){
+  if ((n != NULL) && (n->parent != NULL))
+    return n->parent->parent;
+  else
+    return NULL;
+}
+
+RBbst::node * rotate_left(node *&n, node *&head){
+  node *g = grandparent(n);
+  node *saved_p=g->parent;
+  node *saved_left_n=n->parent->left;
+  n->parent->left=g;
+  g->right=saved_left_n;
+  n->parent->parent=saved_p;
+  g->parent=n->parent;
+  if(saved_p!=NULL){
+    if(saved_p->left==g){
+      saved_p->left=n->parent->parent;
+    }
+    else if(saved_p->right==g){
+      saved_p->right=n->parent->parent;
+    }
+  }
+  else head=n->parent;
+  return head;
+}
+
+RBbst::node * rotate_right(node *&n, node *&head){
+  node *g = grandparent(n);
+  node *saved_p=g->parent;
+  node *saved_right_p=n->parent->right;
+  n->parent->right=g;
+  g->left=saved_right_p;
+  n->parent->parent=saved_p;
+  g->parent=n->parent;
+  if(saved_p!=NULL){
+    if(saved_p->left==g){
+      saved_p->left=n->parent->parent;
+    }
+    else if(saved_p->right==g){
+      saved_p->right=n->parent->parent;
+    }
+  }
+  else head=n->parent;
+  return head;
+}
+
+// find the node with key
+// return data
+string RBbst::search(int key, node *&root){
+  // if empty tree
+  if (root == NO_NODE) return "nothing";
+  // otherwise if nodes key is > than k
+  else if (key < root->key){
+    return search(k, root->left);
+  }
+  // otherwise if nodes key is < k
+  else if (key > root->key){
+    return search(key, root->right);
+  }
+  // otherwise return data
+  else
+    return root->data;
+}
+
+// display the key/data contents of the subtree rooted at n,
+// sorted (ascending) by key value
+/*2:c (5 b N N)
+5:a (N b 2 7)
+7:b (5 b N N)	*/
+void RBbst::print(node *&n){
+   if (n == NO_NODE) return;
+   print(n->left);
+   if (n->parent == NO_NODE){
+     cout << n->key << ":" << n->data << " (" << n->colour << ", parent = null)" << endl;
+   }
+   else {
+     cout << n->key << ":" << n->data << " (" << n->colour << ", parent = " << n->parent->key
+          << ")" << endl;
+   }
+   print(n->right);
+}
+
+// display the contents and structure of the subtree rooted at n,
+// performed via preorder traversal
+void RBbst::debugprint(node *&n){
+   if (n == NO_NODE) return;
+   cout << n->key << ":" << n->data << " (";
+   if (n->left) cout << n->left->key;
+   else cout << "NULL";
+   cout << "<-left,right->";
+   if (n->right) cout << n->right->key;
+   else cout << "NULL";
+   cout << ") ";
+
+   debugprint(n->left);
+   debugprint(n->right);
+}
+
+//Change to printout as specified in Lab5 Preorder Print
+void RBbst::PreOrdprint(node *&n){
+   if (n == NO_NODE) return;
+   cout << n->key << ":" << n->data << " (";
+   if (n->left) cout << n->left->key;
+   else cout << "NULL";
+   cout << "<-left,right->";
+   if (n->right) cout << n->right->key;
+   else cout << "NULL";
+   cout << ") ";
+
+   PreOrdprint(n->left);
+   PreOrdprint(n->right);
+}
+
+// if the subtree rooted at n contains a node whose key
+// matches k then remove it from the subtree, and return true,
+// otherwise return
+bool RBbst::deleteElement(int key, node *&root){
+  node* child;
+  node* n = finding(root,key,0);
+  if (n == NO_NODE)
+    return;
+  if (n->left != NO_NODE && n->right != NO_NODE){
+    node* pred = maximum_node(n->left);
+    n->key = pred->key;
+    n->value = pred->value;
+    n = pred;
+  }
+  assert(n->left == NO_NODE || n->right == NO_NODE);
+  child = n->right == NO_NODE ? n->left  : n->right;
+  if (node_colour(n) == BLACK){
+    n->colour = node_colour(child);
+    delete_case1(root, n);
+  }
+  replace_node(root, n, child);
+  delete n;
+  verify_properties(t);
+  return 1;
+}
+
+// Replace a node
+void RBbst::replace_node(node *&root, node *&n, node *&child){
+    if (n->parent == NO_NODE){
+        root = child;
+    }
+    else{
+        if (n == n->parent->left)
+            n->parent->left = child;
+        else
+            n->parent->right = child;
+    }
+    if (child != NO_NODE){
+        child->parent = n->parent;
+    }
+}
+
+// Returns Maximum node
+RBbst::node * RBbst::maximum_node(node *&n){
+    assert (n != NO_NODE);
+    while (n->right != NO_NODE){
+        n = n->right;
+    }
+    return n;
+}
+
+// Deleting Case 1
+void RBbst::delete_case1(node *& root, node *&n){
+  if (n->parent == NO_NODE)
+    return;
+  else
+    delete_case2(root, n);
+}
+
+// Deleting Case 2
+void RBbst::delete_case2(node *& root, node *&n){
+  if (node_colour(sibling(n)) == RED){
+    n->parent->coluor = RED;
+    sibling(n)->colour = BLACK;
+    if (n == n->parent->left)
+      rotate_left(root, n->parent);
+    else
+      rotate_right(root, n->parent);
+  }
+  delete_case3(root, n);
+}
+
+// Deleting Case 3
+void RBbst::delete_case3(node *& root, node *&n){
+  if (node_colour(n->parent) == BLACK && node_colour(sibling(n)) == BLACK &&
+  node_colour(sibling(n)->left) == BLACK && node_colour(sibling(n)->right) == BLACK){
+    sibling(n)->colour = RED;
+    delete_case1(root, n->parent);
+  }
+  else
+    delete_case4(root, n);
+}
+
+// Deleting Case 4
+void RBbst::delete_case4(node *& root, node *&n){
+  if (node_colour(n->parent) == RED && node_colour(sibling(n)) == BLACK &&
+  node_colour(sibling(n)->left) == BLACK && node_colour(sibling(n)->right) == BLACK){
+    sibling(n)->colour = RED;
+    n->parent->colour = BLACK;
+  }
+  else
+    delete_case5(root, n);
+}
+
+// Deleting Case 5
+void RBbst::delete_case5(node *& root, node *&n){
+  if (n == n->parent->left && node_colour(sibling(n)) == BLACK &&
+  node_colour(sibling(n)->left) == RED && node_colour(sibling(n)->right) == BLACK){
+    sibling(n)->colour = RED;
+    sibling(n)->left->colour = BLACK;
+    rotate_right(t, sibling(n));
+  }
+  else if (n == n->parent->right && node_colour(sibling(n)) == BLACK &&
+  node_colour(sibling(n)->right) == RED && node_colour(sibling(n)->left) == BLACK){
+    sibling(n)->colour = RED;
+    sibling(n)->right->colour = BLACK;
+    rotate_left(root, sibling(n));
+  }
+  delete_case6(root, n);
+}
+
+// Deleting Case 6
+void RBbst::delete_case6(node *& root, node *&n){
+  sibling(n)->colour = node_colour(n->parent);
+  n->parent->colour = BLACK;
+  if (n == n->parent->left){
+    assert (node_colour(sibling(n)->right) == RED);
+    sibling(n)->right->colour = BLACK;
+    rotate_left(root, n->parent);
+  }
+  else{
+    assert (node_colour(sibling(n)->left) == RED);
+    sibling(n)->left->colour = BLACK;
+    rotate_right(root, n->parent);
+  }
+}
 
 // Return Sibling of Node
-node* RBbst::sibling(node *&n){
-    assert (n != NullNode);
-    assert (n->parent != NullNode);
+RBbst::node* RBbst::sibling(node *&n){
+    assert (n != NO_NODE);
+    assert (n->parent != NO_NODE);
     if (n == n->parent->left)
         return n->parent->right;
     else
         return n->parent->left;
 }
 
- // Return Uncle of Node
-node* RBbst::uncle(node *&n){
-    assert (n != NullNode);
-    assert (n->parent != NullNode);
-    assert (n->parent->parent != NullNode);
-    return sibling(n->parent);
-}
-
 // Verifying Properties of Red black Tree
-void RBbst::verify_properties(rbtree t){
-    verify_property_1 (t->root);
-    verify_property_2 (t->root);
-    verify_property_4 (t->root);	//Property 3 is not here **********
-    verify_property_5 (t->root);
+void RBbst::verify_properties(node *&n){
+    verify_property_1 (n);
+    verify_property_2 (n);
+    verify_property_3 (n);
+    verify_property_4 (n);
 }
 
 // Verifying Property 1 Each node must be red or black
 void RBbst::verify_property_1(node *&n){
-    assert (node_colour(n) == r || node_colour(n) == b);  //confirm node_color***********
-    if (n == NullNode)
+    assert (node_colour(n) == RED || node_colour(n) == BLACK);  //confirm node_color***********
+    if (n == NO_NODE)
         return;
     verify_property_1(n->left);
     verify_property_1(n->right);
 }
 
 // Verifying Property 2 Root node must be black
-void RBbst::verify_property_2(node *&root){
-    assert (node_colour(root) == b);
+void RBbst::verify_property_2(node *&n){
+    assert (node_colour(n) == BLACK);
 }
 
-// Where is Property 3? **********
-
-
-// Verifying Property 4 If a node is red, it's children and parent must be black
-void RBbst::verify_property_4(node *&n){
-    if (node_colour(n) == r){
-        assert (node_colour(n->left) == b);
-        assert (node_colour(n->right) == b);
-        assert (node_colour(n->parent) == b);
+// Verifying Property 3 If a node is red, it's children and parent must be black
+void RBbst::verify_property_3(node *&n){
+    if (node_colour(n) == RED){
+        assert (node_colour(n->left) == BLACK);
+        assert (node_colour(n->right) == BLACK);
+        assert (node_colour(n->parent) == BLACK);
     }
-    if (n == NullNode)
+    if (n == NO_NODE)
         return;
     verify_property_4(n->left);
     verify_property_4(n->right);
 }
 
-// Verifying Property 5 The Black height must be the same for all leaves
-void RBbst::verify_property_5(node *&root){
+// Verifying Property 4 The Black height must be the same for all leaves
+void RBbst::verify_property_4(node *&n){
     int black_count_path = -1;
-    verify_property_5_helper(root, 0, &black_count_path);
+    verify_property_5_helper(n, 0, &black_count_path);
 }
 
-void RBbst::verify_property_5_helper(node *&n, int black_count, int* path_black_count){
-    if (node_colour(n) == b){
+void RBbst::verify_property_4_helper(node *&n, int black_count, int* path_black_count){
+    if (node_colour(n) == BLACK){
         black_count++;
     }
-    if (n == NullNode){
+    if (n == NO_NODE){
         if (*path_black_count == -1){
             *path_black_count = black_count;
         }
@@ -130,70 +495,99 @@ void RBbst::verify_property_5_helper(node *&n, int black_count, int* path_black_
         }
         return;
     }
-    verify_property_5_helper(n->left,  black_count, path_black_count);
-    verify_property_5_helper(n->right, black_count, path_black_count);
+    verify_property_4_helper(n->left,  black_count, path_black_count);
+    verify_property_4_helper(n->right, black_count, path_black_count);
 }
 
  //Returns colour of a node
- colour RBbst::node_colour(node *&n){
-    return n == NullNode ? b : n->colour;
+ int RBbst::node_colour(node *&n){
+    return n == NO_NODE ? BLACK : n->colour;
+}
+
+// delete all nodes in the subtree rooted at n,
+// and set n to null
+void RBbst::deallocate(node* &n){
+   if (n == NO_NODE) return;
+   deallocate(n->left);
+   deallocate(n->right);
+   delete n;
+   n = NO_NODE;
+}
+
+
+/*************************************************/
+
+/*
+// Return grandparent
+RBbst::node* RBbst::grandparent(node *&n){
+    assert (n != NO_NODE);
+    assert (n->parent != NO_NODE);
+    assert (n->parent->parent != NO_NODE);
+    return n->parent->parent;
+}
+
+ // Return Uncle of Node
+RBbst::node* RBbst::uncle(node *&n){
+    assert (n != NO_NODE);
+    assert (n->parent != NO_NODE);
+    assert (n->parent->parent != NO_NODE);
+    return sibling(n->parent);
 }
 
 // Create Red Black Tree
-rbtree RBbst::rbtree_create(){
+RBbst::node* RBbst::rbtree_create(){
     rbtree t = new rbtree_t;
-    t->root = NullNode;
+    t->root = NO_NODE;
     verify_properties(t);
     return t;
 }
-
 // Creating New Node of Reb Black Tree
-node* RBbst::new_node(int key, string data, colour n_colour, node *&left, node *&right){
+RBbst::node* RBbst::new_node(int key, string data, colour n_colour, node *&left, node *&right){
     node *result = new node;
     result->key = key;
     result->data = data;
     result->colour = n_colour;
     result->left = left;
     result->right = right;
-    if (left  != NullNode)
+    if (left  != NO_NODE)
         left->parent = result;
-    if (right != NullNode)
+    if (right != NO_NODE)
         right->parent = result;
-    result->parent = NullNode;
+    result->parent = NO_NODE;
     return result;
 }
 
 //Look Up through Node
-node* RBbst::lookup_node(rbtree t, void* key, compare_func compare){//verify inputs ********
-    node* n = t->root;
-    while (n != NullNode){
-        int comp_result = compare(key, n->key);
-        if (comp_result == 0){
+RBbst::node* RBbst::lookup_node(node* t, int key){
+    node* n = t;
+    while (n != NO_NODE){
+//        int comp_result = compare(key, n->key);
+        if (n->key == key){
             return n;
         }
-        else if (comp_result < 0){
+        else if (n->key > key){
             n = n->left;
         }
         else{
-            assert(comp_result > 0);
+            assert(n->key > key);
             n = n->right;
         }
     }
     return n;
 }
 
+
 // RbTree Look Up
 void* RBTree::rbtree_lookup(rbtree t, void* key, compare_func compare){//verify inputs/outputs ********
     node n = lookup_node(t, key, compare);
-    return n == NullNode ? NullNode : n->value;
+    return n == NO_NODE ? NO_NODE : n->value;
 }
-
 // Rotate left
-void RBbst::rotate_left(rbtree t, node *&n){
-    node r = n->right;
-    replace_node(t, n, r);
+void RBbst::rotate_left(node *&root, node *&n){
+    node* r = n->right;
+    replace_node(root, n, r);
     n->right = r->left;
-    if (r->left != NullNode){
+    if (r->left != NO_NODE){
         r->left->parent = n;
     }
     r->left = n;
@@ -201,125 +595,74 @@ void RBbst::rotate_left(rbtree t, node *&n){
 }
 
 // Rotate right
-void RBbst::rotate_right(rbtree t, node *&n){
-    node L = n->left;
-    replace_node(t, n, L);
+void RBbst::rotate_right(node *&root, node *&n){
+    node * L = n->left;
+    replace_node(root, n, L);
     n->left = L->right;
-    if (L->right != NullNode){
+    if (L->right != NO_NODE){
         L->right->parent = n;
     }
     L->right = n;
     n->parent = L;
 }
 
-// Replace a node
-void RBTree::replace_node(rbtree t, node oldn, node newn){
-    if (oldn->parent == NullNode){
-        t->root = newn;
-    }
-    else{
-        if (oldn == oldn->parent->left)
-            oldn->parent->left = newn;
-        else
-            oldn->parent->right = newn;
-    }
-    if (newn != NullNode){
-        newn->parent = oldn->parent;
-    }
-}
 
+ Replaced with RBBst::insert
 // Insert node into RBTree
 void RBbst::rbtree_insert(rbtree t, int key, string data, compare_func compare){
-    node *inserted_node = new_node(key, data, r, NullNode, NullNode);
-    if (t->root == NullNode){
-        t->root = inserted_node;
-    }
-    else{
-        node *n = t->root;/*****************Here**************/
-        while (1){
-            int comp_result = compare(key, n->key);
-            if (comp_result == 0) {
-                n->data = data;
-                return;
-            }
-            else if (comp_result < 0){
-                if (n->left == NullNode){
-                    n->left = inserted_node;
-                    break;
-                }
-                else{
-                    n = n->left;
-                }
-            }
-            else{
-                assert (comp_result > 0);
-                if (n->right == NullNode){
-                    n->right = inserted_node;
-                    break;
-                }
-                else{
-                    n = n->right;
-                }
-            }
-        }
-        inserted_node->parent = n;
-    }
-    insert_case1(t, inserted_node);
-    verify_properties(t);
 }
-
 // Inserting Case 1
-void RBbst::insert_case1(rbtree t, node *&n){
-    if (n->parent == NullNode)
+void RBbst::insert_case1(node *&root, node *&n){
+    if (n->parent == NO_NODE)
         n->colour = b;
     else
-        insert_case2(t, n);
+        insert_case2(root, n);
 }
 
 // Inserting Case 2
-void RBbst::insert_case2(rbtree t, node *&n){
+void RBbst::insert_case2(node *&root, node *&n){
     if (node_colour(n->parent) == b)
         return;
     else
-        insert_case3(t, n);
+        insert_case3(root, n);
 }
 
 // Inserting Case 3
-void RBbst::insert_case3(rbtree t, node *&n){
+void RBbst::insert_case3(node *&root, node *&n){
     if (node_colour(uncle(n)) == r){
         n->parent->colour = b;
         uncle(n)->colour = b;
         grandparent(n)->colour = r;
-        insert_case1(t, grandparent(n));
+        insert_case1(root, grandparent(n));
     }
     else{
-        insert_case4(t, n);
+        insert_case4(root, n);
     }
 }
 
 // Inserting Case 4
-void RBbst::insert_case4(rbtree t, node *&n){
+void RBbst::insert_case4(node *&root, node *&n){
     if (n == n->parent->right && n->parent == grandparent(n)->left){
-        rotate_left(t, n->parent);
+        rotate_left(root, n->parent);
         n = n->left;
     }
     else if (n == n->parent->left && n->parent == grandparent(n)->right){
-        rotate_right(t, n->parent);
+        rotate_right(root, n->parent);
         n = n->right;
     }
-    insert_case5(t, n);
+    insert_case5(root, n);
 }
 
 // Inserting Case 5
-void RBbst::insert_case5(rbtree t, node *&n){
+void RBbst::insert_case5(node *&root, node *&n){
     n->parent->color = b;
     grandparent(n)->color = r;
     if (n == n->parent->left && n->parent == grandparent(n)->left){
-        rotate_right(t, grandparent(n));
+        rotate_right(root, grandparent(n));
     }
     else{
         assert (n == n->parent->right && n->parent == grandparent(n)->right);
-        rotate_left(t, grandparent(n));
+        rotate_left(root, grandparent(n));
     }
 }
 
@@ -327,16 +670,16 @@ void RBbst::insert_case5(rbtree t, node *&n){
 void RBbst::rbtree_delete(rbtree t, void* key, compare_func compare){
     node child;
     node n = lookup_node(t, key, compare);
-    if (n == NullNode)
+    if (n == NO_NODE)
         return;
-    if (n->left != NullNode && n->right != NullNode){
+    if (n->left != NO_NODE && n->right != NO_NODE){
         node pred = maximum_node(n->left);
         n->key   = pred->key;
         n->value = pred->value;
         n = pred;
     }
-    assert(n->left == NullNode || n->right == NullNode);
-    child = n->right == NullNode ? n->left  : n->right;
+    assert(n->left == NO_NODE || n->right == NO_NODE);
+    child = n->right == NO_NODE ? n->left  : n->right;
     if (node_colour(n) == b){
         n->colour = node_colour(child);
         delete_case1(t, n);
@@ -344,91 +687,6 @@ void RBbst::rbtree_delete(rbtree t, void* key, compare_func compare){
     replace_node(t, n, child);
     free(n);
     verify_properties(t);
-}
-
-// Returns Maximum node
-node* RBbst::maximum_node(node *&n){
-    assert (n != NullNode);
-    while (n->right != NullNode){
-        n = n->right;
-    }
-    return n;
-}
-
-// Deleting Case 1
-void RBbst::delete_case1(rbtree t, node *&n){
-    if (n->parent == NullNode)
-        return;
-    else
-        delete_case2(t, n);
-}
-
-// Deleting Case 2
-void RBbst::delete_case2(rbtree t, node *&n){
-    if (node_colour(sibling(n)) == r)    {
-        n->parent->coluor = r;
-        sibling(n)->colour = b;
-        if (n == n->parent->left)
-            rotate_left(t, n->parent);
-        else
-            rotate_right(t, n->parent);
-   }
-    delete_case3(t, n);
-}
-
-// Deleting Case 3
-void RBbst::delete_case3(rbtree t, node *&n){
-    if (node_colour(n->parent) == b && node_colour(sibling(n)) == b &&
-        node_colour(sibling(n)->left) == b && node_colour(sibling(n)->right) == b){
-        sibling(n)->color = r;
-        delete_case1(t, n->parent);
-    }
-    else
-        delete_case4(t, n);
-}
-
-// Deleting Case 4
-void RBbst::delete_case4(rbtree t, node *&n){
-    if (node_colour(n->parent) == r && node_colour(sibling(n)) == b &&
-        node_colour(sibling(n)->left) == b && node_colour(sibling(n)->right) == b){
-        sibling(n)->color = r;
-        n->parent->color = b;
-    }
-    else
-        delete_case5(t, n);
-}
-
-// Deleting Case 5
-void RBbst::delete_case5(rbtree t, node *&n){
-    if (n == n->parent->left && node_colour(sibling(n)) == b &&
-        node_colour(sibling(n)->left) == r && node_colour(sibling(n)->right) == b){
-        sibling(n)->colour = r;
-        sibling(n)->left->colour = b;
-        rotate_right(t, sibling(n));
-    }
-    else if (n == n->parent->right && node_colour(sibling(n)) == b &&
-             node_colour(sibling(n)->right) == r && node_colour(sibling(n)->left) == b){
-        sibling(n)->colour = r;
-        sibling(n)->right->colour = b;
-        rotate_left(t, sibling(n));
-    }
-    delete_case6(t, n);
-}
-
-// Deleting Case 6
-void RBbst::delete_case6(rbtree t, node *&n){
-    sibling(n)->colour = node_colour(n->parent);
-    n->parent->colour = b;
-    if (n == n->parent->left){
-        assert (node_colour(sibling(n)->right) == r);
-        sibling(n)->right->colour = b;
-        rotate_left(t, n->parent);
-    }
-    else{
-        assert (node_colour(sibling(n)->left) == r);
-        sibling(n)->left->colour = b;
-        rotate_right(t, n->parent);
-    }
 }
 
 // Compare two nodes
@@ -448,76 +706,50 @@ int RBbst::compare_int(void* leftp, void* rightp){ //verify input arguements
 /************************ already done *********************
 // Print RBTRee
 void print_tree_helper(node *&n, int indent){
-    int i;
-    if (n == NULL){
-        fputs("<empty tree>", stdout);
-        return;
-    }
-    if (n->right != NULL){
-        print_tree_helper(n->right, indent + INDENT_STEP);
-    }
-    for(i = 0; i < indent; i++)
-        fputs(" ", stdout);
-    if (n->color == BLACK)
-        cout<<(int)n->key<<endl;
-    else
-        cout<<"<"<<(int)n->key<<">"<<endl;
-    if (n->left != NULL){
-        print_tree_helper(n->left, indent + INDENT_STEP);
-    }
 }
-
 void print_tree(rbtree t){
-    print_tree_helper(t->root, 0);
-    puts("");
 }
-***********************************************************/
-
+**********************************************************
+*********************************************************
 // insert a new node in the bst rooted at n,
 // returning true if successful, false otherwise
-bool RBbst::insert(int k, string d, node *&n){
-  // insert the node at the appropiate location
-  // if root is null, create a new node with information and return true
-  if (n == NullNode) {
-   	n = new node;
-	n->left = NullNode;
-	n->right = NullNode;
-    n->parent = NullNode; //new NullNode;
-	n->key = k;
-	n->data = d;
-    n->colour = r;
-   	return 1;
+bool RBbst::insert(int key, string data, node *&n){
+  node *inserted_node = new_node(key, data, r, NO_NODE, NO_NODE);
+  if (n == NO_NODE){
+    n = inserted_node;
   }
-  // if key is < new key and there are nodes to the right
-  // call insert with the right node
-  else if ((n->key < k) && (n->right!= NullNode)){
-    return insert(k, d, n->right);
+  else{
+    node *r = n;
+    while (1){
+      if (n->key < k) {
+        if (r->right == NO_NODE){
+          r->right = inserted_node;
+          break;
+        }
+        else{
+          r = r->right;
+        }
+      }
+      else if (n->key > k){
+        if (r->left == NO_NODE){
+          r->left = inserted_node;
+          break;
+        }
+        else{
+          r = r->left;
+        }
+      }
+      else{
+        r->data = data;
+        return;
+      }
+    }
+    inserted_node->parent = n;
   }
-  // if key is > new key and there are nodes to the left
-  // call insert with the left node
-  else if ((n->key > k) && (n->left != NullNode)) {
-    return insert(k, d, n->left);
-  }
-  // if key is > new key and there are no nodes to the left
-  // attach the new node to the left
-  else if ((n->key > k) && (n->left == NullNode)){
-    if (Attach(k, d, n, n->left));
-    return 1;
-  }
-  // if key is < new key and there are no nodes to the right
-  // attach the new node to the right
-  else if ((n->key < k) && (n->right == NullNode)) {
-    if (Attach(k, d, n, n->right));
-    return 1;
-  }
-  // otherwise key = new key
-  // attach an equal key node
-  else {
-    if (AttachEqual(k, d, n));
-    return 1;
-  }
+  insert_case1(n, inserted_node);
+  verify_properties(n);
 }
-
+********************************************************
 // create new node with the input key and data
 // attach node c to node n, returning true
 bool RBbst::Attach(int key, string data, node *&n, node *&c){
@@ -525,8 +757,8 @@ bool RBbst::Attach(int key, string data, node *&n, node *&c){
   tmp->key = key;
   tmp->data = data;
   tmp->parent = n;
-  tmp->left = NullNode;
-  tmp->right = NullNode;
+  tmp->left = NO_NODE;
+  tmp->right = NO_NODE;
   tmp->colour = r;
   c = tmp;
   return 1;
@@ -538,10 +770,10 @@ bool RBbst::AttachEqual(int key, string data, node *&n){
   node * tmp = n->parent;
   // if there are no nodes to the left
   // attach the new node to the left
-  if (n->left == NullNode) { return Attach(key, data, n, n->left);}
+  if (n->left == NO_NODE) { return Attach(key, data, n, n->left);}
   // if there are no nodes to the right
   // attach new node to the right
-  else if (n->right == NullNode) { return Attach(key, data, n, n->right);}
+  else if (n->right == NO_NODE) { return Attach(key, data, n, n->right);}
   // if we are a left child attach the node to the left
   else if (tmp->left = n) { return leftjoin(key, data, n);}
   // if we are a right child attach the node to the right
@@ -554,7 +786,7 @@ bool RBbst::leftjoin(int key, string data, node *&n) {
   node *tmp = new node;
   tmp->key = key;
   tmp->data = data;
-  tmp->right = NullNode;
+  tmp->right = NO_NODE;
   tmp->parent = n-> parent;
   tmp->colour = r;
   tmp->left = n;
@@ -593,7 +825,7 @@ RBbst::node *RBbst::FindVictim(int key, node *&n){
 RBbst::node *RBbst::LeftSuccessor(int key, node *&victim){
   // if there are no nodes on the right child or
   // the keys match return node
-  if ((victim->right == NullNode) || (victim->key == key)) { return victim; }
+  if ((victim->right == NO_NODE) || (victim->key == key)) { return victim; }
   // otherwise look to the right for successor
   else return LeftSuccessor(key, victim->right);
 }
@@ -603,19 +835,9 @@ RBbst::node *RBbst::LeftSuccessor(int key, node *&victim){
 RBbst::node *RBbst::RightSuccessor(int key, node *&victim){
   // if there are no nodes on the left child or
   // the keys match return node
-  if ((victim->left == NullNode) || (victim->key == key)) {return victim;}
+  if ((victim->left == NO_NODE) || (victim->key == key)) {return victim;}
   // otherwise look to the left for sucessor
   else return RightSuccessor(key, victim->left);
-}
-
-// delete all nodes in the subtree rooted at n,
-// and set n to null
-void RBbst::deallocate(node* &n){
-   if (n == NO_NODE) return;
-   deallocate(n->left);
-   deallocate(n->right);
-   delete n;
-   n = NO_NODE;
 }
 
 // transfer data and key from successor to victim
@@ -638,118 +860,6 @@ void RBbst::RCR(node *&SP, node *&SC){
   SC->parent = SP;
 }
 
-// if the subtree rooted at n contains a node whose key
-// matches k then remove it from the subtree, and return true,
-// otherwise return
-bool RBbst::deleteElement(int k, node *&n){
-  // empty tree
-  if (n==NullNode) return 0;
-  node * Victim = FindVictim(k, n);
-  // if victim has left nodes
-  if (Victim->left != NullNode) {
-    // look for successor to the left
-    node * Successor = LeftSuccessor(k, Victim->left);
-    // switch data and key
-    TDK(Victim, Successor);
-    // if successor has left children rotate child left
-    if (Successor-> left != NullNode) {RCL(Successor->parent, Successor->left);}
-    // otherwise if successor has no left child point parent to null
-    else if (Successor-> left == NullNode){Successor->parent->right = NullNode;}
-    // delete the successor
-    delete Successor;
-  }
-  // if victim has right nodes
-  else if (Victim->right != NullNode) {
-    // look for successor to the right
-    node * Successor = RightSuccessor(k, Victim->right);
-    // switch data and key
-    TDK(Victim, Successor);
-    // if successor has right children rotate child right
-    if (Successor-> right != NullNode) {RCR(Successor->parent, Successor->right);}
-    // otherwise if successor has no right child point parent to null
-    else if (Successor-> right == NullNode){Successor->parent->left = NullNode;}
-    // delete the successor
-    delete Successor;
-  }
-  // victim is a leaf and left child
-  else if ((Victim->parent != NullNode) && (Victim->parent->left == Victim)){
-    Victim->parent->left = NullNode;
-    delete Victim;
-  }
-  // victim is a leaf and right child
-  else if ((Victim->parent != NullNode) && (Victim->parent->right == Victim)){
-    Victim->parent->right = NullNode;
-    delete Victim;
-  }
-  return 1;
-}
-
-// find the node with key
-// return data
-string RBbst::search(int k, node *&n){
-  // if empty tree
-  if (n == NullNode) return "nothing";
-  // otherwise if nodes key is > than k
-  else if (k < n->key){
-    return search(k, n->left);
-  }
-  // otherwise if nodes key is < k
-  else if (k > n->key){
-    return search(k, n->right);
-  }
-  // otherwise return data
-  else
-    return n->data;
-}
-
-// display the key/data contents of the subtree rooted at n,
-// sorted (ascending) by key value
-/*2:c (5 b N N)
-5:a (N b 2 7)
-7:b (5 b N N)	*/
-void RBbst::print(node *n){
-   if (n == NullNode) return;
-   print(n->left);
-   if (n->parent == NullNode){
-     cout << n->key << ":" << n->data << " (" << n->colour << ", parent = null)" << endl;
-   }
-   else {
-     cout << n->key << ":" << n->data << " (" << n->colour << ", parent = " << n->parent->key
-          << ")" << endl;
-   }
-   print(n->right);
-}
-
-// display the contents and structure of the subtree rooted at n,
-// performed via preorder traversal
-void RBbst::debugprint(node *n){
-   if (n == NO_NODE) return;
-   cout << n->key << ":" << n->data << " (";
-   if (n->left) cout << n->left->key;
-   else cout << "NULL";
-   cout << "<-left,right->";
-   if (n->right) cout << n->right->key;
-   else cout << "NULL";
-   cout << ") ";
-
-   debugprint(n->left);
-   debugprint(n->right);
-}
-
-//Change to printout as specified in Lab5 Preorder Print
-void RBbst::PreOrdprint(node *n){
-   if (n == NullNode) return;
-   cout << n->key << ":" << n->data << " (";
-   if (n->left) cout << n->left->key;
-   else cout << "NULL";
-   cout << "<-left,right->";
-   if (n->right) cout << n->right->key;
-   else cout << "NULL";
-   cout << ") ";
-
-   PreOrdprint(n->left);
-   PreOrdprint(n->right);
-}
 // swap data and key between two nodes
 void RBbst::swapElements(node* n, node* m){
    node temp;
@@ -761,3 +871,4 @@ void RBbst::swapElements(node* n, node* m){
    n->key= m->key;
    m->key= temp.key;
 }
+*/

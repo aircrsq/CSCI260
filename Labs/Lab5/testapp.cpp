@@ -31,18 +31,18 @@
  1.0          DB      Oct 06  New version some code was implemented from original
                               version provided by Professor Gara Pruesse
 *************************************************************************/
-#include "bst.h"
+#include "RBbst.h"
 #include <iostream>
 
 using namespace std;
 
 char getcommand();
 void printmenu();
-bool processcommand(char cmd, bst &tree);
+bool processcommand(char cmd, RBbst &tree);
 
 int main()
 {
-   bst B;
+   RBbst B;
 
    printmenu();
    char cmd = getcommand();
@@ -87,7 +87,7 @@ void printmenu()
    cout << "   or F to find a node." << endl;
 }
 
-bool processcommand(char cmd, bst &tree)
+bool processcommand(char cmd, RBbst &tree)
 {
    int k; string d;
    switch (cmd) {
@@ -111,14 +111,14 @@ bool processcommand(char cmd, bst &tree)
 		    cout << k << " was successfully deleted." << endl;
 		else cout << k << " was not deleted -- not in tree." << endl;
                 break;
-      case 'P': cout << "The tree contents are: ";
+/*      case 'P': cout << "The tree contents are: ";
                 tree.display();
                 break;
       case 'D': cout << "The tree debug data is:" << endl;
                 tree.debug();
                 break;
       case 'A': cout << "The tree contents in Preorder is:" << endl;
-                tree.PreOrd();
+                tree.PreOrd();  */
       default:  return false;
    }
    return true;

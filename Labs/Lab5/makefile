@@ -34,10 +34,10 @@
 testapp:	testapp.o RBbst.o
 	g++ -o testapp testapp.o RBbst.o
 
-testapp.o:	bst.h testapp.cpp
+testapp.o:	RBbst.h testapp.cpp
 	g++ -c testapp.cpp
 
-RBbst.o:	bst.h RBbst.cpp
+RBbst.o:	RBbst.h RBbst.cpp
 	g++ -c RBbst.cpp
 clean:
 	rm -rf *o
