@@ -116,8 +116,8 @@ bool processcommand(char cmd, RBbst &tree)
       case 'D': cout << "The tree debug data is:" << endl;
                 tree.debug();
                 break;
- /*     case 'A': cout << "The tree contents in Preorder is:" << endl;
-                tree.PreOrd();  */
+      case 'A': cout << "The tree contents in Preorder is:" << endl;
+                tree.PreOrd();
       default:  return false;
    }
    return true;

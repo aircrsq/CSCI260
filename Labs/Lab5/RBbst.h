@@ -86,7 +86,7 @@ class RBbst{
     int node_colour(node *&n);
     void deallocate(node* &n);
     void print(node *n);
-
+    void PreOrdprint(root);
 /*
 node* insertion( node*,int );
 void inorder(node* );
@@ -109,12 +109,12 @@ void inorder(node* );
       cout << endl;
       debugprint(root);
     }
-/*
+
     //prints node key and pointer information
     void PreOrd(){
       PreOrdprint(root);
     }
-*/
+
     //finds node k and returns the data associated with node
     void find(int k) {
       string SearchResult = search(k,root);

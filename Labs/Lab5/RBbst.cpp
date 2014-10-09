@@ -292,14 +292,18 @@ void RBbst::debugprint(node *&n){
 
 //Change to printout as specified in Lab5 Preorder Print
 void RBbst::PreOrdprint(node *&n){
+   int c = n->colour;
+   char C;
+   if (c == 1){C = 'b';
+   else C = 'r';
    if (n == NO_NODE) return;
-   cout << n->key << ":" << n->data << " (";
+   cout << n->key << ":" << n->data << C << " (";
    if (n->left) cout << n->left->key;
-   else cout << "NULL";
-   cout << "<-left,right->";
+   else cout << "N";
+   cout << "<- N ->";
    if (n->right) cout << n->right->key;
-   else cout << "NULL";
-   cout << ") ";
+   else cout << "N";
+   cout << ") " << endl;
 
    PreOrdprint(n->left);
    PreOrdprint(n->right);
