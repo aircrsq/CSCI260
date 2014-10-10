@@ -85,8 +85,13 @@ class RBbst{
     void verify_property_4_helper(node *&n, int black_count, int* path_black_count);
     int node_colour(node *&n);
     void deallocate(node* &n);
-    void print(node *&n);
-    void PreOrdprint(node *&n);
+    void print(node *n);
+    void PreOrdprint(node *n);
+/*
+node* insertion( node*,int );
+void inorder(node* );
+
+*/
 
   public:
     //Constructors
