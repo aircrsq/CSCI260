@@ -27,8 +27,8 @@
  1.0          DB      Oct 06  New version Original code provide by
                               Professor Gara Pruesse
 *************************************************************************/
-#include <stdio.h>
-#include <stdlib.h>
+#include<stdio.h>
+#include<stdlib.h>
 #include<string.h>
 #include<strings.h>
 #include<string>
@@ -50,8 +50,7 @@ class RBbst{
   // we maintain a pointer to the root of the tree
   node * root;
 
-  // private, recursive routines
-  // (used by the public methods)
+  // private, recursive routines (used by the public methods)
   // see RBbst.cpp file for explanation
     node * insert(int k, string d, node *&n);
     node * finding(node*& ,int ,int );
@@ -86,39 +85,12 @@ class RBbst{
     void verify_property_4_helper(node *&n, int black_count, int* path_black_count);
     int node_colour(node *&n);
     void deallocate(node* &n);
-
+    void print(node *n);
+    void PreOrdprint(root);
 /*
 node* insertion( node*,int );
 void inorder(node* );
 
-  bool Attach(int key, string data, node * &n, node * &c);
-  bool AttachEqual(int key, string data, node * &n);
-  bool leftjoin(int key, string data, node *&n);
-  bool rightjoin(int key, string data, node *&n);
-  node * FindVictim(int key, node *&n);
-  node * LeftSuccessor(int key, node *&victim);
-  node * RightSuccessor(int key, node *&victim);
-  void TDK(node *&Vic, node *&Suc);
-  void RCL(node *&SP, node *&SC);
-  void RCR(node *&SP, node *&SC);
-  void print(node *n);
-  void swapElements(node* n, node* m);
-  node* grandparent(node *&n);
-  node* uncle(node *&n);
-//  rbtree rbtree_create();
-  node* new_node(int key, string data, colour n_colour, node *&left, node *&right);
-  node* lookup_node(node* t, int key);
-  void rotate_left(node *&root, node *&n);
-  void rotate_right(node *&root, node *&n);
-//  void rbtree_insert(rbtree t, int key, string data, compare_func compare);
-  void insert_case1(node *&root, node *&n);
-  void insert_case2(node *&root, node *&n);
-  void insert_case3(node *&root, node *&n);
-  void insert_case4(node *&root, node *&n);
-  void insert_case5(node *&root, node *&n);
-//  void rbtree_delete(rbtree t, void* key, compare_func compare);
-
-//  int compare_int(void* leftp, void* rightp);
 */
 
   public:
@@ -131,9 +103,10 @@ void inorder(node* );
       cout << endl;
       print(root);
     }
-
+*/
     //prints node key and pointer information
     void debug(){
+      cout << endl;
       debugprint(root);
     }
 
@@ -141,7 +114,7 @@ void inorder(node* );
     void PreOrd(){
       PreOrdprint(root);
     }
-*/
+
     //finds node k and returns the data associated with node
     void find(int k) {
       string SearchResult = search(k,root);
