@@ -92,7 +92,8 @@ class RBbst{
       Sentinel->right = Sentinel;
       Sentinel->key = -99999999;
       Sentinel->data = "Sentinel";
-      Sentinel->colour = BLACK;		*/
+      Sentinel->colour = BLACK;
+      root = Sentinel;		*/
    root = NO_NODE; }
     ~RBbst() { deallocate(root); }
 

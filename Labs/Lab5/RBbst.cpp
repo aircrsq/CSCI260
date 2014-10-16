@@ -42,11 +42,11 @@ RBbst::node * RBbst::insertNode(int key, string data, node *&n){
   node* current= new node;
   current->key = key;
   current->data=data;
-  current->left=NO_NODE;
-  current->right=NO_NODE;
+  current->left=Sentinel;
+  current->right=Sentinel;
   current->colour=RED;
-  current->parent=NO_NODE;
-  if(n==NO_NODE){
+  current->parent=Sentinel;
+  if(n==Sentinel){
     current->colour=BLACK;
     n=current;
     return n;
@@ -65,11 +65,11 @@ RBbst::node * RBbst::insertNode(int key, string data, node *&n){
 
 RBbst::node * RBbst::finding(node *&n,int key,int i){
   //static int i;
-  node * temp = NO_NODE;
-  if(n == NO_NODE)return NO_NODE;
+  node * temp = Sentinel;
+  if(n == Sentinel)return Sentinel;
   if(i == 1)return temp;
   if(n->key > key){
-    if(n->left==NO_NODE){
+    if(n->left==Sentinel){
       temp=n;
       i=1;
       return temp;
@@ -77,7 +77,7 @@ RBbst::node * RBbst::finding(node *&n,int key,int i){
     finding(n->left,key,i);
   }
   else{
-    if(n->right==NO_NODE){
+    if(n->right==Sentinel){
       temp=n;
       i=1;
       return temp;
@@ -88,7 +88,7 @@ RBbst::node * RBbst::finding(node *&n,int key,int i){
 }
 
 RBbst::node * RBbst::insert_case1(node *&n, node *&head){
-  if (n->parent == NO_NODE)
+  if (n->parent == Sentinel)
     n->colour = BLACK;
   else
     head=insert_case2(n,head);
@@ -105,7 +105,7 @@ RBbst::node * RBbst::insert_case2(node *&n, node *&head){
 
 RBbst::node * RBbst::insert_case3(node *&n, node *&head){
   node *u = uncle(n), *g;
-  if ((u != NO_NODE) && (u->colour == RED)) {
+  if ((u != Sentinel) && (u->colour == RED)) {
     n->parent->colour = BLACK;
     u->colour = BLACK;
     g = grandparent(n);
@@ -147,8 +147,8 @@ RBbst::node * RBbst::insert_case5(node *&n, node *&head){
 
 RBbst::node * RBbst::uncle(node *&n){
   node *g = grandparent(n);
-  if (g == NO_NODE)
-    return NO_NODE;
+  if (g == Sentinel)
+    return Sentinel;
   if (n->parent == g->left)
     return g->right;
   else
@@ -156,10 +156,10 @@ RBbst::node * RBbst::uncle(node *&n){
 }
 
 RBbst::node * RBbst::grandparent(node *&n){
-  if ((n != NO_NODE) && (n->parent != NO_NODE))
+  if ((n != Sentinel) && (n->parent != Sentinel))
     return n->parent->parent;
   else
-    return NO_NODE;
+    return Sentinel;
 }
 
 RBbst::node * RBbst::rotate_left(node *n, node *head){
@@ -170,7 +170,7 @@ RBbst::node * RBbst::rotate_left(node *n, node *head){
   g->right=saved_left_n;
   n->parent->parent=saved_p;
   g->parent=n->parent;
-  if(saved_p!=NO_NODE){
+  if(saved_p!=Sentinel){
     if(saved_p->left==g){
       saved_p->left=n->parent->parent;
     }
@@ -190,7 +190,7 @@ RBbst::node * RBbst::rotate_right(node *n, node *head){
   g->left=saved_right_p;
   n->parent->parent=saved_p;
   g->parent=n->parent;
-  if(saved_p!=NO_NODE){
+  if(saved_p!=Sentinel){
     if(saved_p->left==g){
       saved_p->left=n->parent->parent;
     }
@@ -206,7 +206,7 @@ RBbst::node * RBbst::rotate_right(node *n, node *head){
 // return data
 string RBbst::search(int key, node *&n){
   // if empty tree
-  if (n == NO_NODE) return "nothing";
+  if (n == Sentinel) return "nothing";
   // otherwise if nodes key is > than k
   else if (key < n->key){
     return search(key, n->left);
@@ -230,17 +230,17 @@ void RBbst::print(node *&n){
    char C;
    if (c == 1){C = 'b';}
    else C = 'r';
-   if (n == NO_NODE) return;
-   if (n->left != NO_NODE) print(n->left);
-   if (n->parent == NO_NODE){
+   if (n == Sentinel) return;
+   if (n->left != Sentinel) print(n->left);
+   if (n->parent == Sentinel){
      cout << n->key << ":" << n->data << " (" << "N " << C << " "
           << n->left->key << " " << n->right->key << ")" << endl;
    }
-/*   else if (n->parent != NO_NODE){
+/*   else if (n->parent != Sentinel){
      cout << n->key << ":" << n->data << " (" << n->key << " " << C
           << " " << n->left->key << " " << n->right->key << ")" << endl;
    }
-*/   if (n->right != NO_NODE) print(n->right);
+*/   if (n->right != Sentinel) print(n->right);
 }
 
 //Change to printout as specified in Lab5 Preorder Print
@@ -249,34 +249,34 @@ void RBbst::PreOrdprint(node *&n){
    char C;
    if (c == 1){C = 'b';}
    else C = 'r';
-   if (n == NO_NODE) return;
+   if (n == Sentinel) return;
    cout << n->key << ":" << n->data << " " << C << " (";
-   if (n->left != NO_NODE) cout << n->left->key;
+   if (n->left != Sentinel) cout << n->left->key;
    else cout << "N";
    cout << "<- " << n->key << " ->";
-   if (n->right != NO_NODE) cout << n->right->key;
+   if (n->right != Sentinel) cout << n->right->key;
    else cout << "N";
    cout << ") " << endl;
 
-   if (n->left != NO_NODE) PreOrdprint(n->left);
-   if (n->right != NO_NODE) PreOrdprint(n->right);
+   if (n->left != Sentinel) PreOrdprint(n->left);
+   if (n->right != Sentinel) PreOrdprint(n->right);
    return;
 }
 
 // display the contents and structure of the subtree rooted at n,
 // performed via preorder traversal
 void RBbst::debugprint(node *&n){
-   if (n == NO_NODE) return;
+   if (n == Sentinel) return;
    cout << n->key << ":" << n->data << " (";
    if (n->left) cout << n->left->key;
-   else cout << "NO_NODE";
+   else cout << "Sentinel";
    cout << "<-left,right->";
    if (n->right) cout << n->right->key;
-   else cout << "NO_NODE";
+   else cout << "Sentinel";
    cout << ") ";
 
-   if (n->left != NO_NODE) debugprint(n->left);
-   if (n->right != NO_NODE) debugprint(n->right);
+   if (n->left != Sentinel) debugprint(n->left);
+   if (n->right != Sentinel) debugprint(n->right);
 }
 
 // if the subtree rooted at n contains a node whose key
@@ -285,16 +285,16 @@ void RBbst::debugprint(node *&n){
 bool RBbst::deleteElement(int key, node *&root){
   node* child;
   node* n = finding(root,key,0);
-  if (n == NO_NODE)
+  if (n == Sentinel)
     return 0;
-  if (n->left != NO_NODE && n->right != NO_NODE){
+  if (n->left != Sentinel && n->right != Sentinel){
     node* pred = maximum_node(n->left);
     n->key = pred->key;
     n->data = pred->data;
     n = pred;
   }
-  assert(n->left == NO_NODE || n->right == NO_NODE);
-  child = n->right == NO_NODE ? n->left  : n->right;
+  assert(n->left == Sentinel || n->right == Sentinel);
+  child = n->right == Sentinel ? n->left  : n->right;
   if (node_colour(n) == BLACK){
     n->colour = node_colour(child);
     delete_case1(root, n);
@@ -307,7 +307,7 @@ bool RBbst::deleteElement(int key, node *&root){
 
 // Replace a node
 void RBbst::replace_node(node *&root, node *&n, node *&child){
-    if (n->parent == NO_NODE){
+    if (n->parent == Sentinel){
         root = child;
     }
     else{
@@ -316,15 +316,15 @@ void RBbst::replace_node(node *&root, node *&n, node *&child){
         else
             n->parent->right = child;
     }
-    if (child != NO_NODE){
+    if (child != Sentinel){
         child->parent = n->parent;
     }
 }
 
 // Returns Maximum node
 RBbst::node * RBbst::maximum_node(node *&n){
-    assert (n != NO_NODE);
-    while (n->right != NO_NODE){
+    assert (n != Sentinel);
+    while (n->right != Sentinel){
         n = n->right;
     }
     return n;
@@ -332,7 +332,7 @@ RBbst::node * RBbst::maximum_node(node *&n){
 
 // Deleting Case 1
 void RBbst::delete_case1(node *& root, node *&n){
-  if (n->parent == NO_NODE)
+  if (n->parent == Sentinel)
     return;
   else
     delete_case2(root, n);
@@ -408,8 +408,8 @@ void RBbst::delete_case6(node *& root, node *&n){
 
 // Return Sibling of Node
 RBbst::node * RBbst::sibling(node *&n){
-    assert (n != NO_NODE);
-    assert (n->parent != NO_NODE);
+    assert (n != Sentinel);
+    assert (n->parent != Sentinel);
     if (n == n->parent->left)
         return n->parent->right;
     else
@@ -427,7 +427,7 @@ void RBbst::verify_properties(node *&n){
 // Verifying Property 1 Each node must be red or black
 void RBbst::verify_property_1(node *&n){
     assert (node_colour(n) == RED || node_colour(n) == BLACK);
-    if (n == NO_NODE)
+    if (n == Sentinel)
         return;
     verify_property_1(n->left);
     verify_property_1(n->right);
@@ -445,7 +445,7 @@ void RBbst::verify_property_3(node *&n){
         assert (node_colour(n->right) == BLACK);
         assert (node_colour(n->parent) == BLACK);
     }
-    if (n == NO_NODE)
+    if (n == Sentinel)
         return;
     verify_property_4(n->left);
     verify_property_4(n->right);
@@ -461,7 +461,7 @@ void RBbst::verify_property_4_helper(node *&n, int black_count, int* path_black_
     if (node_colour(n) == BLACK){
         black_count++;
     }
-    if (n == NO_NODE){
+    if (n == Sentinel){
         if (*path_black_count == -1){
             *path_black_count = black_count;
         }
@@ -477,17 +477,17 @@ void RBbst::verify_property_4_helper(node *&n, int black_count, int* path_black_
  //Returns colour of a node
 int RBbst::node_colour(node *n){
   return n->colour;
-    //return n->colour == NO_NODE ? BLACK : n->colour;
+    //return n->colour == Sentinel ? BLACK : n->colour;
 }
 
 // delete all nodes in the subtree rooted at n,
 // and set n to null
 void RBbst::deallocate(node* &n){
-   if (n == NO_NODE) return;
+   if (n == Sentinel) return;
    deallocate(n->left);
    deallocate(n->right);
    delete n;
-   n = NO_NODE;
+   n = Sentinel;
 }
 /*
 // swap data and key between two nodes

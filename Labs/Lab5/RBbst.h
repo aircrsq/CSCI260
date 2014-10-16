@@ -45,7 +45,7 @@ class RBbst{
   };
     // we maintain a pointer to the root of the tree
     node * root;
-//    node * Sentinel;
+    node * Sentinel;
 
   // private, recursive routines (used by the public methods)
   // see RBbst.cpp file for explanation
@@ -86,15 +86,15 @@ class RBbst{
   public:
     //Constructors
     RBbst() { 
-/*      Sentinel = new node;
+      Sentinel = new node;
       Sentinel->parent = Sentinel;
       Sentinel->left = Sentinel;
       Sentinel->right = Sentinel;
       Sentinel->key = -99999999;
       Sentinel->data = "Sentinel";
       Sentinel->colour = BLACK;
-      root = Sentinel;		*/
-   root = NO_NODE; }
+      root = Sentinel;
+/*   root = NO_NODE;	*/ }
     ~RBbst() { deallocate(root); }
 
     //prints tree in Inorder
