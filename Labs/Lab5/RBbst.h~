@@ -88,7 +88,15 @@ class RBbst{
 
   public:
     //Constructors
-    RBbst() { root = NO_NODE;
+    RBbst() { //root = NO_NODE;
+      node * Sentinel = new node;
+      Sentinel->parent = NO_NODE;
+      Sentinel->left = NO_NODE;
+      Sentinel->right = NO_NODE;
+      Sentinel->key = -99999999;
+      Sentinel->colour = 1;
+      Sentinel->data = Sentinel;
+      root = Sentinel;
  }
     ~RBbst() { deallocate(root); }
 
