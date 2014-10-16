@@ -39,49 +39,78 @@ using namespace std;
 // insert a new node in the bst rooted at n,
 // returning true if successful, false otherwise
 RBbst::node * RBbst::insertNode(int key, string data, node *&n){
+  //make new node with key and data
+  node * current = new node;
+  current->left = Sentinel;
+  current->right = Sentinel;
+  current->parent = Sentinel;
+  current->key = key;
+  current->data = data;
+  current->colour = RED;
+  //Empty tree
   if(n==Sentinel){
     current->colour=BLACK;
     n=current;
     return n;
   }
+  //otherwise
   else{
     node * temp = new node;
+    //find the spot to attach the new node
     temp=finding(n,key,0);
+    //assign the new node to the find
     current->parent=temp;
+    //if new node is greater than parent make right child
     if(key>=temp->key)
       temp->right=current;
+    //otherwise new node is left child
     else temp->left=current;
   }
+  //check the insert for case 1
   n=insert_case1(current,n);
   return n;
 }
 
 RBbst::node * RBbst::finding(node *&n,int key,int i){
   node * temp = Sentinel;
-  if(n == Sentinel)return Sentinel;
+  //if empty node, return node
+  if(n == Sentinel)return n;
   if(i == 1)return temp;
+  //if nodes key is greater than key
   if(n->key > key){
+    //if left child is Sentinel
     if(n->left==Sentinel){
+      //assign n to temp
       temp=n;
+      //set i to 1 and return temp
       i=1;
       return temp;
     }
-    finding(n->left,key,i);
+    //otherwise continue to look to the left
+    else
+      return finding(n->left,key,i);
   }
+  //if nodes key is less than key
   else{
+    //if right child is Sentinel
     if(n->right==Sentinel){
+      //assign n to temp
       temp=n;
+      //set i to 1 and return temp
       i=1;
       return temp;
     }
-    finding(n->right,key,i);
+    //otherwise continue to look to the right
+    else
+      return finding(n->right,key,i);
   }
-  return temp;
 }
 
 RBbst::node * RBbst::insert_case1(node *&n, node *&head){
+  //if parent is a Sentinel, than node is root and must be black
   if (n->parent == Sentinel)
     n->colour = BLACK;
+  //otherwise check case 2
   else
     head=insert_case2(n,head);
   return head;
