@@ -27,10 +27,6 @@
  1.0          DB      Oct 06  New version Original code provide by
                               Professor Gara Pruesse
 *************************************************************************/
-//#include<stdio.h>
-//#include<stdlib.h>
-//#include<string.h>
-//#include<strings.h>
 #include<string>
 #include<iostream>
 
@@ -49,6 +45,7 @@ class RBbst{
   };
     // we maintain a pointer to the root of the tree
     node * root;
+//    node * Sentinel;
 
   // private, recursive routines (used by the public methods)
   // see RBbst.cpp file for explanation
@@ -88,8 +85,16 @@ class RBbst{
 
   public:
     //Constructors
-    RBbst() { root = NO_NODE;
- }
+    RBbst() { 
+/*      Sentinel = new node;
+      Sentinel->parent = Sentinel;
+      Sentinel->left = Sentinel;
+      Sentinel->right = Sentinel;
+      Sentinel->key = -99999999;
+      Sentinel->data = "Sentinel";
+      Sentinel->colour = BLACK;
+      root = Sentinel;		*/
+   root = NO_NODE; }
     ~RBbst() { deallocate(root); }
 
     //prints tree in Inorder
