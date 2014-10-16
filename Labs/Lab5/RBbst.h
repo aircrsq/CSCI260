@@ -79,16 +79,25 @@ class RBbst{
     void replace_node(node *&root, node *&n, node *&child);
     void verify_properties(node *&n);
     void verify_property_1(node *&n);
-    void verify_property_2(node *&root);
+    void verify_property_2(node *&n);
     void verify_property_3(node *&n);
-    void verify_property_4(node *&root);
+    void verify_property_4(node *&n);
     void verify_property_4_helper(node *&n, int black_count, int* path_black_count);
     int node_colour(node *n);
     void deallocate(node* &n);
 
   public:
     //Constructors
-    RBbst() { root = NO_NODE; }
+    RBbst() { //root = NO_NODE;
+      node * Sentinel = new node;
+      Sentinel->parent = NO_NODE;
+      Sentinel->left = NO_NODE;
+      Sentinel->right = NO_NODE;
+      Sentinel->key = -99999999;
+      Sentinel->colour = 1;
+      Sentinel->data = Sentinel;
+      root = Sentinel;
+ }
     ~RBbst() { deallocate(root); }
 
     //prints tree in Inorder
