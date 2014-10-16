@@ -39,13 +39,6 @@ using namespace std;
 // insert a new node in the bst rooted at n,
 // returning true if successful, false otherwise
 RBbst::node * RBbst::insertNode(int key, string data, node *&n){
-  node* current= new node;
-  current->key = key;
-  current->data=data;
-  current->left=Sentinel;
-  current->right=Sentinel;
-  current->colour=RED;
-  current->parent=Sentinel;
   if(n==Sentinel){
     current->colour=BLACK;
     n=current;
@@ -64,7 +57,6 @@ RBbst::node * RBbst::insertNode(int key, string data, node *&n){
 }
 
 RBbst::node * RBbst::finding(node *&n,int key,int i){
-  //static int i;
   node * temp = Sentinel;
   if(n == Sentinel)return Sentinel;
   if(i == 1)return temp;
@@ -122,12 +114,10 @@ RBbst::node * RBbst::insert_case4(node *&n, node *&head){
   node *g = grandparent(n);
   if ((n == n->parent->right) && (n->parent == g->left)) {
     head=rotate_left(n->parent,head);
-
     n = n->left;
   }
   else if ((n == n->parent->left) && (n->parent == g->right)) {
     head=rotate_right(n->parent,head);
-
     n = n->right;
   }
   head=insert_case5(n,head);
@@ -236,11 +226,11 @@ void RBbst::print(node *&n){
      cout << n->key << ":" << n->data << " (" << "N " << C << " "
           << n->left->key << " " << n->right->key << ")" << endl;
    }
-/*   else if (n->parent != Sentinel){
+   else if (n->parent != Sentinel){
      cout << n->key << ":" << n->data << " (" << n->key << " " << C
           << " " << n->left->key << " " << n->right->key << ")" << endl;
    }
-*/   if (n->right != Sentinel) print(n->right);
+   if (n->right != Sentinel) print(n->right);
 }
 
 //Change to printout as specified in Lab5 Preorder Print
