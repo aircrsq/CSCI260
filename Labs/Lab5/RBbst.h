@@ -1,9 +1,9 @@
-#ifndef BST
-#define BST
+#ifndef RBBST
+#define RBBST
 /************************************************************************
  Design Unit  : Lab5
 
- File Name    : bst.h
+ File Name    : RBbst.h
 
  Purpose      : Header file for bst
 
@@ -27,10 +27,10 @@
  1.0          DB      Oct 06  New version Original code provide by
                               Professor Gara Pruesse
 *************************************************************************/
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<strings.h>
+//#include<stdio.h>
+//#include<stdlib.h>
+//#include<string.h>
+//#include<strings.h>
 #include<string>
 #include<iostream>
 
@@ -47,13 +47,13 @@ class RBbst{
          int key;
          int colour;
   };
-  // we maintain a pointer to the root of the tree
-  node * root;
+    // we maintain a pointer to the root of the tree
+    node * root;
 
   // private, recursive routines (used by the public methods)
   // see RBbst.cpp file for explanation
-    node * insert(int k, string d, node *&n);
-    node * finding(node*& ,int ,int );
+    node * insertNode(int k, string d, node *&n);
+    node * finding(node *&n,int ,int );
     node * insert_case1(node *&n, node *&head);
     node * insert_case2(node *&, node *&);
     node * insert_case3(node *&, node *&);
@@ -61,10 +61,10 @@ class RBbst{
     node * insert_case5(node *&, node *&);
     node * uncle(node *&);
     node * grandparent(node *&);
-    node * rotate_left(node *&, node *&);
-    node * rotate_right(node *&, node *&);
-    string search(int, node *&);
-    void print(node *&);
+    node * rotate_left(node *, node *);
+    node * rotate_right(node *, node *);
+    string search(int, node *&n);
+    void print(node *&n);
     void debugprint(node *&n);
     void PreOrdprint(node *&n);
     bool deleteElement(int, node* &);
@@ -83,22 +83,20 @@ class RBbst{
     void verify_property_3(node *&n);
     void verify_property_4(node *&root);
     void verify_property_4_helper(node *&n, int black_count, int* path_black_count);
-    int node_colour(node *&n);
+    int node_colour(node *n);
     void deallocate(node* &n);
-    void print(node *&n);
-    void PreOrdprint(node *&n);
 
   public:
     //Constructors
     RBbst() { root = NO_NODE; }
     ~RBbst() { deallocate(root); }
-/*
+
     //prints tree in Inorder
     void display() {
       cout << endl;
       print(root);
     }
-*/
+
     //prints node key and pointer information
     void debug(){
       cout << endl;
@@ -118,7 +116,7 @@ class RBbst{
 
     //Inserts a node with key k and data d into the tree
     bool insert(int key, string data) {
-      root = insert(key, data, root);
+      root = insertNode(key, data, root);
       return true;
     }
 

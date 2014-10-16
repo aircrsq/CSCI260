@@ -86,13 +86,13 @@ void printmenu()
    cout << "   or F to find a node." << endl;
 }
 
-bool processcommand(char cmd, RBbst &tree)
-{
+bool processcommand(char cmd, RBbst &tree){
    int k; string d;
    switch (cmd) {
       case 'F': cout << "Enter the key integer you wish to find." << endl;
                 cin >> k;
                 tree.find(k);
+                break;
       case 'H': printmenu();
                 break;
       case 'I': cout << "Enter the key integer" << endl;
@@ -110,16 +110,17 @@ bool processcommand(char cmd, RBbst &tree)
 		    cout << k << " was successfully deleted." << endl;
 		else cout << k << " was not deleted -- not in tree." << endl;
                 break;
-/*      case 'P': cout << "The tree contents are: ";
+      case 'P': cout << "The tree contents are: ";
                 tree.display();
-                break;  */
+                break; 
       case 'D': cout << "The tree debug data is:" << endl;
                 tree.debug();
                 break;
       case 'A': cout << "The tree contents in Preorder is:" << endl;
                 tree.PreOrd();
+                break;
       default:  return false;
    }
    return true;
-}
+}	
 

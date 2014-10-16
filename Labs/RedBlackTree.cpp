@@ -9,6 +9,18 @@
 using namespace std;
  
 const int MinValue = -999999;
+
+template <class Comparable>
+RBTreeNode<Comparable> *
+RedBlackTree<Comparable>::clone( RBTreeNode<Comparable> * nodePtr ) const
+{
+ 
+ if( nodePtr == nodePtr->lChildPtr )  // if points to special leaf node
+ return theLeaf;
+ else
+ return new RedBlackNode<Comparable>( nodePtr->value, clone( nodePtr->lChildPtr ), clone( nodePtr->rChildPtr ), nodePtr->color); // recursive function calls
+ 
+}
  
 // method to swap the colors of nodeptr, parentptr, and grandptr. Reduces redundant code within split()
 template <class Comparable>
@@ -47,7 +59,7 @@ template <class Comparable>
 RedBlackTree<Comparable>::RedBlackTree( const RedBlackTree<Comparable>& old )
 {
  
- nullNode = new RBTreeNode<Comparable>; // new node for the leaf
+ RBTreeNode * nullNode = new RBTreeNode<Comparable>; // new node for the leaf
  nullNode->lChildPtr = nullNode->rChildPtr = nullNode;
  m_root = new RedBlackNode<Comparable>; // create the new node
  m_root->lChildPtr = m_root->rChildPtr = nullNode;
@@ -237,17 +249,7 @@ void RedBlackTree<Comparable>::split (  RBTreeNode<Comparable>* nodePtr,
  
 }
  
-template <class Comparable>
-RBTreeNode<Comparable> *
-RedBlackTree<Comparable>::clone( RBTreeNode<Comparable> * nodePtr ) const
-{
- 
- if( nodePtr == nodePtr->lChildPtr )  // if points to special leaf node
- return theLeaf;
- else
- return new RedBlackNode<Comparable>( nodePtr->value, clone( nodePtr->lChildPtr ), clone( nodePtr->rChildPtr ), nodePtr->color); // recursive function calls
- 
-}
+
  
 template <class Comparable>
 void RedBlackTree<Comparable>::reclaimMemory( RBTreeNode<Comparable> *nodePtr ) const
