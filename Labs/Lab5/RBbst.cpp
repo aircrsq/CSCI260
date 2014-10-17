@@ -256,8 +256,22 @@ void RBbst::print(node *&n){
           << n->left->key << " " << n->right->key << ")" << endl;
    }
    else if (n->parent != Sentinel){
+     if ((n->left == Sentinel) && (n->right == Sentinel)){
+       cout << n->key << ":" << n->data << " (" << n->key << " " << C
+          << " " << "N " << "N" << ")" << endl;
+     }
+     else if ((n->left == Sentinel) && (n->right != Sentinel)){
+       cout << n->key << ":" << n->data << " (" << n->key << " " << C
+          << " " << "N " << n->right->key << ")" << endl;
+     }
+     else if ((n->left != Sentinel) && (n->right == Sentinel)){
+       cout << n->key << ":" << n->data << " (" << n->key << " " << C
+          << " " << n->left->key << " N" << ")" << endl;
+     }
+     else {
      cout << n->key << ":" << n->data << " (" << n->key << " " << C
           << " " << n->left->key << " " << n->right->key << ")" << endl;
+     }
    }
    if (n->right != Sentinel) print(n->right);
 }
@@ -287,10 +301,10 @@ void RBbst::PreOrdprint(node *&n){
 void RBbst::debugprint(node *&n){
    if (n == Sentinel) return;
    cout << n->key << ":" << n->data << " (";
-   if (n->left) cout << n->left->key;
+   if (n->left->key != -99999999) cout << n->left->key;
    else cout << "Sentinel";
    cout << "<-left,right->";
-   if (n->right) cout << n->right->key;
+   if (n->right->key != -99999999) cout << n->right->key;
    else cout << "Sentinel";
    cout << ") ";
 
