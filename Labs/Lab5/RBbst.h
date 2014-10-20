@@ -81,6 +81,7 @@ class RBbst{
   void verify_property_4_helper(node *&n, int black_count, int* path_black_count);
   int node_colour(node *n);
   void deallocate(node* &n);
+  void swapElements(node* n, node* m);
 
   public:
   //Constructors
