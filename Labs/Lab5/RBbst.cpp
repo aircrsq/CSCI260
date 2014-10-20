@@ -78,14 +78,14 @@ RBbst::node * RBbst::insertNode(int key, string data, node *&n){
   n=insert_case1(current,n);
   return n;
 }
-
+//return a pointer to the node to which new node can be attached
 RBbst::node * RBbst::finding(node *&n,int key,int i){
   node * temp = Sentinel;
   //if empty node, return node
   if(n == Sentinel){
     return n;
   }
-  //if the node has been insterted return node
+  //if the node has been inserted return node
   if(i == 1){
     return temp;
   }
@@ -189,10 +189,10 @@ RBbst::node * RBbst::insert_case5(node *&current, node *&n){
   //if child is left of left
   if (current == current->parent->left)
     //rotate right
-    n=rotate_right(current,n);
+    n=rotate_right(current->parent,n);
   //otherwise rotate left
   else
-    n=rotate_left(current,n);
+    n=rotate_left(current->parent,n);
   return n;
 }
 //return a pointer to uncle

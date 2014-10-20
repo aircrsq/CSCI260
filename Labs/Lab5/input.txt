@@ -1,16 +1,19 @@
 i 50 fifty
-i 25 twentyfive
-i 75 seventyfive
-i 13 thirteen
-i 35 thirtyfive
-i 30 thirty
-i 33 thirtythree
-i 60 sixty
-i 80 eighty
-i 79 seventynine
 a
-d
-p
-r 25
-p
-
+i 25 twentyfive
+a
+i 75 seventyfive
+a
+i 35 thirtyfive
+a
+i 33 thirtythree
+a
+i 60 sixty
+a
+i 65 sixtyfive
+a
+i 80 eighty
+a
+i 85 eightyfive
+a
+q
