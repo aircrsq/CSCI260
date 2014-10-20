@@ -123,7 +123,6 @@ RBbst::node * RBbst::insert_case1(node *&current, node *&n){
   //if parent is a Sentinel, than node is root and must be black
   if (current->parent == Sentinel){
     current->colour = BLACK;
-    cout << "insert case 1 \n";
   }
   //otherwise check case 2
   else
@@ -134,7 +133,6 @@ RBbst::node * RBbst::insert_case1(node *&current, node *&n){
 RBbst::node * RBbst::insert_case2(node *&current, node *&n){
   //if the parents colour is black
   if (current->parent->colour == BLACK){
-    cout << "insert case 2 \n";
     return n;
   }
   //otherwise check case 3
@@ -152,7 +150,6 @@ RBbst::node * RBbst::insert_case3(node *&current, node *&n){
     current->parent->colour = BLACK;
     u->colour = BLACK;
     g->colour = RED;
-    cout << "insert case 3 \n";
     //then insert case 1
     n=insert_case1(g,n);
   }
@@ -169,15 +166,13 @@ RBbst::node * RBbst::insert_case4(node *&current, node *&n){
   if ((current == current->parent->right) && (current->parent == g->left)) {
     //rotate left
     n=rotate_left(current,n);
-//    current = current->left;
-    cout << "insert case 4 \n";
+    current = current->left;
   }
   //otherwise if current is left child and parent is right
   else if ((current == current->parent->left) && (current->parent == g->right)) {
     //rotate right
     n=rotate_right(current,n);
     current = current->right;
-    cout << "insert case 4 \n";
   }
   //otherwise check case 5
   else{
@@ -198,7 +193,6 @@ RBbst::node * RBbst::insert_case5(node *&current, node *&n){
   //otherwise rotate left
   else
     n=rotate_left(current,n);
-  cout << "insert case 5 \n";
   return n;
 }
 //return a pointer to uncle
@@ -237,34 +231,35 @@ RBbst::node * RBbst::rotate_left(node *current, node *n){
   current->right = currentgrand;
   currentgrand->parent = current;
   currentgrand->left = currentparent->left;
-//  node *currentparentleft=current->parent->left;
-//  current->parent->left=currentgrand;
-//  currentgrand->right=currentparentleft;
-//  currentgrand->parent=current->parent;
   //if currents great grandparent is not a sentinel
-//  if(currentgg!=Sentinel){
+  if(currentgg!=Sentinel){
     //if current grand is a left child
-//    if(currentgg->left==currentgrand){
-//      currentgg->left=current->parent->parent;
-//    }
+    if(currentgg->left==currentgrand){
+      currentgg->left=current->parent->parent;
+    }
     //otherwise current grand is a right child
-//    else if(currentgg->right==currentgrand){
-//      currentgg->right=current->parent->parent;
-//   }
-//  }
-//  else n=current->parent;
-    n=current->parent;
+    else if(currentgg->right==currentgrand){
+      currentgg->right=current->parent->parent;
+    }
+  }
+  else n=current->parent;
   return n;
 }
 //rotate node to right
 RBbst::node * RBbst::rotate_right(node *current, node *n){
   node *currentgrand = grandparent(current);
+  node *currentparent = current->parent;
   node *currentgg=currentgrand->parent;
-  node *currentparentright=current->parent->right;
-  current->parent->right=currentgrand;
-  currentgrand->left=currentparentright;
-  current->parent->parent=currentgg;
-  currentgrand->parent=current->parent;
+  currentgrand->right = current;
+  current->parent = currentgrand;
+  current->right = currentparent;
+  currentparent->parent = current;
+  currentparent->left = current->left;
+  currentgg->left = current;
+  current->parent = currentgg;
+  current->left = currentgrand;
+  currentgrand->parent = current;
+  currentgrand->right = currentparent->right;
   //if currents great grandparent is not a sentinel
   if(currentgg!=Sentinel){
     //if current grand is a left child
@@ -631,7 +626,7 @@ void RBbst::verify_property_4(node *&n){
   verify_property_4_helper(n, 0, &black_count_path);
 }
 
-void RBbst::verify_property_4_helper(node *&n, int black_count, int* path_black_count){
+void RBbst::verify_property_4_helper(node *&n, int black_count, int* black_count_path){
   //if node colour is black, increment black count
   if (node_colour(n) == BLACK){
     black_count++;
@@ -639,20 +634,20 @@ void RBbst::verify_property_4_helper(node *&n, int black_count, int* path_black_
   //if node is a sentinel
   if (n == Sentinel){
     //if count is -1, set path black count to black count
-    if (*path_black_count == -1){
-      *path_black_count = black_count;
+    if (*black_count_path == -1){
+      *black_count_path = black_count;
     }
     //otherwise
     else {
       //check if black count is path black count
-      assert (black_count == *path_black_count);
+      assert (black_count == *black_count_path);
     }
     return;
   }
   //verify property 4 help on left child
-  verify_property_4_helper(n->left,  black_count, path_black_count);
+  verify_property_4_helper(n->left,  black_count, black_count_path);
   //verify property 4 help on right child
-  verify_property_4_helper(n->right, black_count, path_black_count);
+  verify_property_4_helper(n->right, black_count, black_count_path);
 }
  //Returns colour of a node
 int RBbst::node_colour(node *n){
