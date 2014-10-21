@@ -59,6 +59,8 @@ class RBbst{
   node * grandparent(node *&);
   node * rotate_left(node *, node *);
   node * rotate_right(node *, node *);
+  node * Double_rotate_left(node *, node *);
+  node * Double_rotate_right(node *, node *);
   string search(int, node *&n);
   void print(node *&n);
   void debugprint(node *&n);
