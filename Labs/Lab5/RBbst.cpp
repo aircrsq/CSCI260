@@ -100,8 +100,9 @@ RBbst::node * RBbst::finding(node *&n,int key,int i){
       return temp;
     }
     //otherwise continue to look to the left
-    else
+    else{
       return finding(n->left,key,i);
+    }
   }
   //if nodes key is less than key
   else{
@@ -125,8 +126,9 @@ RBbst::node * RBbst::insert_case1(node *&current, node *&n){
     current->colour = BLACK;
   }
   //otherwise check case 2
-  else
+  else{
     n=insert_case2(current,n);
+  }
   return n;
 }
 //if parent is black then no change in colour required
@@ -136,8 +138,9 @@ RBbst::node * RBbst::insert_case2(node *&current, node *&n){
     return n;
   }
   //otherwise check case 3
-  else
+  else{
     n=insert_case3(current,n);
+  }
   return n;
 }
 //if uncle is red, colour swap with parent, uncle and grandparent
@@ -165,13 +168,13 @@ RBbst::node * RBbst::insert_case4(node *&current, node *&n){
   node *g = grandparent(current);
   if ((current == current->parent->right) && (current->parent == g->left)) {
     //rotate left
-    n=rotate_left(current,n);
+    n=Double_rotate_left(current,n);
     current = current->left;
   }
   //otherwise if current is left child and parent is right
   else if ((current == current->parent->left) && (current->parent == g->right)) {
     //rotate right
-    n=rotate_right(current,n);
+    n=Double_rotate_right(current,n);
     current = current->right;
   }
   //otherwise check case 5
@@ -218,6 +221,40 @@ RBbst::node * RBbst::grandparent(node *&current){
 }
 //rotate node to left
 RBbst::node * RBbst::rotate_left(node *current, node *n){
+  node *GP = grandparent(current);
+  node *P = current->parent;
+  node *C = current;
+  node *CR = current->right;
+  node *CL = current->left;
+  if (GP != Sentinel){
+    GP->right = current;
+  }
+  current->parent = GP;
+  P->parent = current;
+  P->right = CL;
+  C->left = P;
+  n=current;
+  return n;
+}
+//rotate node to right
+RBbst::node * RBbst::rotate_right(node *current, node *n){
+  node *GP = grandparent(current);
+  node *P = current->parent;
+  node *C = current;
+  node *CR = current->right;
+  node *CL = current->left;
+  if (GP != Sentinel){
+    GP->left = current;
+  }
+  current->parent = GP;
+  P->parent = current;
+  P->left = CR;
+  current->right = P;
+  n=current;
+  return n;
+}
+//Double the rotate left
+RBbst::node * RBbst::Double_rotate_left(node *current, node *n){
   node *currentgrand = grandparent(current);
   node *currentparent = current->parent;
   node *currentgg=currentgrand->parent;
@@ -245,8 +282,8 @@ RBbst::node * RBbst::rotate_left(node *current, node *n){
   else n=current->parent;
   return n;
 }
-//rotate node to right
-RBbst::node * RBbst::rotate_right(node *current, node *n){
+//Double rotate node to right
+RBbst::node * RBbst::Double_rotate_right(node *current, node *n){
   node *currentgrand = grandparent(current);
   node *currentparent = current->parent;
   node *currentgg=currentgrand->parent;
