@@ -1,237 +1,104 @@
-    /*
-     * C++ Program to Implement Skip List 
-     */
+class IntSkipList
+{
+    private class Node
+    {
+        public Node[] Next { get; private set; }
+        public int Value { get; private set; }
 
-    #include <iostream>
-    #include <cstdlib>
-    #include <cmath>
-    #include <cstring>
-    #define MAX_LEVEL 6
-    const float P = 0.5;
-    using namespace std;
-    /*
-     * Skip Node Declaration
-     */
-    struct snode
-    {
-        int value;
-        snode **forw;
-        snode(int level, int &value)
+        public Node(int value, int level)
         {
-            forw = new snode * [level + 1];
-            memset(forw, 0, sizeof(snode*) * (level + 1));
-            this->value = value; 
+            Value = value;
+            Next = new Node[level];
         }
-        ~snode()
-        {
-            delete [] forw;        
-        } 
-    };
-    /*
-     * Skip List Declaration
-     */
-    struct skiplist
+    }
+
+    private Node _head = new Node(0, 33); // The max. number of levels is 33
+    private Random _rand = new Random();
+    private int _levels = 1;
+
+    /// <summary>
+    /// Inserts a value into the skip list.
+    /// </summary>
+    public void Insert(int value)
     {
-        snode *header;
-        int value;
-        int level;
-        skiplist() 
+        // Determine the level of the new node. Generate a random number R. The number of
+        // 1-bits before we encounter the first 0-bit is the level of the node. Since R is
+        // 32-bit, the level can be at most 32.
+        int level = 0;
+        for (int R = _rand.Next(); (R & 1) == 1; R >>= 1)
         {
-            header = new snode(MAX_LEVEL, value);
-            level = 0;
+            level++;
+            if (level == _levels) { _levels++; break; }
         }
-        ~skiplist() 
+
+        // Insert this node into the skip list
+        Node newNode = new Node(value, level + 1);
+        Node cur = _head;
+        for (int i = _levels - 1; i >= 0; i--)
         {
-            delete header;
-        }
-        void display();
-        bool contains(int &);
-        void insert_element(int &);
-        void delete_element(int &);        
-    };
-    /*
-     * Main: Contains Menu
-     */
-    int main() 
-    {
-        skiplist ss;
-        int choice, n;
-        while (1)
-        {
-            cout<<endl<<"-----------------------"<<endl;
-            cout<<endl<<"Operations on Skip list"<<endl;
-            cout<<endl<<"-----------------------"<<endl;
-            cout<<"1.Insert Element"<<endl;
-            cout<<"2.Delete Element"<<endl;
-            cout<<"3.Search Element"<<endl;
-            cout<<"4.Display List "<<endl;
-            cout<<"5.Exit "<<endl;
-            cout<<"Enter your choice : ";
-            cin>>choice;
-            switch(choice)
+            for (; cur.Next[i] != null; cur = cur.Next[i])
             {
-            case 1:
-                 cout<<"Enter the element to be inserted: ";
-                 cin>>n;
-                 ss.insert_element(n);
-                 if(ss.contains(n))
-                     cout<<"Element Inserted"<<endl;
-                 break;
-            case 2:
-                 cout<<"Enter the element to be deleted: ";
-                 cin>>n;
-                 if(!ss.contains(n))
-                 {
-                     cout<<"Element not found"<<endl;
-                     break;
-                 }
-                 ss.delete_element(n);
-                 if(!ss.contains(n))
-                     cout<<"Element Deleted"<<endl;
-                 break;
-            case 3:
-                 cout<<"Enter the element to be searched: ";
-                 cin>>n; 
-                 if(ss.contains(n))
-                     cout<<"Element "<<n<<" is in the list"<<endl;
-                 else
-                     cout<<"Element not found"<<endl;
-            case 4:
-                 cout<<"The List is: ";
-                 ss.display();
-                 break;
-            case 5:
-                 exit(1);
-                 break;
-            default:
-                 cout<<"Wrong Choice"<<endl;
+                if (cur.Next[i].Value > value) break;
+            }
+
+            if (i <= level) { newNode.Next[i] = cur.Next[i]; cur.Next[i] = newNode; }
+        }
+    }
+
+    /// <summary>
+    /// Returns whether a particular value already exists in the skip list
+    /// </summary>
+    public bool Contains(int value)
+    {
+        Node cur = _head;
+        for (int i = _levels - 1; i >= 0; i--)
+        {
+            for (; cur.Next[i] != null; cur = cur.Next[i])
+            {
+                if (cur.Next[i].Value > value) break;
+                if (cur.Next[i].Value == value) return true;
             }
         }
-        return 0;
+        return false;
     }
-     
-    /*
-     * Random Value Generator
-     */
-    float frand() 
+
+    /// <summary>
+    /// Attempts to remove one occurence of a particular value from the skip list. Returns
+    /// whether the value was found in the skip list.
+    /// </summary>
+    public bool Remove(int value)
     {
-        return (float) rand() / RAND_MAX;
-    }
-     
-    /*
-     * Random Level Generator
-     */
-    int random_level() 
-    {
-        static bool first = true;
-        if (first) 
+        Node cur = _head;
+
+        bool found = false;
+        for (int i = _levels - 1; i >= 0; i--)
         {
-            srand((unsigned)time(NULL));
-            first = false;
-        }
-        int lvl = (int)(log(frand()) / log(1.-P));
-        return lvl < MAX_LEVEL ? lvl : MAX_LEVEL;
-    }
-     
-    /*
-     * Insert Element in Skip List
-     */
-    void skiplist::insert_element(int &value) 
-    {
-        snode *x = header;	
-        snode *update[MAX_LEVEL + 1];
-        memset(update, 0, sizeof(snode*) * (MAX_LEVEL + 1));
-        for (int i = level;i >= 0;i--) 
-        {
-            while (x->forw[i] != NULL && x->forw[i]->value < value) 
+            for (; cur.Next[i] != null; cur = cur.Next[i])
             {
-                x = x->forw[i];
-            }
-            update[i] = x; 
-        }
-        x = x->forw[0];
-        if (x == NULL || x->value != value) 
-        {        
-            int lvl = random_level();
-            if (lvl > level) 
-            {
-                for (int i = level + 1;i <= lvl;i++) 
+                if (cur.Next[i].Value == value)
                 {
-                    update[i] = header;
-                }
-                level = lvl;
-            }
-            x = new snode(lvl, value);
-            for (int i = 0;i <= lvl;i++) 
-            {
-                x->forw[i] = update[i]->forw[i];
-                update[i]->forw[i] = x;
-            }
-        }
-    }
-     
-    /*
-     * Delete Element from Skip List
-     */
-    void skiplist::delete_element(int &value) 
-    {
-        snode *x = header;	
-        snode *update[MAX_LEVEL + 1];
-        memset (update, 0, sizeof(snode*) * (MAX_LEVEL + 1));
-        for (int i = level;i >= 0;i--) 
-        {
-            while (x->forw[i] != NULL && x->forw[i]->value < value)
-            {
-                x = x->forw[i];
-            }
-            update[i] = x; 
-        }
-        x = x->forw[0];
-        if (x->value == value) 
-        {
-            for (int i = 0;i <= level;i++) 
-            {
-                if (update[i]->forw[i] != x)
+                    found = true;
+                    cur.Next[i] = cur.Next[i].Next[i];
                     break;
-                update[i]->forw[i] = x->forw[i];
-            }
-            delete x;
-            while (level > 0 && header->forw[level] == NULL) 
-            {
-                level--;
+                }
+
+                if (cur.Next[i].Value > value) break;
             }
         }
+
+        return found;
     }
-     
-    /*
-     * Display Elements of Skip List
-     */
-    void skiplist::display() 
+
+    /// <summary>
+    /// Produces an enumerator that iterates over elements in the skip list in order.
+    /// </summary>
+    public IEnumerable<int> Enumerate()
     {
-        const snode *x = header->forw[0];
-        while (x != NULL) 
+        Node cur = _head.Next[0];
+        while (cur != null)
         {
-            cout << x->value;
-            x = x->forw[0];
-            if (x != NULL)
-                cout << " - ";
+            yield return cur.Value;
+            cur = cur.Next[0];
         }
-        cout <<endl;
     }
-     
-    /*
-     * Search Elemets in Skip List
-     */
-    bool skiplist::contains(int &s_value) 
-    {
-        snode *x = header;
-        for (int i = level;i >= 0;i--) 
-        {
-            while (x->forw[i] != NULL && x->forw[i]->value < s_value)
-            {
-                x = x->forw[i];
-            }
-        }
-        x = x->forw[0];
-        return x != NULL && x->value == s_value;
-    }
+}
