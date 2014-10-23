@@ -76,6 +76,7 @@ void RBbst::insertNode(int key, string data, node *&n){
   }
   //check the insert for case 1
   insert_case1(current,n);
+  verify_properties(n);
 }
 //return a pointer to the node to which new node can be attached
 RBbst::node * RBbst::finding(node *&n,int key,int i){
@@ -167,12 +168,16 @@ void RBbst::insert_case4(node *&current, node *&n){
     //Double rotate left right
     rotate_left(current,n);
     rotate_right(current,n);
+    current->colour = BLACK;
+    current->right->colour = RED;
   }
   //otherwise if current is left child and parent is right
   else if ((current == current->parent->left) && (current->parent == g->right)) {
     //Double rotate right left
     rotate_right(current,n);
     rotate_left(current,n);
+    current->colour = BLACK;
+    current->left->colour = RED;
   }
   //otherwise check case 5
   else{
@@ -683,9 +688,9 @@ void RBbst::verify_property_3(node *&n){
     return;
   }
   //verify property 4 on left child
-  verify_property_4(n->left);
+  verify_property_3(n->left);
   //verify property 4 on right child
-  verify_property_4(n->right);
+  verify_property_3(n->right);
 }
 // Verifying Property 4 The Black height must be the same for all leaves
 void RBbst::verify_property_4(node *&n){
