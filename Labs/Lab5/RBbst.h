@@ -48,17 +48,18 @@ class RBbst{
 
   // private, recursive routines (used by the public methods)
   // see RBbst.cpp file for explanation
-  node * insertNode(int k, string d, node *&n);
+  void insertNode(int k, string d, node *&n);
   node * finding(node *&n,int ,int );
-  node * insert_case1(node *&n, node *&head);
-  node * insert_case2(node *&, node *&);
-  node * insert_case3(node *&, node *&);
-  node * insert_case4(node *&, node *&);
-  node * insert_case5(node *&, node *&);
+  void insert_case1(node *&, node *&);
+  void insert_case2(node *&, node *&);
+  void insert_case3(node *&, node *&);
+  void insert_case4(node *&, node *&);
+  void insert_case5(node *&, node *&);
   node * uncle(node *&);
   node * grandparent(node *&);
-  node * rotate_left(node *, node *);
-  node * rotate_right(node *, node *);
+  void rotate_left(node *, node *);
+  void rotate_right(node *, node *);
+  void replace_node(node *n, node *current, node * newn);
   node * Double_rotate_left(node *, node *);
   node * Double_rotate_right(node *, node *);
   string search(int, node *&n);
@@ -74,7 +75,7 @@ class RBbst{
   void delete_case5(node *&t, node *&n);
   void delete_case6(node *&t, node *&n);
   node * sibling(node *&n);
-  void replace_node(node *&root, node *&n, node *&child);
+//  void replace_node(node *&root, node *&n, node *&child);
   void verify_properties(node *&n);
   void verify_property_1(node *&n);
   void verify_property_2(node *&n);
@@ -124,7 +125,7 @@ class RBbst{
 
   //Inserts a node with key k and data d into the tree
   bool insert(int key, string data) {
-    root = insertNode(key, data, root);
+    insertNode(key, data, root);
     return true;
   }
   //removes a node and its information from the tree

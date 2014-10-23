@@ -43,7 +43,7 @@ contained in RBbst hearder file
 
 // insert a new node in the RBbst rooted at n,
 // returning a pointer to the root
-RBbst::node * RBbst::insertNode(int key, string data, node *&n){
+void RBbst::insertNode(int key, string data, node *&n){
   //make new node with key and data
   node * current = new node;
   current->left = Sentinel;
@@ -53,10 +53,10 @@ RBbst::node * RBbst::insertNode(int key, string data, node *&n){
   current->data = data;
   current->colour = RED;
   //Empty tree
-  if(n==Sentinel){
+  if((n->parent==Sentinel) && (n->key == -99999999)){
     current->colour=BLACK;
-    n=current;
-    return n;
+    root=current;
+    verify_properties(n);
   }
   //otherwise
   else{
@@ -75,8 +75,7 @@ RBbst::node * RBbst::insertNode(int key, string data, node *&n){
     }
   }
   //check the insert for case 1
-  n=insert_case1(current,n);
-  return n;
+  insert_case1(current,n);
 }
 //return a pointer to the node to which new node can be attached
 RBbst::node * RBbst::finding(node *&n,int key,int i){
@@ -115,90 +114,86 @@ RBbst::node * RBbst::finding(node *&n,int key,int i){
       return temp;
     }
     //otherwise continue to look to the right
-    else
+    else{
       return finding(n->right,key,i);
+    }
   }
 }
 //if the node is the root
-RBbst::node * RBbst::insert_case1(node *&current, node *&n){
+void RBbst::insert_case1(node *&current, node *&n){
   //if parent is a Sentinel, than node is root and must be black
   if (current->parent == Sentinel){
     current->colour = BLACK;
   }
   //otherwise check case 2
   else{
-    n=insert_case2(current,n);
+    insert_case2(current,n);
   }
-  return n;
 }
 //if parent is black then no change in colour required
-RBbst::node * RBbst::insert_case2(node *&current, node *&n){
+void RBbst::insert_case2(node *&current, node *&n){
   //if the parents colour is black
   if (current->parent->colour == BLACK){
-    return n;
+    return;
   }
   //otherwise check case 3
   else{
-    n=insert_case3(current,n);
+    insert_case3(current,n);
   }
-  return n;
 }
 //if uncle is red, colour swap with parent, uncle and grandparent
-RBbst::node * RBbst::insert_case3(node *&current, node *&n){
+void RBbst::insert_case3(node *&current, node *&n){
   node *u = uncle(current);
   node *g = grandparent(current);
   //if uncle is red
-  if ((u != Sentinel) && (u->colour == RED)) {
+  if (u->colour == RED) {
     //change colour of parent, uncle, and grandparent
     current->parent->colour = BLACK;
     u->colour = BLACK;
     g->colour = RED;
     //then insert case 1
-    n=insert_case1(g,n);
+    insert_case1(g,n);
   }
   //otherwise check case 4
   else {
-    n=insert_case4(current,n);
+    insert_case4(current,n);
   }
-  return n;
 }
 //uncle is black child is left of right or right of left
-RBbst::node * RBbst::insert_case4(node *&current, node *&n){
-  //if current is right child and parent is left child
+void RBbst::insert_case4(node *&current, node *&n){
   node *g = grandparent(current);
+    //if current is right child and parent is left child
   if ((current == current->parent->right) && (current->parent == g->left)) {
-    //Double rotate left
-    n=Double_rotate_left(current,n);
-
-//    current = current->left;
+    //Double rotate left right
+    rotate_left(current,n);
+    rotate_right(current,n);
   }
   //otherwise if current is left child and parent is right
   else if ((current == current->parent->left) && (current->parent == g->right)) {
-    //Double rotate right
-    n=Double_rotate_right(current,n);
-
-//    current = current->right;
+    //Double rotate right left
+    rotate_right(current,n);
+    rotate_left(current,n);
   }
   //otherwise check case 5
   else{
-    n=insert_case5(current,n);
+    insert_case5(current,n);
   }
-  return n;
 }
 //uncle is black child is left of left or right of right
-RBbst::node * RBbst::insert_case5(node *&current, node *&n){
+void RBbst::insert_case5(node *&current, node *&n){
   node *g = grandparent(current);
   //colour swap parent and grandparent
   current->parent->colour = BLACK;
   g->colour = RED;
   //if child is left of left
-  if (current == current->parent->left)
+  if (current == current->parent->left){
     //rotate right
-    n=rotate_right(current->parent,n);
+    rotate_right(current->parent,n);
+  }
   //otherwise rotate left
-  else
-    n=rotate_left(current->parent,n);
-  return n;
+  else{
+    rotate_left(current->parent,n);
+  }
 }
 //return a pointer to uncle
 RBbst::node * RBbst::uncle(node *&current){
@@ -222,42 +217,60 @@ RBbst::node * RBbst::grandparent(node *&current){
     return Sentinel;
 }
 //rotate node to left
-RBbst::node * RBbst::rotate_left(node *current, node *n){
+void RBbst::rotate_left(node *current, node *n){
   node *GP = grandparent(current);
   node *P = current->parent;
   node *C = current;
   node *CR = current->right;
   node *CL = current->left;
-
   current->parent = GP;
   P->parent = current;
   P->right = CL;
-  C->left = P;
-  n=current;
-  if (GP != Sentinel){
-    GP->right = current;
-    n = current->parent;
+  current->left = P;
+  if (current->parent == Sentinel){
+    root=current;
   }
-  return n;
+  if (GP != Sentinel){
+    GP->left = current;
+  }
+/*    node *r = current->right;
+    replace_node(n, current, r);
+    current->right = r->left;
+    if (r->left != NULL){
+        r->left->parent = current;
+    }
+    r->left = current;
+    current->parent = r;    */
 }
 //rotate node to right
-RBbst::node * RBbst::rotate_right(node *current, node *n){
+void RBbst::rotate_right(node *current, node *n){
   node *GP = grandparent(current);
   node *P = current->parent;
   node *C = current;
   node *CR = current->right;
   node *CL = current->left;
-
-  current->parent = GP;
+  current->parent = grandparent(current);
   P->parent = current;
   P->left = CR;
   current->right = P;
-  n=current;
-  if (GP != Sentinel){
-    GP->left = current;
-    n=current->parent;
+//  cout << endl << "insert case 5 \n";
+  if (current->parent == Sentinel){
+//    cout << endl << n << " " << current << endl;
+    root=current;
+//    cout << endl << "new root \n" << n;
   }
-  return n;
+  if (GP != Sentinel){
+    GP->right = current;
+//    n=current->parent;
+  }
+/*    node *L = current->left;
+    replace_node(n, current, L);
+    current->left = L->right;
+    if (L->right != NULL){
+        L->right->parent = current;
+    }
+    L->right = current;
+    current->parent = L;    */
 }
 //Double the rotate left
 RBbst::node * RBbst::Double_rotate_left(node *current, node *n){
@@ -266,27 +279,46 @@ RBbst::node * RBbst::Double_rotate_left(node *current, node *n){
   node *currentgg=currentgrand->parent;
   currentgrand->left = current;
   current->parent = currentgrand;
+  currentparent->right = current->right;
   current->left = currentparent;
   currentparent->parent = current;
-  currentparent->right = current->right;
+
   currentgg->right = current;
   current->parent = currentgg;
   current->right = currentgrand;
   currentgrand->parent = current;
-  currentgrand->left = currentparent->left;
+  currentgrand->left = current->right;
   //if currents great grandparent is not a sentinel
   if(currentgg!=Sentinel){
+    n=current->parent;
     //if current grand is a left child
     if(currentgg->left==currentgrand){
-      currentgg->left=current->parent->parent;
+      currentgg->left=current;
     }
     //otherwise current grand is a right child
     else if(currentgg->right==currentgrand){
-      currentgg->right=current->parent->parent;
+      currentgg->right=current;
     }
   }
-  else n=current->parent;
+  else {
+    n=current;
+  }
   return n;
+}
+
+void RBbst::replace_node(node *n, node *current, node * newn){
+    if (current->parent == NULL){
+        n->parent = newn;
+    }
+    else{
+        if (current == current->parent->left)
+            current->parent->left = newn;
+        else
+            current->parent->right = newn;
+    }
+    if (newn != NULL){
+        newn->parent = current->parent;
+    }
 }
 //Double rotate node to right
 RBbst::node * RBbst::Double_rotate_right(node *current, node *n){
@@ -295,26 +327,29 @@ RBbst::node * RBbst::Double_rotate_right(node *current, node *n){
   node *currentgg=currentgrand->parent;
   currentgrand->right = current;
   current->parent = currentgrand;
+  currentparent->left = current->left;
   current->right = currentparent;
   currentparent->parent = current;
-  currentparent->left = current->left;
   currentgg->left = current;
   current->parent = currentgg;
   current->left = currentgrand;
   currentgrand->parent = current;
-  currentgrand->right = currentparent->right;
+  currentgrand->right = currentparent->left;
   //if currents great grandparent is not a sentinel
   if(currentgg!=Sentinel){
+    n=current->parent;
     //if current grand is a left child
     if(currentgg->left==currentgrand){
-      currentgg->left=current->parent->parent;
+      currentgg->left=current;
     }
     //otherwise current grand is a right child
     else if(currentgg->right==currentgrand){
-      currentgg->right=current->parent->parent;
+      currentgg->right=current;
     }
   }
-  else n=current->parent;
+  else {
+    n=current;
+  }
   return n;
 }
 // find the node with key and return data
@@ -456,7 +491,7 @@ bool RBbst::deleteElement(int key, node *&root){
   verify_properties(root);
   return 1;
 }
-// Replace a node
+/*// Replace a node
 void RBbst::replace_node(node *&root, node *&n, node *&child){
     //if parent is a sentinel
     if (n->parent == Sentinel){
@@ -481,7 +516,7 @@ void RBbst::replace_node(node *&root, node *&n, node *&child){
       //set childs parent to nodes parent
       child->parent = n->parent;
     }
-}
+}   */
 // Returns Maximum node
 RBbst::node * RBbst::maximum_node(node *&n){
     //check if node is not a sentinel
