@@ -339,7 +339,7 @@ RBbst::node * RBbst::Double_rotate_right(node *current, node *n){
 }
 //replace node
 void RBbst::replace_node(node *n, node *current, node * newn){
-    if (current->parent == NULL){
+/*    if (current->parent == NULL){
         n->parent = newn;
     }
     else{
@@ -347,7 +347,7 @@ void RBbst::replace_node(node *n, node *current, node * newn){
             current->parent->left = newn;
         else
             current->parent->right = newn;
-    }
+    }   */
     if (newn != NULL){
         newn->parent = current->parent;
     }
@@ -458,13 +458,28 @@ void RBbst::debugprint(node *&current){
 // if the subtree rooted at n contains a node whose key
 // matches k then remove it from the subtree
 bool RBbst::deleteElement(int key, node *&root){
+  node * child;
   //Find the node to delete
   node* DeleteNode = finding(root,key,0);
   //find the predecessor
   node*predecessor = maximum_node(DeleteNode->left);
+  child = predecessor->left;
   //swap the key and data
   swapElements(DeleteNode, predecessor);
-  //if the predecessor has a left child, attach it to predecessor's parent
+    //if colour is black, set to colour of child
+  if (node_colour(predecessor) == BLACK){
+    predecessor->colour = node_colour(child);
+    //delete case 1
+    delete_case1(root, predecessor);
+  }
+  //replace node
+  replace_node(root, predecessor, child);
+  //delete the node from memory
+  delete predecessor;
+  //verify the properties of a Red Black tree
+  verify_properties(root);
+  return 1;
+/*  //if the predecessor has a left child, attach it to predecessor's parent
   if (predecessor->left != Sentinel){
     predecessor->left->parent = predecessor->parent;
     predecessor->parent->right = predecessor->left;
@@ -474,7 +489,7 @@ bool RBbst::deleteElement(int key, node *&root){
     predecessor->parent->right = Sentinel;
   }
   //if predecessor was black, then need to check tree for black height
-  verify_properties(DeleteNode);
+  verify_properties(DeleteNode);    */
 /*  node* child;
   //find the node to be removed in the tree
   node* n = finding(root,key,0);
