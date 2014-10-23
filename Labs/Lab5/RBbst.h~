@@ -66,7 +66,7 @@ class RBbst{
   void print(node *&n);
   void debugprint(node *&n);
   void PreOrdprint(node *&n);
-  bool deleteElement(int, node*&);
+  bool deleteElement(int, node* &);
   node * maximum_node(node *&);
   void delete_case1(node *&root, node *&t);
   void delete_case2(node *&root, node *&t);

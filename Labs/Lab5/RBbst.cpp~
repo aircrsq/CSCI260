@@ -468,6 +468,8 @@ bool RBbst::deleteElement(int key, node *&root){
   if (predecessor->left != Sentinel){
     predecessor->left->parent = predecessor->parent;
     predecessor->parent->right = predecessor->left;
+    cout << predecessor->parent->key << endl;
+    cout << predecessor->left->key << endl;
   }
   //otherwise attach sentinel to predecessor's parent
   else{

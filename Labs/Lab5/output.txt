@@ -131,28 +131,5 @@ The tree contents in Preorder is:
 
 Enter your command choice (A, D, P, H, I, Q, R, F, or S)
 Enter the key integer
-50 was successfully deleted.
-
-Enter your command choice (A, D, P, H, I, Q, R, F, or S)
-The tree contents in Preorder is:
-50:fifty b (33<- 50 ->65) 
-33:thirtythree b (16<- 33 ->45) 
-16:sixteen r (15<- 16 ->25) 
-15:fifteen b (1<- 15 ->N) 
-1:one r (N<- 1 ->N) 
-25:twentyfive b (18<- 25 ->N) 
-18:eighteen r (N<- 18 ->N) 
-45:fortyfive b (35<- 45 ->46) 
-35:thirtyfive r (N<- 35 ->N) 
-46:fortysix r (N<- 46 ->N) 
-65:sixtyfive b (60<- 65 ->80) 
-60:sixty b (N<- 60 ->63) 
-63:sixtythee r (N<- 63 ->N) 
-80:eighty r (75<- 80 ->92) 
-75:seventyfive b (N<- 75 ->76) 
-76:seventysix r (N<- 76 ->N) 
-92:ninetytwo b (85<- 92 ->95) 
-85:eightyfive r (N<- 85 ->N) 
-95:ninetyfive r (N<- 95 ->N) 
-
-Enter your command choice (A, D, P, H, I, Q, R, F, or S)
+16
+18

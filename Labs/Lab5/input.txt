@@ -19,6 +19,7 @@ i 16 sixteen
 i 18 eighteen
 i 1 one
 a
+r 33
 r 50
 a
 q
