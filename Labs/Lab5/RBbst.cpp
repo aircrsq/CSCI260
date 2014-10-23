@@ -190,7 +190,7 @@ void RBbst::insert_case5(node *&current, node *&n){
     //rotate right
     rotate_right(current->parent,n);
   }
-  //otherwise rotate left
+  //otherwise child is right of right
   else{
     rotate_left(current->parent,n);
   }
@@ -231,16 +231,13 @@ void RBbst::rotate_left(node *current, node *n){
     root=current;
   }
   if (GP != Sentinel){
-    GP->left = current;
-  }
-/*    node *r = current->right;
-    replace_node(n, current, r);
-    current->right = r->left;
-    if (r->left != NULL){
-        r->left->parent = current;
+    if (GP->left == P){
+      GP->left = current;
     }
-    r->left = current;
-    current->parent = r;    */
+    else{
+      GP->right = current;
+    }
+  }
 }
 //rotate node to right
 void RBbst::rotate_right(node *current, node *n){
@@ -249,28 +246,21 @@ void RBbst::rotate_right(node *current, node *n){
   node *C = current;
   node *CR = current->right;
   node *CL = current->left;
-  current->parent = grandparent(current);
+  current->parent = GP;
   P->parent = current;
   P->left = CR;
   current->right = P;
-//  cout << endl << "insert case 5 \n";
   if (current->parent == Sentinel){
-//    cout << endl << n << " " << current << endl;
     root=current;
-//    cout << endl << "new root \n" << n;
   }
   if (GP != Sentinel){
-    GP->right = current;
-//    n=current->parent;
-  }
-/*    node *L = current->left;
-    replace_node(n, current, L);
-    current->left = L->right;
-    if (L->right != NULL){
-        L->right->parent = current;
+    if (GP->left == P){
+      GP->left = current;
     }
-    L->right = current;
-    current->parent = L;    */
+    else {
+      GP->right = current;
+    }
+  }
 }
 //Double the rotate left
 RBbst::node * RBbst::Double_rotate_left(node *current, node *n){
