@@ -57,6 +57,7 @@ class RBbst{
   void insert_case5(node *&, node *&);
   node * uncle(node *&);
   node * grandparent(node *&);
+  node * sibling(node *&);
   void rotate_left(node *, node *);
   void rotate_right(node *, node *);
   void replace_node(node *n, node *current, node * newn);
@@ -74,7 +75,7 @@ class RBbst{
   void delete_case4(node *&t, node *&n);
   void delete_case5(node *&t, node *&n);
   void delete_case6(node *&t, node *&n);
-  node * sibling(node *&n);
+
 //  void replace_node(node *&root, node *&n, node *&child);
   void verify_properties(node *&n);
   void verify_property_1(node *&n);
@@ -84,7 +85,7 @@ class RBbst{
   void verify_property_4_helper(node *&n, int black_count, int* path_black_count);
   int node_colour(node *n);
   void deallocate(node* &n);
-  void swapElements(node* n, node* m);
+  void swapElements(node*& n, node*& m);
 
   public:
   //Constructors

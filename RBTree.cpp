@@ -267,40 +267,54 @@ void RBTree::replace_node(rbtree t, node oldn, node newn){
  * Insert node into RBTree
  */
 void RBTree::rbtree_insert(rbtree t, void* key, void* value, compare_func compare){
+    //make new node
     node inserted_node = new_node(key, value, RED, NULL, NULL);
+    //if at the root
     if (t->root == NULL){
         t->root = inserted_node;
     }
+    //otherwise find attach point and attach
     else{
-        node n = t->root;
+        //temp pointer to root
+        node temp = t->root;
+        //cycle through tree until found attach point
         while (1){
-            int comp_result = compare(key, n->key);
+            int comp_result = compare(key, temp->key);
+            //if keys are same
             if (comp_result == 0) {
-                n->value = value;
+                temp->value = value;
                 return;
             }
+            //otherwise new node is in left subtree
             else if (comp_result < 0){
-                if (n->left == NULL){
-                    n->left = inserted_node;
+                //if left subtree is empty, attach node
+                if (temp->left == NULL){
+                    temp->left = inserted_node;
                     break;
                 }
+                //otherwise cycle down left subtree
                 else{
-                    n = n->left;
+                    temp = temp->left;
                 }
             }
+            //otherwise new node is in right subtree
             else{
                 assert (comp_result > 0);
-                if (n->right == NULL){
-                    n->right = inserted_node;
+                //if right subtree is empty, attach node
+                if (temp->right == NULL){
+                    temp->right = inserted_node;
                     break;
                 }
+                //otherwise cycle down right subtree
                 else{
-                    n = n->right;
+                    temp = temp->right;
                 }
             }
         }
-        inserted_node->parent = n;
+        //attach new node to attach point
+        inserted_node->parent = temp;
     }
+    //check for colour and height setup
     insert_case1(t, inserted_node);
     verify_properties(t);
 }
@@ -542,14 +556,14 @@ void print_tree(rbtree t){
  */
 int main(){
     int i;
-    RBTree rbt;
-    rbtree t = rbt.rbtree_create();
+    RBTree rbt; //pointer to roor
+    rbtree t = rbt.rbtree_create();//create tree with null root
     for (i = 0; i < 12; i++){
         int x = rand() % 10;
         int y = rand() % 10;
         print_tree(t);
         cout<<"Inserting "<<x<<" -> "<<y<<endl<<endl;
-        rbt.rbtree_insert(t, (void*)x, (void*)y, compare_int);
+        rbt.rbtree_insert(t, (void*)x, (void*)y, compare_int);//call insert with root, random x, random y
         assert(rbt.rbtree_lookup(t, (void*)x, compare_int) == (void*)y);
     }
     for (i = 0; i < 15; i++){

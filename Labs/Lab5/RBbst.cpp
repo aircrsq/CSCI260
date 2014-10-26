@@ -52,20 +52,13 @@ void RBbst::insertNode(int key, string data, node *&n){
   current->key = key;
   current->data = data;
   current->colour = RED;
-  //Empty tree
-  if((n->parent==Sentinel) && (n->key == -99999999)){
-    current->colour=BLACK;
-    root=current;
-    verify_properties(n);
-  }
-  //otherwise
-  else{
-    node * temp = new node;
-    //find the spot to attach the new node
-    temp=finding(n,key,0);
-    //assign the new node to the find
-    current->parent=temp;
-    //if new node is greater than parent make right child
+  node * temp = new node;
+  //find the spot to attach the new node
+  temp=finding(n,key,0);
+  //assign the new node to the find
+  current->parent=temp;
+  //if new node is greater than parent make right child
+  if (n != Sentinel){
     if(key>=temp->key){
       temp->right=current;
     }
@@ -76,7 +69,7 @@ void RBbst::insertNode(int key, string data, node *&n){
   }
   //check the insert for case 1
   insert_case1(current,n);
-  verify_properties(n);
+  //verify_properties(n);
 }
 //return a pointer to the node to which new node can be attached
 RBbst::node * RBbst::finding(node *&n,int key,int i){
@@ -89,8 +82,11 @@ RBbst::node * RBbst::finding(node *&n,int key,int i){
   if(i == 1){
     return temp;
   }
+  if (n->key == key){
+    return n;
+  }
   //if nodes key is greater than key
-  if(n->key > key){
+  else if(n->key > key){
     //if left child is Sentinel
     if(n->left==Sentinel){
       //assign n to temp
@@ -119,16 +115,13 @@ RBbst::node * RBbst::finding(node *&n,int key,int i){
       return finding(n->right,key,i);
     }
   }
-  //keys are equal
-  else{
-    return n;
-  }
 }
 //if the node is the root
 void RBbst::insert_case1(node *&current, node *&n){
   //if parent is a Sentinel, than node is root and must be black
   if (current->parent == Sentinel){
     current->colour = BLACK;
+    root = current;
   }
   //otherwise check case 2
   else{
@@ -151,7 +144,7 @@ void RBbst::insert_case3(node *&current, node *&n){
   node *u = uncle(current);
   node *g = grandparent(current);
   //if uncle is red
-  if (u->colour == RED) {
+  if ((u->colour == RED) && (u != Sentinel)) {
     //change colour of parent, uncle, and grandparent
     current->parent->colour = BLACK;
     u->colour = BLACK;
@@ -171,29 +164,27 @@ void RBbst::insert_case4(node *&current, node *&n){
   if ((current == current->parent->right) && (current->parent == g->left)) {
     //Double rotate left right
     rotate_left(current,n);
-    rotate_right(current,n);
-    current->colour = BLACK;
-    current->right->colour = RED;
+    current = current->left;
   }
   //otherwise if current is left child and parent is right
   else if ((current == current->parent->left) && (current->parent == g->right)) {
     //Double rotate right left
     rotate_right(current,n);
-    rotate_left(current,n);
-    current->colour = BLACK;
-    current->left->colour = RED;
+    current = current->right;
+//    current->colour = BLACK;
+//    current->left->colour = RED;
   }
   //otherwise check case 5
-  else{
-    insert_case5(current,n);
-  }
+  insert_case5(current,n);
 }
 //uncle is black child is left of left or right of right
 void RBbst::insert_case5(node *&current, node *&n){
   node *g = grandparent(current);
   //colour swap parent and grandparent
   current->parent->colour = BLACK;
-  g->colour = RED;
+  if (g != Sentinel){
+    g->colour = RED;
+  }
   //if child is left of left
   if (current == current->parent->left){
     //rotate right
@@ -225,6 +216,22 @@ RBbst::node * RBbst::grandparent(node *&current){
   else
     return Sentinel;
 }
+// Return Sibling of Node
+RBbst::node * RBbst::sibling(node *&current){
+  //check that node and nodes parent are not sentinel
+  if (current != Sentinel){
+    if (current->parent != Sentinel){
+      if (current == current->parent->left){
+      //return right child
+        return current->parent->right;
+      }
+      //otherwise return left child
+      else{
+        return current->parent->left;
+      }
+    }
+  }
+}
 //rotate node to left
 void RBbst::rotate_left(node *current, node *n){
   node *GP = grandparent(current);
@@ -232,8 +239,8 @@ void RBbst::rotate_left(node *current, node *n){
   node *C = current;
   node *CR = current->right;
   node *CL = current->left;
-  current->parent = GP;
   P->parent = current;
+  current->parent = GP;
   P->right = CL;
   current->left = P;
   if (current->parent == Sentinel){
@@ -255,9 +262,9 @@ void RBbst::rotate_right(node *current, node *n){
   node *C = current;
   node *CR = current->right;
   node *CL = current->left;
-  current->parent = GP;
   P->parent = current;
-  P->left = CR;
+  current->parent = grandparent(current);
+  P->left = current->right;
   current->right = P;
   if (current->parent == Sentinel){
     root=current;
@@ -266,7 +273,7 @@ void RBbst::rotate_right(node *current, node *n){
     if (GP->left == P){
       GP->left = current;
     }
-    else {
+    else{
       GP->right = current;
     }
   }
@@ -304,7 +311,6 @@ RBbst::node * RBbst::Double_rotate_left(node *current, node *n){
   }
   return n;
 }
-
 //Double rotate node to right
 RBbst::node * RBbst::Double_rotate_right(node *current, node *n){
   node *currentgrand = grandparent(current);
@@ -457,230 +463,196 @@ void RBbst::debugprint(node *&current){
 }
 // if the subtree rooted at n contains a node whose key
 // matches k then remove it from the subtree
-bool RBbst::deleteElement(int key, node *&root){
-  node * child;
+bool RBbst::deleteElement(int key, node *&n){
+  node * child = Sentinel;
+  node * predecessor;
   //Find the node to delete
-  node* DeleteNode = finding(root,key,0);
-  //find the predecessor
-  node*predecessor = maximum_node(DeleteNode->left);
-  child = predecessor->left;
-  //swap the key and data
-  swapElements(DeleteNode, predecessor);
-    //if colour is black, set to colour of child
-  if (node_colour(predecessor) == BLACK){
-    predecessor->colour = node_colour(child);
-    //delete case 1
-    delete_case1(root, predecessor);
+  node * DeleteNode = finding(n,key,0);
+  //if there is a left subtree search for a predecessor starting at the left child
+  if (DeleteNode->left != Sentinel){
+    predecessor = maximum_node(DeleteNode->left);
   }
-  //replace node
-  replace_node(root, predecessor, child);
-  //delete the node from memory
-  delete predecessor;
-  //verify the properties of a Red Black tree
-  verify_properties(root);
-  return 1;
-/*  //if the predecessor has a left child, attach it to predecessor's parent
+  //otherwise no predecessor exists
+  else {
+    predecessor = Sentinel;
+  }
   if (predecessor->left != Sentinel){
-    predecessor->left->parent = predecessor->parent;
-    predecessor->parent->right = predecessor->left;
+    child = predecessor->left;
   }
-  //otherwise attach sentinel to predecessor's parent
   else{
-    predecessor->parent->right = Sentinel;
+    child = Sentinel;
   }
-  //if predecessor was black, then need to check tree for black height
-  verify_properties(DeleteNode);    */
-/*  node* child;
-  //find the node to be removed in the tree
-  node* n = finding(root,key,0);
-  //if removal node is sentinel, return
-  if (n == Sentinel){
-    return 0;
+  if (predecessor != Sentinel){
+    //swap the key and data
+    swapElements(DeleteNode, predecessor);
+    //if node predecessor is red, attach left child to parent
+    if (node_colour(predecessor) == RED){
+      //left child is sentinel
+      if (predecessor->left != Sentinel){
+        predecessor->parent->left = predecessor->left;
+      }
+      else if (predecessor->left == Sentinel){
+        predecessor->parent->left = Sentinel;
+      }
+      //left child is subtree
+      else {}
+    }
+    //if colour is black, set to colour of child
+    else if (node_colour(predecessor) == BLACK){
+      if (child->colour == RED){
+        child->colour = BLACK;
+        predecessor->parent->right = child;
+        child->parent = predecessor->parent;
+      }
+      else if (child != Sentinel){
+        delete_case1(child, root);
+      }
+      else {
+        delete_case1(predecessor, n);
+        delete predecessor;
+      }
+    }
   }
-  //if removal node has left and right children
-  if (n->left != Sentinel && n->right != Sentinel){
-    //find the predecessor on the left tree
-    node* pred = maximum_node(n->left);
-    //overwrite removal nodes information with predecessor
-    n->key = pred->key;
-    n->data = pred->data;
-    n = pred;
+  //if predecessor is Sentinel
+  else if (predecessor == Sentinel){
+    //if node colour is black
+    if (DeleteNode->colour == BLACK){
+      delete_case1(DeleteNode, n);
+      //if
+      if (DeleteNode->parent->left == DeleteNode){
+        DeleteNode->parent->left = Sentinel;
+      }
+      else if (DeleteNode->parent->right == DeleteNode){
+        DeleteNode->parent->right = DeleteNode->left;
+      }
+      delete DeleteNode;
+    }
+    //otherwise the node colour is red
+    else {
+      if (DeleteNode->parent->left == DeleteNode){
+        DeleteNode->parent->left = Sentinel;
+      }
+      else if (DeleteNode->parent->right == DeleteNode){
+        DeleteNode->parent->right = Sentinel;
+      }
+      delete DeleteNode;
+    }
   }
-  //check if children are sentinels
-  assert(n->left == Sentinel || n->right == Sentinel);
-  child = n->right == Sentinel ? n->left  : n->right;
-  //if colour is black, set to colour of child
-  if (node_colour(n) == BLACK){
-    n->colour = node_colour(child);
-    //delete case 1
-    delete_case1(root, n);
-  }
-  //replace node
-  replace_node(root, n, child);
-  //delete the node from memory
-  delete n;
-  //verify the properties of a Red Black tree
-  verify_properties(root);
-  return 1;	*/
+  else {}
+  return 1;
 }
-/*// Replace a node
-void RBbst::replace_node(node *&root, node *&n, node *&child){
-    //if parent is a sentinel
-    if (n->parent == Sentinel){
-      //child is assigned to root
-      root = child;
-    }
-    //otherwise
-    else{
-      //if node is a left child
-      if (n == n->parent->left){
-        //set grandparent left child to child
-        n->parent->left = child;
-      }
-      //otherwise
-      else{
-        //set grantparent right child to child
-        n->parent->right = child;
-      }
-    }
-    //if child is not a sentinel
-    if (child != Sentinel){
-      //set childs parent to nodes parent
-      child->parent = n->parent;
-    }
-}   */
 // Returns Maximum node
 RBbst::node * RBbst::maximum_node(node *&n){
     node * Temp = n;
     //check if node is not a sentinel
-    assert (Temp != Sentinel);
-    //while right child is not a sentinel go right
-    while (Temp->right != Sentinel){
+    if (Temp != Sentinel){
+      //while right child is not a sentinel go right
+      while (Temp->right != Sentinel){
         Temp = Temp->right;
+      }
+      return Temp;
     }
-    return Temp;
 }
 // Deleting Case 1
-void RBbst::delete_case1(node *& root, node *&n){
+void RBbst::delete_case1(node *&child, node *& n){
   //if nodes parent is sentinel, nothing to do
-  if (n->parent == Sentinel){
-    return;
-  }
-  //otherwise delete case 2
-  else{
-    delete_case2(root, n);
+  if (child->parent != Sentinel){
+    delete_case2(child, n);
   }
 }
 // Deleting Case 2
-void RBbst::delete_case2(node *& root, node *&n){
+void RBbst::delete_case2(node *&child, node *& n){
   //if the sibling of the node is red
-  if (node_colour(sibling(n)) == RED){
-    //colour swam nodes parent and sibling
-    n->parent->colour = RED;
-    sibling(n)->colour = BLACK;
+  if (node_colour(sibling(child)) == RED){
+    //colour swap nodes parent and sibling
+    child->parent->colour = RED;
+    sibling(child)->colour = BLACK;
     //if node is left child
-    if (n == n->parent->left){
+    if (child == child->parent->left){
       //rotate left
-      rotate_left(root, n->parent);
+      rotate_left(child->parent, root);
     }
     //otherwise rotate right
     else {
-      rotate_right(root, n->parent);
+      rotate_right(child->parent, root);
     }
   }
   //otherwise delete case 3
-  delete_case3(root, n);
+  delete_case3(child, n);
 }
 // Deleting Case 3
-void RBbst::delete_case3(node *& root, node *&n){
+void RBbst::delete_case3(node *&child, node *& n){
   //if nodes parent is black, nodes sibling is black, nodes neice and nephew are black
-  if (node_colour(n->parent) == BLACK && node_colour(sibling(n)) == BLACK &&
-  node_colour(sibling(n)->left) == BLACK && node_colour(sibling(n)->right) == BLACK){
+  if (node_colour(child->parent) == BLACK && node_colour(sibling(child)) == BLACK &&
+  node_colour(sibling(child)->left) == BLACK && node_colour(sibling(child)->right) == BLACK){
     //set siblings colour to red
-    sibling(n)->colour = RED;
+    sibling(child)->colour = RED;
     //delete case 1
-    delete_case1(root, n->parent);
+    delete_case1(child->parent, n);
   }
   //otherwise delete case 4
   else {
-    delete_case4(root, n);
+    delete_case4(child, n);
   }
 }
 // Deleting Case 4
-void RBbst::delete_case4(node *& root, node *&n){
+void RBbst::delete_case4(node *&child, node *& n){
   //if nodes parent is red, sibling is black, neice and nephew are black
-  if (node_colour(n->parent) == RED && node_colour(sibling(n)) == BLACK &&
-  node_colour(sibling(n)->left) == BLACK && node_colour(sibling(n)->right) == BLACK){
+  if (node_colour(child->parent) == RED && node_colour(sibling(child)) == BLACK &&
+  node_colour(sibling(child)->left) == BLACK && node_colour(sibling(child)->right) == BLACK){
     //set siblings colour to red and parent to black
-    sibling(n)->colour = RED;
-    n->parent->colour = BLACK;
+    sibling(child)->colour = RED;
+    child->parent->colour = BLACK;
   }
   //otherwise delete case 5
   else {
-    delete_case5(root, n);
+    delete_case5(child, n);
   }
 }
 // Deleting Case 5
-void RBbst::delete_case5(node *& root, node *&n){
-  //if node is a left child and sibling is black, neice is red and nephew is black
-  if (n == n->parent->left && node_colour(sibling(n)) == BLACK &&
-  node_colour(sibling(n)->left) == RED && node_colour(sibling(n)->right) == BLACK){
-    //change sibling to red and neice to black
-    sibling(n)->colour = RED;
-    sibling(n)->left->colour = BLACK;
-    //rotate right
-    rotate_right(root, sibling(n));
-  }
-  //otherwise if node is right child, sibling is black, nephew is red and neice is black
-  else if (n == n->parent->right && node_colour(sibling(n)) == BLACK &&
-  node_colour(sibling(n)->right) == RED && node_colour(sibling(n)->left) == BLACK){
-    //change sibling to red and nephew to black
-    sibling(n)->colour = RED;
-    sibling(n)->right->colour = BLACK;
-    //rotate left
-    rotate_left(root, sibling(n));
+void RBbst::delete_case5(node *&child, node *& n){
+  if (node_colour(sibling(child))== BLACK){
+    //if node is a left child and sibling is black, neice is red and nephew is black
+    if (child == child->parent->left && node_colour(sibling(child)->left) == RED
+        && node_colour(sibling(child)->right) == BLACK){
+      //change sibling to red and neice to black
+      sibling(child)->colour = RED;
+      sibling(child)->left->colour = BLACK;
+      //rotate right
+      rotate_right(sibling(child)->left, n);
+    }
+    //otherwise if node is right child, sibling is black, nephew is red and neice is black
+    else if (child == child->parent->right && node_colour(sibling(child)->right) == RED
+             && node_colour(sibling(child)->left) == BLACK){
+      //change sibling to red and nephew to black
+      sibling(child)->colour = RED;
+      sibling(child)->right->colour = BLACK;
+      //rotate left
+      rotate_left(sibling(child)->right, n);
+    }
   }
   //otherwise delete case 6
-  delete_case6(root, n);
+  delete_case6(child, n);
 }
 // Deleting Case 6
-void RBbst::delete_case6(node *& root, node *&n){
+void RBbst::delete_case6(node *&child, node *& n){
   //set siblings colour to parents colour
-  sibling(n)->colour = node_colour(n->parent);
+  sibling(child)->colour = node_colour(child->parent);
   //set parent to black
-  n->parent->colour = BLACK;
+  child->parent->colour = BLACK;
   //if node is left child
-  if (n == n->parent->left){
-    //check if nephew is red
-    assert (node_colour(sibling(n)->right) == RED);
+  if (child == child->parent->left){
     //set nephew to black
-    sibling(n)->right->colour = BLACK;
+    sibling(child)->right->colour = BLACK;
     //rotate left
-    rotate_left(root, n->parent);
+    rotate_left(sibling(child), n);
   }
   //otherwise
   else{
-    //check if neice is red
-    assert (node_colour(sibling(n)->left) == RED);
     //set neice to black
-    sibling(n)->left->colour = BLACK;
+    sibling(child)->left->colour = BLACK;
     //rotate right
-    rotate_right(root, n->parent);
-  }
-}
-// Return Sibling of Node
-RBbst::node * RBbst::sibling(node *&n){
-  //check that node and nodes parent are not sentinel
-  assert (n != Sentinel);
-  assert (n->parent != Sentinel);
-  //if node is left child
-  if (n == n->parent->left){
-    //return right child
-    return n->parent->right;
-  }
-  //otherwise return left child
-  else{
-    return n->parent->left;
+    rotate_right(sibling(child), n);
   }
 }
 // Verifying Properties of Red black Tree
@@ -778,7 +750,7 @@ void RBbst::deallocate(node* &n){
   n = Sentinel;
 }
 // swap data and key between two nodes
-void RBbst::swapElements(node* n, node* m){
+void RBbst::swapElements(node *& n, node *& m){
   //transfer information from first node to temp
   node * temp = new node;
   temp->data = n->data;
@@ -789,4 +761,5 @@ void RBbst::swapElements(node* n, node* m){
   //transfer information from temp to second
   m->data = temp->data;
   m->key= temp->key;
+  delete temp;
 }

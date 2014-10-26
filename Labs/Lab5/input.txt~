@@ -1,12 +1,12 @@
 i 50 fifty
 i 25 twentyfive
-i 75 seventyfive
+i 70 seventy
+i 85 eightyfive
 i 35 thirtyfive
-i 33 thirtythree
+i 37 thirtyseven
 i 60 sixty
 i 65 sixtyfive
 i 80 eighty
-i 85 eightyfive
 i 15 fifteen
 i 95 ninetyfive
 i 76 seventysix
@@ -14,12 +14,18 @@ i 45 fortyfive
 i 92 ninetytwo
 i 54 fiftyfour
 i 63 sixtythee
-i 46 fortysix
+i 47 fortyseven
 i 16 sixteen
-i 18 eighteen
-i 1 one
+i 82 eightytwo
+i 77 seventyseven
+i 71 seventyone
+i 72 seventytwo
+i 38 thirtyeight
 a
-r 33
+r 15
+r 45
+r 95
+r 80
 a
 q
 
