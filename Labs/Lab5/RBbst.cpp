@@ -16,7 +16,9 @@
  Dependences  : RBbst.h
                 assert.h
 
- Author       : David Burneau, Vancouver Island University
+ Author       : David Burneau, 575076880 Vancouver Island University
+              : Note, some code may be similiar to the Wikipedia site
+                on Red Black trees, which was the source of inspiration.
 
  System       : G++ (Linux)
 
@@ -160,22 +162,23 @@ void RBbst::insert_case3(node *&current, node *&n){
 //uncle is black, child is left of right or right of left
 void RBbst::insert_case4(node *&current, node *&n){
   node *g = grandparent(current);
+  node *c = current;
     //if current is right child and parent is left child
   if ((current == current->parent->right) && (current->parent == g->left)) {
     //rotate left right
     rotate_left(current,n);
     //change current for second rotate
-    current = current->left;
+    c = current->left;
   }
   //otherwise if current is left child and parent is right
   else if ((current == current->parent->left) && (current->parent == g->right)) {
     //rotate right left
     rotate_right(current,n);
     //change current for second rotate
-    current = current->right;
+    c = current->right;
   }
   //check case 5
-  insert_case5(current,n);
+  insert_case5(c,n);
 }
 //uncle is black child is left of left or right of right
 void RBbst::insert_case5(node *&current, node *&n){
