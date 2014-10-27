@@ -8,13 +8,7 @@ Invoking "make clean" removes the object files and the executable file
 To execute the file, type ./testapp at the command prompt
 
 I you want to avoid having to build the RBbst by hand, I recommend using "./testapp < input.txt
- from the command prompt. This will read the inputs from the input file and create the tree.
-
-The input.txt file is a list of 23 inputs that have been randomly choosen (asking my kids
-to pick numbers between 1 - 100) and inserted into the tree in the order given. At the end of the inserts,
-the tree is printed in preorder. Following the print, there are four removals of nodes that were randomly 
-choosen followed by another preorder print
- 
+ from the command prompt. This will read the inputs from the input file and create the tree. 
 If you wish to change the tree, you can change the input.txt file, as you wish.
 
  Make targets:

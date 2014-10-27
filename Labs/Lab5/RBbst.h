@@ -31,6 +31,8 @@
 #include<iostream>
 
 using namespace std;
+
+//Define Black as 1 and Red as 0
 #define BLACK 1
 #define RED 0
 
@@ -48,8 +50,8 @@ class RBbst{
 
   // private, recursive routines (used by the public methods)
   // see RBbst.cpp file for explanation
-  void insertNode(int k, string d, node *&n);
-  node * finding(node *&n,int ,int );
+  void insertNode(int, string, node *&);
+  node * Find(node *&,int ,int );
   void insert_case1(node *&, node *&);
   void insert_case2(node *&, node *&);
   void insert_case3(node *&, node *&);
@@ -60,36 +62,27 @@ class RBbst{
   node * sibling(node *&);
   void rotate_left(node *, node *);
   void rotate_right(node *, node *);
-  void replace_node(node *n, node *current, node * newn);
-  node * Double_rotate_left(node *, node *);
-  node * Double_rotate_right(node *, node *);
-  string search(int, node *&n);
-  void print(node *&n);
-  void debugprint(node *&n);
-  void PreOrdprint(node *&n);
+  string search(int, node *&);
+  void print(node *&);
+  void debugprint(node *&);
+  void PreOrdprint(node *&);
   bool deleteElement(int, node*&);
   node * maximum_node(node *&);
-  void delete_case1(node *&root, node *&t);
-  void delete_case2(node *&root, node *&t);
-  void delete_case3(node *&t, node *&n);
-  void delete_case4(node *&t, node *&n);
-  void delete_case5(node *&t, node *&n);
-  void delete_case6(node *&t, node *&n);
-
-//  void replace_node(node *&root, node *&n, node *&child);
-  void verify_properties(node *&n);
-  void verify_property_1(node *&n);
-  void verify_property_2(node *&n);
-  void verify_property_3(node *&n);
-  void verify_property_4(node *&n);
-  void verify_property_4_helper(node *&n, int black_count, int* path_black_count);
-  int node_colour(node *n);
-  void deallocate(node* &n);
-  void swapElements(node*& n, node*& m);
+  void delete_case1(node *&, node *&);
+  void delete_case2(node *&, node *&);
+  void delete_case3(node *&, node *&);
+  void delete_case4(node *&, node *&);
+  void delete_case5(node *&, node *&);
+  void delete_case6(node *&, node *&);
+  int node_colour(node *);
+  void deallocate(node *&);
+  void swapElements(node*& , node*&);
 
   public:
-  //Constructors
+  //Constructor
   RBbst() {
+    //Make a new node initialized as a sentinel
+    //and have it assigned to root
     Sentinel = new node;
     Sentinel->parent = Sentinel;
     Sentinel->left = Sentinel;
@@ -99,6 +92,7 @@ class RBbst{
     Sentinel->colour = BLACK;
     root = Sentinel;
   }
+  //Destructor
   ~RBbst() { deallocate(root); }
 
   //prints tree in Inorder
@@ -129,6 +123,7 @@ class RBbst{
     insertNode(key, data, root);
     return true;
   }
+
   //removes a node and its information from the tree
   bool deleteElement(int k) {
     if (deleteElement(k, root))
