@@ -191,12 +191,17 @@ int main()
    cout << "Q - Quit?" << endl;
    cout << "F - Read from a file?" << endl;
    cout << "R - Random generated?" << endl;
+   cout << "M - My Hash?" << endl;
    cin >> UserOption;
    UserOption = toupper(UserOption);
    switch (UserOption) {
      case 'F': {//Reads the file MRK for input
                ifstream myfile ("MRK");
-               size = 239;
+               // allow the user to select the size of the table
+               cout << "How large a table would you like to work with?" << endl;
+               cout << "(e.g. a prime number about the size of ";
+               cout << "your planned number of data entries)" << endl;
+               cin >> size;
                // allow the user to select the number of test records
                cout << "How many test values would you like to insert?" << endl;
                do {
@@ -249,6 +254,66 @@ int main()
                }
                else cout << "Unable to open file"; 
        break;}
+     case 'M': {//Reads the file MRK for input
+               ifstream myfile ("MRK");
+               // allow the user to select the size of the table
+               cout << "How large a table would you like to work with?" << endl;
+               cout << "(e.g. a prime number about the size of ";
+               cout << "your planned number of data entries)" << endl;
+               cin >> size;
+               // allow the user to select the number of test records
+               cout << "How many test values would you like to insert?" << endl;
+               do {
+                 cin >> entry;
+                 if (atoi(entry.c_str()) < 1) {
+                   cout << entry << " is not a positive integer value, ";
+                   cout << endl << "please try again" << endl;
+                 } else numtests = atoi(entry.c_str());
+               } while (numtests < 0 || numtests > size);
+               // allocate the hash table, quit if it fails
+               hashtable *H = new hashtable(size);
+               if (H == NULL) {
+                 cout << "unable to allocate sufficient table space, sorry!" << endl;
+                 return 1;
+               }
+               // allocate space for the test records, quit if it fails
+               keytype *keyvals = new keytype[size];
+               if (keyvals == NULL) {
+                 cout << "unable to allocate sufficient test data, sorry!" << endl;
+                 delete H;
+                 return 2;
+               }
+               int InputLines = 0;
+               if (myfile.is_open()){
+                 while ((getline (myfile,line)) && (InputLines < numtests)){
+                   cout << line << '\n';
+                   keyvals[InputLines] = line;
+                   record *r = new record;
+                   if (!r) continue;
+                   r->key = keyvals[InputLines];
+                   H->insert(r);
+                   InputLines++;
+                 }
+                 myfile.close();
+                 // go through the list of remembered keys and try to
+                 //    retrieve each of them from the hash table
+                 cout << endl << "Looking for the records we created" << endl;
+                 for (int j = 0; j < numtests; j++) {
+                   record *s = H->lookup(keyvals[j]);
+                   if (!s) cout << "Could not find record " << keyvals[j] << endl;
+                   else {
+                     cout << setw(2) << s->key;// << ":" << s->data;
+                     cout << " found successfully" << endl;
+                   }
+                 }
+                 // deallocate the hash table and the storage
+                 //    for remembered keys
+                 delete H;
+                 //delete keyvals;
+               }
+               else cout << "Unable to open file"; 
+       break;}
+
      case 'R': {//call the manual insert function
                // allow the user to select the size of the table
                cout << "How large a table would you like to work with?" << endl;
