@@ -223,38 +223,30 @@ int main()
                if (myfile.is_open()){
                  while ((getline (myfile,line)) && (InputLines < numtests)){
                    cout << line << '\n';
-                   // create the desired number of test records,
-                   //    each with a random key,
-                   // remember their key values in the keyvals array,
-                   //    and insert them in the hash table
-//                   cout << "Creating records with random keys and inserting in hash table" << endl;
-//                   for (int i = 0; i < numtests; i++) {
-                     keyvals[InputLines] = line;
-                     record *r = new record;
-                     if (!r) continue;
-                     r->key = keyvals[InputLines];
-//                     r->data = line;
-                     H->insert(r);
-//                   }
+                   keyvals[InputLines] = line;
+                   record *r = new record;
+                   if (!r) continue;
+                   r->key = keyvals[InputLines];
+                   H->insert(r);
                    InputLines++;
-               }
-               myfile.close();
-               // go through the list of remembered keys and try to
-               //    retrieve each of them from the hash table
-               cout << endl << "Looking for the records we created" << endl;
-               for (int j = 0; j < numtests; j++) {
-                 record *s = H->lookup(keyvals[j]);
-                 if (!s) cout << "Could not find record " << keyvals[j] << endl;
-                 else {
-                   cout << setw(2) << s->key;// << ":" << s->data;
-                   cout << " found successfully" << endl;
                  }
+                 myfile.close();
+                 // go through the list of remembered keys and try to
+                 //    retrieve each of them from the hash table
+                 cout << endl << "Looking for the records we created" << endl;
+                 for (int j = 0; j < numtests; j++) {
+                   record *s = H->lookup(keyvals[j]);
+                   if (!s) cout << "Could not find record " << keyvals[j] << endl;
+                   else {
+                     cout << setw(2) << s->key;// << ":" << s->data;
+                     cout << " found successfully" << endl;
+                   }
+                 }
+                 // deallocate the hash table and the storage
+                 //    for remembered keys
+                 delete H;
+                 //delete keyvals;
                }
-               // deallocate the hash table and the storage
-               //    for remembered keys
-               delete H;
-               //delete keyvals;
-             }
                else cout << "Unable to open file"; 
        break;}
      case 'R': {//call the manual insert function
