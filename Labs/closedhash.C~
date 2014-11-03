@@ -115,14 +115,16 @@ hashtable::hashtable(int sz)
 //     hash table and the length of the largest chain   
 hashtable::~hashtable()
 {
+int Entries = 0;
    if (table) {
       for (int i = 0; i < tsize; i++) {
+if ((table[i]) != NULL){Entries++;}
              if (table[i]) delete table[i];
       }
       delete table;
    }
    cout << "Total collisions: " << collisions;
-   cout << " out of " << entries << " entries";
+   cout << " out of " << Entries << " entries";
    cout << ", largest chain: " << longestsearch << endl;
 }
 
@@ -244,7 +246,7 @@ int main()
    // deallocate the hash table and the storage
    //    for remembered keys
    delete H;
-   delete keyvals;
+   //delete keyvals;
 }
 
 
