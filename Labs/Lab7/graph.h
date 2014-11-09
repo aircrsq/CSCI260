@@ -1,3 +1,5 @@
+#ifndef GRAPH
+#define GRAPH
 /****************************************************************
 /*            graph.h
 /*            by Gara Pruesse
@@ -7,11 +9,39 @@
 /*            builds graph, provides graph access routines
 /*
 /*********************************************************************/
+/************************************************************************
+ Design Unit  : Lab7
+
+ File Name    : graph.h
+
+ Purpose      : Header file for graph
+
+ Note         :
+
+ Limitations  : none known
+
+ Errors       : none known
+
+ Modules      :
+
+ Dependences  : none
+
+ Author       : David Burneau, Vancouver Island University
+
+ System       : G++ (Linux)
+
+------------------------------------------------------------------
+ Revision List
+ Version      Author  Date    Changes
+ 1.0          DB      Nov 04  New version Original code provide by
+                              Professor Gara Pruesse
+*************************************************************************/
 #include <string>
 #include <fstream>
 #include <iostream>
 #include <values.h>
-#include <vector>   // STL vector, for adjacency list; ability to iterate
+#include <vector> // STL vector, for adjacency list; ability to iterate
+#include <list>
 
 using namespace std;
 
@@ -24,25 +54,32 @@ class graph {
    private:
       int n;
       int default_nonedge;
-      vector<int> *Adj;  // array of neighbour-vector
-                                // all subsequent entries are names of neighbou
-
-
+      vector <std::list<int> > Adj;
+      int file_read(char *fn);  //Done
+      // array of neighbour-vector
+      // all subsequent entries are names of neighbou
    public:
-        graph();
-        graph(int num) {n=num;}
-	int graph_read(char *fn);
-	~graph();
-	int num_vertices() { return n; }
-	int add_edge(int u, int v);
-	int remove_edge(int u, int v);
-	int adjacent(int u, int v);
+    graph(){
+      //make a new vector of lists
+      std::vector <std::list<int> > Adj;
+    }
+    graph(int num) {
+      n=num;
+      //make a new vector of n lists
+      std::vector <std::list<int> > Adj(n);
+    }
+	~graph(){
+//	  delete Adj;
+	}
+    int graph_read(char *fn){n = file_read(fn);};   //Done
+	int num_vertices() { return n; };   //Done
+	int add_edge(int u, int v); //Done
+	int remove_edge(int u, int v);  //Done
+	int adjacent(int u, int v);     //Done
 	int first_neighbour(int v);
 	int next_neighbour(int v);
-	bool print_graph();
+	bool print_graph();     //Done
 	bool print_vertex(int v);
-	int BreadthFirstTraversal(int v);
+	int BreadthFirstTraversal(int v);   //Done
 };
-
-
-
+#endif
