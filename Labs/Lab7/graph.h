@@ -82,6 +82,6 @@ class graph {
 	bool print_vertex(int v);
 	int BreadthFirstTraversal(int v);   //Done
         void DepthFirstSearch(int v);
-        void DFSUtil(int v, bool visited[]);
+        void DFShelp(int v, bool visited[]);
 };
 #endif

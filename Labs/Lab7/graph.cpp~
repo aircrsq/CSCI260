@@ -18,12 +18,12 @@ int graph::file_read(char *fn){
     getline(myfile,line);
     this->n = atoi(line.c_str());
     //read remainder of file until 99
-    while ((getline(myfile,line)) && (line != "99")){
+    while ((getline(myfile,line)) && (atoi(line.c_str()) < n)){
       //chop the line into separate words
       stringstream ss(line);
       string tmp;
       while(std::getline(ss, tmp, ' ')){
-        if (tmp != " " && (atoi(tmp.c_str())) <= n){
+        if (tmp != " " && (atoi(tmp.c_str())) < n){
           //push onto neighbors
           neighbors.push_back(atoi(tmp.c_str()));
         }
@@ -137,7 +137,7 @@ void graph::DepthFirstSearch(int v){
 }
 void graph::DFSUtil(int v, bool visited[]){
   // Mark the current node as visited and print it
-  visited[q] = true;
+  visited[v] = true;
   cout << v << " ";
   // Recur for all the vertices adjacent to this vertex
   list<int>::iterator i;

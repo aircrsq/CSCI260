@@ -18,7 +18,7 @@ int graph::file_read(char *fn){
     getline(myfile,line);
     this->n = atoi(line.c_str());
     //read remainder of file until 99
-    while ((getline(myfile,line)) && (line != "99")){
+    while ((getline(myfile,line)) && (atoi(line.c_str()) < n)){
       //chop the line into separate words
       stringstream ss(line);
       string tmp;
@@ -133,11 +133,11 @@ void graph::DepthFirstSearch(int v){
   for(int i = 0; i < v; i++)
     visited[i] = false;
   // Call the recursive helper function to print DFS traversal
-  DFSUtil(v, visited);
+  DFShelp(v, visited);
 }
-void graph::DFSUtil(int v, bool visited[]){
+void graph::DFShelp(int v, bool visited[]){
   // Mark the current node as visited and print it
-  visited[q] = true;
+  visited[v] = true;
   cout << v << " ";
   // Recur for all the vertices adjacent to this vertex
   list<int>::iterator i;
