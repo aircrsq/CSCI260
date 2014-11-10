@@ -122,6 +122,7 @@ int graph::BreadthFirstTraversal(int v){
       }
     }
   }
+  cout << endl;
   DepthFirstSearch(v);
 }
 // DFS traversal of the vertices reachable from v. It uses recursive DFSUtil()

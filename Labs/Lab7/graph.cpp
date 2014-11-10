@@ -137,7 +137,7 @@ void graph::DepthFirstSearch(int v){
 }
 void graph::DFSUtil(int v, bool visited[]){
   // Mark the current node as visited and print it
-  visited[v] = true;
+  visited[q] = true;
   cout << v << " ";
   // Recur for all the vertices adjacent to this vertex
   list<int>::iterator i;
