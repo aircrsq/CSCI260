@@ -123,7 +123,7 @@ int graph::BreadthFirstTraversal(int v){
     }
   }
   cout << endl;
-  DepthFirstSearch(v);
+  //DepthFirstSearch(v);
 }
 // DFS traversal of the vertices reachable from v. It uses recursive DFSUtil()
 void graph::DepthFirstSearch(int v){
@@ -133,9 +133,9 @@ void graph::DepthFirstSearch(int v){
   for(int i = 0; i < v; i++)
     visited[i] = false;
   // Call the recursive helper function to print DFS traversal
-  DFSUtil(v, visited);
+  DFShelp(v, visited);
 }
-void graph::DFSUtil(int v, bool visited[]){
+void graph::DFShelp(int v, bool visited[]){
   // Mark the current node as visited and print it
   visited[v] = true;
   cout << v << " ";

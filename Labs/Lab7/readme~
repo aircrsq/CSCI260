@@ -1,0 +1,93 @@
+/************************************************************************
+ Design Unit  : Lab7
+
+ File Name    : readme
+
+ Purpose      : Explanation of the make file for graph
+
+ Note         : none
+
+ Limitations  : none
+
+ Errors       : none known
+
+ Modules      : none
+
+ Dependences  : none
+
+ Author       : David Burneau, Vancouver Island University
+
+ System       : G++ (Linux)
+
+------------------------------------------------------------------
+ Revision List
+ Version      Author  Date    Changes
+ 1.0          DB      Nov 04  New version
+*************************************************************************/
+
+To construct the files for the graph, Lab7, you can use the following options
+	make			-- creates testapp program
+	make clean		-- removes all .o files and the executable program
+
+To run the executable, type "./testapp".
+
+Your menu options will be
+   "Enter F to read a graph from a file,"
+   "   or A to add an edge,"
+   "   or R to remove an edge,"
+   "   or L to list the neighbours of a vertex,"
+   "   or S to search the graph from a vertex,"
+   "   or D to for debug data display,"
+   "   or P to for Vertex display,"
+   "   or H for help,"
+   "   or Q to quit."
+
+---------------------------------
+Reading the graph from a file - F
+   You can read the graph data into the program from a file. The file must be of the format
+5		
+0 1 2 99
+1 0 3 99
+2 0 3 4 99
+3 1 2 4 99
+4 2 4 99
+99
+
+The first line is the number of vertices
+Each Vertex line ends in a number greater than the number of vertices
+The file ends in a number greater than the number of vertices
+
+---------------------------------
+Add an Edge - A
+   You will be prompted to enter the vertex you would like to add an edge to and then
+   you will be prompted for the vertex at the end of the edge
+
+---------------------------------
+Remove an Edge - R
+   You will be prompted to enter the vertex you would like to remove an edge from and then
+   you will be prompted for the vertex at the end of the edge
+
+---------------------------------
+List the neighbors of a vertex - L
+   Not developed in this version
+
+---------------------------------
+Search from a Vertex - S
+   You will be prompted for a vertex number
+   A Breadth First Search will be displayed
+
+---------------------------------
+Debug print - D
+   Will display the graph similiar to the input format
+
+---------------------------------
+Print a vertex - P
+   Will display a vertex and all it's edges
+
+---------------------------------
+Help - H
+   Will display the menu of commands
+
+---------------------------------
+Quit - Q
+   will quit the program

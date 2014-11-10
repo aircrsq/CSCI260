@@ -1,3 +1,35 @@
+/************************************************************************
+ Design Unit  : Lab7
+
+ File Name    : graph.cpp
+
+ Purpose      : source file for graph
+
+ Note         :
+
+ Limitations  : none known
+
+ Errors       : none known
+
+ Modules      :
+
+ Dependences  : graph.h
+		fstream
+		stdlib.h
+		string
+		iostream
+		sstream
+		vector
+
+ Author       : David Burneau, Vancouver Island University
+
+ System       : G++ (Linux)
+
+------------------------------------------------------------------
+ Revision List
+ Version      Author  Date    Changes
+ 1.0          DB      Nov 04  First implementation
+*************************************************************************/
 #include <fstream>
 #include <stdlib.h>
 #include <string>
@@ -123,7 +155,7 @@ int graph::BreadthFirstTraversal(int v){
     }
   }
   cout << endl;
-  DepthFirstSearch(v);
+  //DepthFirstSearch(v);
 }
 // DFS traversal of the vertices reachable from v. It uses recursive DFSUtil()
 void graph::DepthFirstSearch(int v){
