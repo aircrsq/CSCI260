@@ -89,6 +89,7 @@ bool graph::print_vertex(int v){
 }
 //BFS from vertex
 int graph::BreadthFirstTraversal(int v){
+  cout << "BFS on " << v << endl;
   //queue for BFS
   list<int> queue;
   //iterator for neighbors
@@ -121,4 +122,26 @@ int graph::BreadthFirstTraversal(int v){
       }
     }
   }
+  cout << endl;
+  DepthFirstSearch(v);
+}
+// DFS traversal of the vertices reachable from v. It uses recursive DFSUtil()
+void graph::DepthFirstSearch(int v){
+  cout << "DFS on " << v << endl;
+  // Mark all the vertices as not visited
+  bool *visited = new bool[v];
+  for(int i = 0; i < v; i++)
+    visited[i] = false;
+  // Call the recursive helper function to print DFS traversal
+  DFSUtil(v, visited);
+}
+void graph::DFSUtil(int v, bool visited[]){
+  // Mark the current node as visited and print it
+  visited[v] = true;
+  cout << v << " ";
+  // Recur for all the vertices adjacent to this vertex
+  list<int>::iterator i;
+  for(i = Adj[v].begin(); i != Adj[v].end(); ++i)
+    if(!visited[*i])
+      DFSUtil(*i, visited);
 }
