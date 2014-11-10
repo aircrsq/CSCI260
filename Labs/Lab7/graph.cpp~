@@ -23,7 +23,7 @@ int graph::file_read(char *fn){
       stringstream ss(line);
       string tmp;
       while(std::getline(ss, tmp, ' ')){
-        if (tmp != " " && (atoi(tmp.c_str())) <= n){
+        if (tmp != " " && (atoi(tmp.c_str())) < n){
           //push onto neighbors
           neighbors.push_back(atoi(tmp.c_str()));
         }
