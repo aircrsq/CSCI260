@@ -33,6 +33,7 @@ char getcommand();
 void printmenu();
 bool processcommand(char cmd, graph &G);
 void print_v(int v);
+void (*pFoo)(int);
 
 int main(){
    graph G;
@@ -46,7 +47,7 @@ int main(){
 }
 
 char getcommand(){
-   cout << "Enter your command choice (F, A, R, L, S, D, P, H, Q)" << endl;
+   cout << "Enter your command choice (F, A, R, L, T, S, D, P, H, Q)" << endl;
    char cmd;
    cin >> cmd;
    cmd = toupper(cmd);
@@ -72,7 +73,7 @@ void printmenu(){
    cout << "   or R to remove an edge," << endl;
    cout << "   or L to list the neighbours of a vertex," << endl;
    cout << "   or T to initial BFS search the graph from a vertex," << endl;
-   cout << "   or S to search the graph from a vertex," << endl;
+   cout << "   or S to new BFS search the graph from a vertex," << endl;
    cout << "   or D to for debug data display," << endl;
    cout << "   or P to print Vertex display," << endl;
    cout << "   or H for help," << endl;
@@ -124,7 +125,8 @@ bool processcommand(char cmd, graph &G){
 		if (s<0 || s>=G.num_vertices())
 			cout << "Error, out of range.\n";
 		else
-			G.BreadthFirstTraversal(s, print_v(s));
+            pFoo = print_v;
+			G.BreadthFirstTraversal(s, pFoo);
                 break;
       //Complete Debug data display
       case 'D': G.print_graph();
@@ -141,6 +143,7 @@ bool processcommand(char cmd, graph &G){
    }
    return true;
 }
+
 void print_v(int v){
   cout << v << " ";
 }

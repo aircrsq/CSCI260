@@ -75,20 +75,20 @@ class graph {
       std::vector <std::list<int> > Adj(n);
     }
 	~graph(){
-//	  delete Adj;
+//	  delete &Adj;
 	}
-    int graph_read(char *fn){n = file_read(fn);};   //Done
-	int num_vertices() { return n; };  	//Done
-	int add_edge(int u, int v); 		//Done
-	int remove_edge(int u, int v);  	//Done
-	int adjacent(int u, int v);     	//Done
+    int graph_read(char *fn){n = file_read(fn);};
+	int num_vertices() { return n; };
+	int add_edge(int u, int v);
+	int remove_edge(int u, int v);
+	int adjacent(int u, int v);
 	int first_neighbour(int v);
 	int next_neighbour(int v);
-	bool print_graph();     		//Done
-	bool print_vertex(int v);		//Done
-	void BreadthFirstTraversal(int v);   	//Done
-        void DepthFirstSearch(int v);		//Done
-        void BreadthFirstTraversal(int v, void (*f) (int));	//In progress
-        void DFShelp(int v, bool visited[]);	//Done
+	bool print_graph();
+	bool print_vertex(int v);
+	void BreadthFirstTraversal(int v);
+    void DepthFirstSearch(int v);
+    void BreadthFirstTraversal(int v, void (*f) (int));
+    void DFShelp(int v, bool visited[]);
 };
 #endif

@@ -120,7 +120,6 @@ bool graph::print_vertex(int v){
     cout << endl;
   return 1;
 }
-
 //BFS from vertex
 void graph::BreadthFirstTraversal(int v){
   cout << "BFS on " << v << endl;
@@ -169,6 +168,7 @@ void graph::DepthFirstSearch(int v){
   // Call the recursive helper function to print DFS traversal
   DFShelp(v, visited);
 }
+
 void graph::DFShelp(int v, bool visited[]){
   // Mark the current node as visited and print it
   visited[v] = true;
@@ -177,10 +177,10 @@ void graph::DFShelp(int v, bool visited[]){
   list<int>::iterator i;
   for(i = Adj[v].begin(); i != Adj[v].end(); ++i)
     if(!visited[*i])
-      DFSUtil(*i, visited);
+      DFShelp(*i, visited);
 }
 
-void BreadthFirstTraversal(int v, void (*f) (int)){	//in progress
+void graph::BreadthFirstTraversal(int v, void (*f) (int)){
   cout << "BFS2 on " << v << endl;
   //queue for BFS
   list<int> queue2;
@@ -195,15 +195,13 @@ void BreadthFirstTraversal(int v, void (*f) (int)){	//in progress
   visited[v] = true;
   f(v);
   //push v onto queue
-  queue.push_back(v);
+  queue2.push_back(v);
   //while the queue is not empty
-  while(!queue.empty()){
+  while(!queue2.empty()){
     //get the front of queue
-    v = queue.front();
-    //display the vertex
-    //cout << v << " ";
+    v = queue2.front();
     //pop off the vertex
-    queue.pop_front();
+    queue2.pop_front();
     //check the neighbors
     for(i = Adj[v].begin(); i != Adj[v].end(); ++i){
       //if neighbor has not been visited
@@ -212,11 +210,10 @@ void BreadthFirstTraversal(int v, void (*f) (int)){	//in progress
         visited[*i] = true;
         f(*i);
         //push neighbor into queue
-        queue.push_back(*i);
+        queue2.push_back(*i);
       }
     }
   }
   cout << endl;
-  //DepthFirstSearch(v);
 }
 
