@@ -1,5 +1,5 @@
 /************************************************************************
- Design Unit  : Lab8
+ Design Unit  : Lab9
 
  File Name    : graph.cpp
 
@@ -30,6 +30,7 @@
  Version      Author  Date    Changes
  1.0          DB      Nov 04  First implementation
  1.1          DB      Nov 10  Implement new version of BFS
+ 1.2          DB      Nov 13  Fixed issue with white spaces
 *************************************************************************/
 #include <fstream>
 #include <stdlib.h>

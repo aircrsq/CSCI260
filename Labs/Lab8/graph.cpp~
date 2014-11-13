@@ -53,7 +53,7 @@ int graph::file_read(char *fn){
     myfile >> Vertex;
     this->n = Vertex;
     //read remainder of file until 99
-    while (InputLines < n /*&& (Vertex != 99)*/){
+    while (InputLines < n){
       myfile >> Vertex;
       while (Vertex < n){
         neighbors.push_back(Vertex);
@@ -62,10 +62,8 @@ int graph::file_read(char *fn){
       neighbors.pop_front();
       this->Adj.push_back(neighbors);
       neighbors.clear();
-      cout << "Clear neighbors" << endl;
       InputLines++;
     }
-    cout << "Close file" << endl; 
     myfile.close();
   }
   //file could not be opened
