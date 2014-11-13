@@ -1,5 +1,5 @@
 /************************************************************************
- Design Unit  : Lab8
+ Design Unit  : Lab9
 
  File Name    : graph.cpp
 
@@ -30,6 +30,7 @@
  Version      Author  Date    Changes
  1.0          DB      Nov 04  First implementation
  1.1          DB      Nov 10  Implement new version of BFS
+ 1.2          DB      Nov 13  Fixed issue with white spaces
 *************************************************************************/
 #include <fstream>
 #include <stdlib.h>
@@ -154,7 +155,7 @@ void graph::BreadthFirstTraversal(int v){
   cout << endl;
   //DepthFirstSearch(v);
 }
-// DFS traversal of the vertices reachable from v. It uses recursive DFSUtil()
+// DFS traversal of the vertices reachable from v. It uses recursive DFShelp()
 void graph::DepthFirstSearch(int v){
   cout << "DFS on " << v << endl;
   // Mark all the vertices as not visited

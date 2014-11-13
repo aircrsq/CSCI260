@@ -155,7 +155,7 @@ void graph::BreadthFirstTraversal(int v){
   cout << endl;
   //DepthFirstSearch(v);
 }
-// DFS traversal of the vertices reachable from v. It uses recursive DFSUtil()
+// DFS traversal of the vertices reachable from v. It uses recursive DFShelp()
 void graph::DepthFirstSearch(int v){
   cout << "DFS on " << v << endl;
   // Mark all the vertices as not visited
