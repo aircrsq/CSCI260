@@ -90,9 +90,8 @@ cout << "Clear neighbors" << endl;
       neighbors.clear();
       InputLines++;	*/
 //    }
-cout << "Close file" << endl; 
     myfile.close();
-
+cout << "Close file" << endl; 
   }
   //file could not be opened
   else {
