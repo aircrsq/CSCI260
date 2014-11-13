@@ -52,46 +52,21 @@ int graph::file_read(char *fn){
     //get the first line
     myfile >> Vertex;
     this->n = Vertex;
-//    cout << this->n << endl;
-    //getline(myfile,line);
-    //this->n = line;
-    //    this->n = atoi(line.c_str());
     //read remainder of file until 99
     while (!myfile.eof() /*&& (Vertex != 99)*/){
       myfile >> Vertex;
-//cout << Vertex << endl;
       while (Vertex < n){
         neighbors.push_back(Vertex);
         myfile >> Vertex;
-cout << Vertex << " ";
       } 
-cout << endl;
       neighbors.pop_front();
       this->Adj.push_back(neighbors);
-cout << "List attached" << endl;
       neighbors.clear();
-cout << "Clear neighbors" << endl;
+      cout << "Clear neighbors" << endl;
       InputLines++;
     }
-/*    while ((getline(myfile,line)) && (atoi(line.c_str()) < n)){
-      //chop the line into separate words
-      stringstream ss(line);
-      string tmp;
-      while(std::getline(ss, tmp, ' ')){
-        if (tmp != " " && (atoi(tmp.c_str())) < n){
-          //push onto neighbors
-          neighbors.push_back(atoi(tmp.c_str()));
-        }
-      }		*/
-/*      neighbors.pop_front();
-      //assign neighbors to Adj
-      this->Adj.push_back(neighbors);
-      //clear the neighbors
-      neighbors.clear();
-      InputLines++;	*/
-//    }
+    cout << "Close file" << endl; 
     myfile.close();
-cout << "Close file" << endl; 
   }
   //file could not be opened
   else {
