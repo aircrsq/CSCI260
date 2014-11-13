@@ -53,7 +53,7 @@ int graph::file_read(char *fn){
     myfile >> Vertex;
     this->n = Vertex;
     //read remainder of file until 99
-    while (!myfile.eof() /*&& (Vertex != 99)*/){
+    while (InputLines < n /*&& (Vertex != 99)*/){
       myfile >> Vertex;
       while (Vertex < n){
         neighbors.push_back(Vertex);
