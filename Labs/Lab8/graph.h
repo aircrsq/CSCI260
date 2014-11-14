@@ -40,13 +40,13 @@
  Version      Author  Date    Changes
  1.0          DB      Nov 04  New version Original code provide by
                               Professor Gara Pruesse
- 1.1          DB      Nov 10 Implement new version of BFS
+ 1.1          DB      Nov 10 Implement new version of BFS with function call
 *************************************************************************/
 #include <string>
 #include <fstream>
 #include <iostream>
 #include <values.h>
-#include <vector> // STL vector, for adjacency list; ability to iterate
+#include <vector>
 #include <list>
 
 using namespace std;
@@ -74,9 +74,7 @@ class graph {
       //make a new vector of n lists
       std::vector <std::list<int> > Adj(n);
     }
-	~graph(){
-//	  delete &Adj;
-	}
+	~graph(){}
     int graph_read(char *fn){n = file_read(fn);};
 	int num_vertices() { return n; };
 	int add_edge(int u, int v);

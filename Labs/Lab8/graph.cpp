@@ -42,8 +42,6 @@
 //vector <std::list<int> > Adj;
 
 int graph::file_read(char *fn){
-//int line;
-  string line;
   ifstream myfile (fn);
   int Vertex;
   list <int> neighbors;
@@ -53,13 +51,13 @@ int graph::file_read(char *fn){
     //get the first line
     myfile >> Vertex;
     this->n = Vertex;
-    //read remainder of file until 99
+    //read remainder of file until number of Vertices
     while (InputLines < n){
       myfile >> Vertex;
       while (Vertex < n){
         neighbors.push_back(Vertex);
         myfile >> Vertex;
-      } 
+      }
       neighbors.pop_front();
       this->Adj.push_back(neighbors);
       neighbors.clear();

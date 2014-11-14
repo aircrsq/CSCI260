@@ -25,6 +25,8 @@
  Version      Author  Date    Changes
  1.0          DB      Nov 10  New version Original code provide by
                               Professor Gara Pruesse
+ 1.1          DB      Nov 10  Included print_v function and modified call
+                              to BFS with function
 *************************************************************************/
 #include "graph.h"
 #include <iostream>

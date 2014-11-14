@@ -1,5 +1,5 @@
 #/************************************************************************
-# Design Unit  : Lab7
+# Design Unit  : Lab9
 
 # File Name    : makefile
 
