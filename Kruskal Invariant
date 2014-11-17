@@ -1,0 +1,22 @@
+Kruskal's algorithm for the minimum spanning tree problem begins with many disjoint spanning trees, a spanning forest. It repeatedly joins two trees together until a spanning tree of the entire given graph remains.
+
+
+--G = <V,E>
+
+P := {{v1}, ..., {vn}} --partition V into singleton trees
+E' := {}
+
+loop |V|-1 times
+--Inv: E' contains only edges of a min' span' tree for each S in P &
+--     each S in P represents a subtree of a minimum spanning tree of G
+
+   find shortest edge e joining different subsets S1 and S2 in P
+   E' += {e}
+   P := P - {S1,S2} + {S1 union S2}
+end loop
+
+--- Kruskal's Minimum Spanning Tree Algorithm, O(|E|*log(|E|)) time ---
+
+Correctness
+
+Kruskal's algorithm certainly leads to a spanning tree T but it is necessary to prove that T is minimal. The invariant shows that this is so: The invariant is certainly true on the initial iteration. In the body of the loop, two partial minimum spanning trees T1 and T2 are joined by an edge `e'. The vertices in T1 and T2 must be connected somehow in a final minimum spanning tree T'. Suppose they could be connected more cheaply in T' than in T. Add e to T'. This would create a cycle but it could be broken by removing an edge from T to T'-T. This would leave the vertices in T1 and T2 connected but at a lower cost than in T' because e is chosen as the cheapest satisfactory edge. Therefore T1, T2 and e form a minimum spanning subtree which must be part of a minimum spanning tree of G. The invariant really is invariant. The algorithm continues to join subtrees until a single minimum cost tree remains, spanning all vertices. 
