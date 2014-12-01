@@ -24,7 +24,12 @@
 
  Modules      :
 
- Dependences  : none
+ Dependences  : string
+		fstream
+		iostream
+		values.h
+		vector
+		list
 
  Author       : David Burneau, Vancouver Island University
 

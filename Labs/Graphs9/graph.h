@@ -74,7 +74,10 @@ class graph {
       //make a new vector of n lists
       std::vector <std::list<int> > Adj(n);
     }
-	~graph(){}
+    
+    ~graph(){
+       Adj.clear(); 
+    }
     int graph_read(char *fn){n = file_read(fn);};
 	int num_vertices() { return n; };
 	int add_edge(int u, int v);

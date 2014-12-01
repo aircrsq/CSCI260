@@ -74,7 +74,7 @@ class graph {
       std::vector <std::list<int> > Adj(n);
     }
 	~graph(){
-//	  delete Adj;
+	  Adj.clear();
 	}
     int graph_read(char *fn){n = file_read(fn);};   //Done
 	int num_vertices() { return n; };  	//Done

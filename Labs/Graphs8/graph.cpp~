@@ -175,5 +175,5 @@ void graph::DFShelp(int v, bool visited[]){
   list<int>::iterator i;
   for(i = Adj[v].begin(); i != Adj[v].end(); ++i)
     if(!visited[*i])
-      DFSUtil(*i, visited);
+      DFShelp(*i, visited);
 }

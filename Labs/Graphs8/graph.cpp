@@ -44,6 +44,7 @@ int graph::file_read(char *fn){
   ifstream myfile (fn);
   list <int> neighbors;
   int InputLines = 0;
+  this->Adj.clear();
   //if the input file is open
   if (myfile.is_open()){
     //get the first line
